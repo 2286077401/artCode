@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "tn-radio-group": "/tuniao-ui/components/tn-radio-group/tn-radio-group",
+    "tn-radio": "/tuniao-ui/components/tn-radio/tn-radio",
+    "tn-scroll-list": "/tuniao-ui/components/tn-scroll-list/tn-scroll-list",
+    "tn-slider": "/tuniao-ui/components/tn-slider/tn-slider",
+    "tn-number-box": "/tuniao-ui/components/tn-number-box/tn-number-box"
+  },
+  "component": true
+}

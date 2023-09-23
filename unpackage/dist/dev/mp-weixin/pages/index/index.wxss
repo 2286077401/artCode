@@ -1,0 +1,4 @@
+.custom-tabbar-page.data-v-57280228 {
+  height: calc(100vh - (100rpx + env(safe-area-inset-bottom) / 2));
+}
+

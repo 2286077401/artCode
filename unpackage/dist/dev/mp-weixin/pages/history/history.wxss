@@ -1,0 +1,14 @@
+.content.data-v-24bfa630 {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 30rpx;
+}
+.content .item.data-v-24bfa630 {
+  position: relative;
+  flex: 0 0 335rpx;
+  margin-bottom: 20rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+

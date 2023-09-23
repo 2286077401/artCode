@@ -1,0 +1,1 @@
+<view class="text-container"><view class="wave-wrapper"><view data-ref="waveBox" class="wave-text-box vue-ref"><text class="wave-text" style="{{'font-size:'+(fontSize+'upx')+';'+('color:'+(color)+';')}}">{{text}}</text></view><view data-ref="wavePallet" class="wave-pallet vue-ref"></view></view></view>

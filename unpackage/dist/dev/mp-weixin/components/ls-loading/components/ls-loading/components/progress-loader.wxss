@@ -1,0 +1,55 @@
+
+.progress-loader.data-v-a35c8c70 {
+	position: relative;
+	flex: 1;
+}
+.progress-under.data-v-a35c8c70 {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+
+
+
+
+
+	width: 0;
+	white-space: nowrap;
+	-webkit-animation-name: progressloader-data-v-a35c8c70;
+	        animation-name: progressloader-data-v-a35c8c70;
+	-webkit-animation-delay: 0.5s;
+	        animation-delay: 0.5s;
+	-webkit-animation-timing-function: linear;
+	        animation-timing-function: linear;
+	-webkit-animation-duration: 3s;
+	        animation-duration: 3s;
+	-webkit-animation-iteration-count: infinite;
+	        animation-iteration-count: infinite;
+}
+._text-bold.data-v-a35c8c70 {
+	font-weight: 700;
+	lines: 1;
+}
+.progress-hidden.data-v-a35c8c70 {
+	opacity: 0;
+}
+@-webkit-keyframes progressloader-data-v-a35c8c70 {
+0% {
+		width: 0%;
+}
+100% {
+		width: 100%;
+}
+}
+@keyframes progressloader-data-v-a35c8c70 {
+0% {
+		width: 0%;
+}
+100% {
+		width: 100%;
+}
+}
+
+
+

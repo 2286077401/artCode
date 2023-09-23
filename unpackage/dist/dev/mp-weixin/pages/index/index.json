@@ -1,0 +1,12 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "artCode",
+  "usingComponents": {
+    "list-pro": "/components/listPro/listPro",
+    "draw": "/components/draw/draw",
+    "index-page": "/components/indexPage/indexPage",
+    "ar-code": "/components/arCode/arCode",
+    "my": "/components/my/my",
+    "tn-tabbar": "/tuniao-ui/components/tn-tabbar/tn-tabbar"
+  }
+}

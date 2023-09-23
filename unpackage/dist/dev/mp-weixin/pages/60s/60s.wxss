@@ -1,0 +1,43 @@
+
+page.data-v-57e448fa {
+	background-image: url(/static/Chatbot01.png);
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.begin.data-v-57e448fa {
+	width: calc(100% - 40rpx);
+	margin: 0 auto;
+	text-align: center;
+}
+.topBox.data-v-57e448fa {
+	text-align: center;
+	width: 630rpx;
+	margin: 0 auto;
+	border: 1rpx solid #dedede;
+}
+.login__info__item__button.data-v-57e448fa {
+	width: 80%;
+	margin: 0 auto;
+	background-image: repeating-linear-gradient(-45deg, #9A5CE5, #00C3FF);
+	margin-bottom: 100rpx;
+}
+.listData.data-v-57e448fa {
+	width: 630rpx;
+	margin: 0 auto;
+	text-align: justify;
+	margin-top: 20rpx;
+	padding: 0rpx 20rpx 0rpx 20rpx;
+}
+.riBox.data-v-57e448fa {
+	justify-content: space-between;
+	text-align: center;
+	font-weight: bolder;
+	color: #eb6430;
+	border: 2rpx dotted #eb6430;
+	width: 630rpx;
+	margin: 0 auto;
+	display: flex;
+	padding: 10rpx;
+}
+

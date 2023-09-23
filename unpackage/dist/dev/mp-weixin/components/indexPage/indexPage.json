@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "tn-swiper": "/tuniao-ui/components/tn-swiper/tn-swiper"
+  },
+  "component": true
+}

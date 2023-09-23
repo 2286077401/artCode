@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "聊天",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "uni-transition": "/uni_modules/uni-transition/components/uni-transition/uni-transition"
+  }
+}
