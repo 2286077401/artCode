@@ -33,10 +33,10 @@
 			</tn-radio-group>
 			<view class="topCenter">
 				<textarea placeholderStyle='color:#EFEFEF' placeholder="请输入二维码提示词,建议使用英文" class="textarer"
-					maxlength="200" v-model="codeData.prompt"></textarea>
+					maxlength="500" v-model="codeData.prompt"></textarea>
 				<view class="tetxNum">
 					<view style="color: #EFEFEF;">
-						<span>{{codeData.prompt.length}}/200</span>
+						<span>{{codeData.prompt.length}}/500</span>
 					</view>
 					<!-- <view style="color: #EFEFEF;">
 					<span style="font-size: 22rpx;">自然风光 山川湖海 落日长河 共赏春色 </span>
@@ -71,7 +71,6 @@
 				<view class='nextNav'> 预设二维码风格组合，如定位框的样式（方形、圆形等）、点的样式（方形、圆形等）</view>
 				<image mode="widthFix" style="display: block; width: 50%;margin: 30rpx auto 0rpx auto;"
 					:src="'https://oss.laf.run/nupa44-bits/imgCode/'+pattern[paterNum]+'.png'"></image>
-
 				<tn-scroll-list>
 					<view class="tn-flex tn-margin-sm">
 						<block v-for="(item, index) in pattern" :key="index">
@@ -96,7 +95,7 @@
 					<tn-number-box style="flex: 1;" disabledInput v-model="codeData.steps" :min="10" :max="20"
 						:step='1'></tn-number-box>
 				</view>
-				<view class='titleNav'>
+				<!-- <view class='titleNav'>
 					二维码的权重
 				</view>
 				<view class='nextNav'>当权重越大，图片越接近真实二维码，但是艺术化的风格会减弱，取值范围是 10-30，默认是 15</view>
@@ -105,7 +104,7 @@
 						:step='1'></tn-slider>
 					<tn-number-box style="flex:1;" disabledInput v-model="codeData.qrw" :min="10" :max="30"
 						:step='1'></tn-number-box>
-				</view>
+				</view> -->
 				<view class='titleNav'>
 					是否保持原始链接
 				</view>
@@ -224,7 +223,7 @@
 		</view>
 		<view class="login-sussuspension begin">
 			<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
-				:hover-stay-time="150" @click="codeDrwL()">立即生成</view>
+				:hover-stay-time="150" @click="codeDrwL()">立即生成(5积分/次)</view>
 		</view>
 	</view>
 </template>
@@ -266,10 +265,9 @@
 					content: '', //二维码内容
 					prompt: "", //绘制指令
 					type: 'link', //二维码类型
-					preset: "sunset", //背景風格
+					preset: "", //背景風格
 					pattern: "", //预设二维码圆角 点 风格
-					steps: 16, //迭代次数
-					qrw: 15, //二维码全重
+					steps: 16, //迭代次数 
 					rawurl: 'false', //是否保持原始链接
 					padding_level: 5, //二维码内边距
 					aspect_ratio: '768x768', //二维码宽高比
@@ -279,7 +277,7 @@
 					ecl: 'H', //纠错等级
 					seed: "",
 				},
-				engineType: "高级引擎", //引擎选择
+				engineType: "自定义引擎", //引擎选择
 				engineList: [{
 						name: '高级引擎',
 						disabled: false
@@ -505,19 +503,23 @@
 				paterNum: "0",
 			};
 		},
-		onShow() {
+
+		mounted() {
 			this.codeImgData;
 			this.codeIsLoad;
-		},
-		mounted() {
 			this.getCodeProList()
 		},
 		methods: {
 			coseCode(item) {
 				this.activeCode = item._id
+				// uni.showToast({
+				// 	title: '功能暂未开放',
+				// 	icon: "none",
+				// })
+				// return; 
 				// this.codeData = item.prompt
 				Object.assign(this.codeData, item.prompt);
-				console.log(JSON.stringify(this.codeData), JSON.stringify(item.prompt))
+				console.log(this.codeData)
 			},
 			getCodeProList() {
 				getCodePro().then((res) => {
@@ -543,6 +545,20 @@
 				}
 			},
 			codeDrwL() {
+				if (this.codeIsLoad) {
+					uni.showToast({
+						title: '不要着急，正在努力生成！',
+						icon: 'none'
+					})
+					return false
+				}
+				if (this.prompt == '') {
+					uni.showToast({
+						title: '请输入描述语！',
+						icon: 'none'
+					})
+					return false
+				}
 				let updateObj = {
 					content: this.codeData.content,
 					prompt: this.codeData.prompt,
@@ -550,7 +566,6 @@
 					preset: this.codeData.preset,
 					pattern: this.codeData.pattern,
 					steps: this.codeData.steps,
-					qrw: this.codeData.qrw / 10, // 将 qrw 缩小十倍  
 					rawurl: this.codeData.rawurl,
 					padding_level: this.codeData.padding_level + '',
 					aspect_ratio: this.codeData.aspect_ratio,
@@ -589,10 +604,9 @@
 					content: '', //二维码内容
 					prompt: "", //绘制指令
 					type: 'link', //二维码类型
-					preset: "sunset", //背景風格
+					preset: "", //背景風格
 					pattern: "", //预设二维码圆角 点 风格
-					steps: 16, //迭代次数
-					qrw: 15, //二维码全重
+					steps: 16, //迭代次数 
 					rawurl: 'false', //是否保持原始链接
 					padding_level: 5, //二维码内边距
 					aspect_ratio: '768x768', //二维码宽高比
@@ -612,6 +626,12 @@
 </script>
 
 <style scoped lang="scss">
+	.login__info__item__button {
+		letter-spacing: .5em;
+		width: 80%;
+		margin: 0 auto;
+	}
+
 	.btnTxt {
 		width: 100%;
 		position: absolute;
@@ -666,6 +686,10 @@
 	}
 
 	/deep/ .tn-radio__label {
+		color: white !important;
+	}
+
+	.tn-radio__label {
 		color: white !important;
 	}
 

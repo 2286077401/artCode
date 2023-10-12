@@ -1,3 +1,8 @@
+.login__info__item__button.data-v-e46d42f8 {
+  letter-spacing: .5em;
+  width: 80%;
+  margin: 0 auto;
+}
 .btnTxt.data-v-e46d42f8 {
   width: 100%;
   position: absolute;
@@ -44,6 +49,9 @@
   margin: 0 !important;
 }
 .data-v-e46d42f8 .tn-radio__label {
+  color: white !important;
+}
+.tn-radio__label.data-v-e46d42f8 {
   color: white !important;
 }
 .imgNumberBox.data-v-e46d42f8 {

@@ -6,7 +6,7 @@
 		<view
 			class="about-shadow tn-margin-top-xl tn-padding-top-sm tn-padding-bottom-sm tn-margin-left tn-margin-right">
 			<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
-				<view class="tn-flex tn-flex-col-center" @click="openLandscape('https://laf.run/signup?code=EvaEc9x')">
+				<view class="tn-flex tn-flex-col-center" @click="open('https://laf.run/signup?code=EvaEc9x')">
 					<view class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center  tn-color-white">
 						<image style="width: 40rpx;" mode="widthFix"
 							src="https://oss.laf.run/nupa44-bits/interviewCode/laflogo.png"></image>
@@ -20,7 +20,8 @@
 		</view>
 		<view class="about-shadow  tn-margin-left tn-margin-right">
 			<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
-				<view class="tn-flex tn-flex-col-center" @click="openLandscape('https://auth.zhishuyun.com/auth/login?inviter_id=b1c9bad9-37f3-4ccd-a9b0-ae6daf66af5c&redirect=https://data.zhishuyun.com')">
+				<view class="tn-flex tn-flex-col-center"
+					@click="open('https://auth.zhishuyun.com/auth/login?inviter_id=b1c9bad9-37f3-4ccd-a9b0-ae6daf66af5c&redirect=https://data.zhishuyun.com')">
 					<view style="background-color: #ffffff;border-radius: 50%;"
 						class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center  tn-color-white">
 						<image style="width: 50rpx;" mode="widthFix"
@@ -62,11 +63,22 @@
 			}
 		},
 		methods: {
-			openLandscape(path) {
+			open(path) {
 				console.log(path)
+				uni.navigateTo({
+					url: '/pages/webView/webView?url=' + path
+				})
+			},
+			openLandscape(path) {
 				uni.setClipboardData({
-					data:path,
-					showToast: false
+					data: path,
+					showToast: false,
+					success: function() {
+						uni.showToast({
+							title: '复制成功',
+							icon: 'none'
+						})
+					}
 				})
 			}
 		}

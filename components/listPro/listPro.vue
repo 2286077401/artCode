@@ -31,7 +31,7 @@
 						<view class="list_top">
 							<view v-if="indexData != index" @click='showDetail(index)'
 								class="animate__animated animate__zoomIn  list_top_title">
-								{{item[0]}}
+								{{item.templateName}}
 							</view>
 							<view class="animate__animated animate__fadeInUp list_top_left" v-else>
 								<image :src="'https://api.multiavatar.com/'+generateRandomString()+'.png'"
@@ -43,10 +43,10 @@
 						</view>
 						<view v-if="indexData == index" class="animate__animated animate__fadeInLeft">
 							<view class="list_title">
-								{{item[0]}}
+								{{item.templateName}}
 							</view>
 							<view class="list_next">
-								{{item[1]}}
+								{{item.content}}
 							</view>
 							<view class="talkTime">
 
@@ -82,12 +82,11 @@
 			serchData(e) {
 				clearTimeout(this.timer);
 				this.timer = setTimeout(() => {
-					const index = this.promptsList.findIndex(item => item[0].includes(e.detail.value));
+					const index = this.promptsList.findIndex(item => item.templateName.includes(e.detail.value));
 					if (index !== -1) {
 						const [matchedItem] = this.promptsList.splice(index, 1);
 						this.promptsList.unshift(matchedItem);
-					}
-
+					} 
 				}, 1000);
 			},
 			goto(item) {

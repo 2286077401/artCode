@@ -1,0 +1,101 @@
+@charset "UTF-8";
+.audio {
+  background: #68d7bb;
+  height: 58rpx;
+  border-radius: 50rpx;
+  width: 200rpx;
+  align-items: center;
+}
+.audio.active {
+  opacity: 0.8;
+}
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.flex-1 {
+  flex: 1;
+}
+.ml-3 {
+  margin-right: 30rpx;
+  color: #fff;
+}
+.ml-3b {
+  margin-right: 30rpx;
+  color: #666666;
+  font-size: 10rpx;
+  margin: 0 auto;
+  line-height: 50rpx;
+}
+.mr-3 {
+  margin-left: 30rpx;
+}
+.wifi-symbol {
+  width: 50rpx;
+  height: 50rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  transform: rotate(135deg) translate3d(0, 0, 0);
+  -webkit-transform: rotate(135deg) translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.wifi-circle {
+  border: 5rpx solid #fff;
+  border-radius: 50%;
+  position: absolute;
+}
+.wifi-circleb {
+  border: 5rpx solid #666666;
+  border-radius: 50%;
+  position: absolute;
+}
+.first {
+  width: 5rpx;
+  height: 5rpx;
+  background: #fff;
+  top: 45rpx;
+  left: 45rpx;
+}
+.second {
+  width: 25rpx;
+  height: 25rpx;
+  top: 35rpx;
+  left: 35rpx;
+}
+.third {
+  width: 40rpx;
+  height: 40rpx;
+  top: 25rpx;
+  left: 25rpx;
+}
+.active .second {
+  animation: fadeInOut 1s infinite 0.2s;
+  -webkit-animation: fadeInOut 1s infinite 0.2s;
+}
+.active .third {
+  animation: fadeInOut 1s infinite 0.4s;
+  -webkit-animation: fadeInOut 1s infinite 0.4s;
+}
+@-webkit-keyframes fadeInOut {
+0% {
+    opacity: 0;
+    /*初始状态 透明度为0*/
+}
+100% {
+    opacity: 1;
+    /*结尾状态 透明度为1*/
+}
+}
+@keyframes fadeInOut {
+0% {
+    opacity: 0;
+    /*初始状态 透明度为0*/
+}
+100% {
+    opacity: 1;
+    /*结尾状态 透明度为1*/
+}
+}
+

@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
-	
-		 <view v-if="tabberPageLoadFlag[0]" :style="{display: currentIndex === 0 ? '' : 'none'}">
+
+		<view v-if="tabberPageLoadFlag[0]" :style="{display: currentIndex === 0 ? '' : 'none'}">
 			<scroll-view class="custom-tabbar-page" scroll-y enable-back-to-top @scrolltolower="tabbarPageScrollLower">
 				<listPro ref="listPro"></listPro>
 			</scroll-view>
@@ -34,10 +34,9 @@
 
 <script>
 	// import aboutUs from "@/pages/aboutUs/aboutUs.vue"  
- 
+
 	export default {
-		components: {  
-		},
+		components: {},
 		data() {
 			return {
 				// 自定义底栏对应页面的加载情况
@@ -92,8 +91,13 @@
 			// 切换导航
 			switchTabbar(index) {
 				this._switchTabbarPage(index)
-			},
+				if (index == 1) {
+					this.$nextTick(() => {
+						this.$refs['draw'].getSocketResu()
+					})
+				}
 
+			},
 
 			// 导航页面滚动到底部
 			tabbarPageScrollLower(e) {},
@@ -114,8 +118,6 @@
 	}
 </script>
 <style lang="scss" scoped>
- 
-
 	.custom-tabbar-page {
 		height: calc(100vh - (100rpx + env(safe-area-inset-bottom) / 2));
 	}

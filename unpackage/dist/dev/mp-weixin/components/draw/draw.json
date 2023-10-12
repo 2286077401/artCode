@@ -1,6 +1,8 @@
 {
+  "component": true,
   "usingComponents": {
-    "tn-empty": "/tuniao-ui/components/tn-empty/tn-empty"
-  },
-  "component": true
+    "tn-empty": "/tuniao-ui/components/tn-empty/tn-empty",
+    "tn-popup": "/tuniao-ui/components/tn-popup/tn-popup",
+    "style-detail": "/components/draw/styleDetail"
+  }
 }

@@ -1,0 +1,35 @@
+.showTitle.data-v-43265ad2 {
+  font-weight: bolder;
+  margin: 30rpx;
+}
+.showCenter.data-v-43265ad2 {
+  padding: 30rpx;
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+.box.data-v-43265ad2 {
+  background-color: #606266;
+  width: 600rpx;
+  text-align: center;
+  max-height: 70vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  overflow-y: scroll;
+  padding: 20rpx;
+}
+.box .boxList.data-v-43265ad2 {
+  display: flex;
+}
+.box .f1.data-v-43265ad2 {
+  flex: 1;
+  text-align: center;
+  margin-top: 30rpx;
+}
+.box .fw.data-v-43265ad2 {
+  font-weight: bolder;
+}
+

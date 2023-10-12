@@ -1,27 +1,13 @@
 {
-    "name": "uView",
-    "version": "1.8.6",
-    "description": "uView UI，是uni-app生态优秀的UI框架，全面的组件和便捷的工具会让您信手拈来，如鱼得水",
-    "main": "index.js",
+    "id": "ua2-markdown",
+    "name": "uniapp markdown语法渲染及代码高亮(vue2版)",
+    "displayName": "uniapp markdown语法渲染及代码高亮(vue2版)",
+    "version": "1.1.6",
+    "description": "基于uniapp+vue2自定义渲染markdown语法/高亮，适用于h5+小程序+App端。",
     "keywords": [
-        "uview",
-        "ui",
-        "uni-app"
+        "uni-markdown",
+        "markdown"
     ],
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": ""
-    },
-    "devDependencies": {
-        "node-sass": "^4.14.0",
-        "sass-loader": "^8.0.2"
-    },
-    "author": "uView",
-    "license": "MIT",
-    "id": "uview-v1",
     "dcloudext": {
         "category": [
             "前端组件",

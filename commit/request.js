@@ -35,7 +35,6 @@ module.exports = {
 		header = "multipart/form-data";
 		url = this.config("APIHOST") + url;
 		let token = uni.getStorageSync("token");
-		console.log(data)
 		return new Promise((succ, error) => {
 			uni.uploadFile({
 				url: url,
@@ -93,9 +92,43 @@ module.exports = {
 			})
 		})
 	},
-	post: function(url, data, header, timeout = 30000) {
+	userRes: function(url, data) {
+		console.log(data)
+		url = configdata.APIHOST + url;
+		return new Promise((succ, error) => {
+			uni.request({
+				url: url,
+				data: data,
+				method: "POST",
+				header: {
+					"content-type": "application/x-www-form-urlencoded",
+				},
+				success: function(result) {
+
+					if (result.data.code == '500') {
+						uni.clearStorage()
+						uni.showToast({
+							title: result.data.msg,
+							icon: 'none',
+							mask: true,
+						})
+					} else {
+						succ.call(self, result.data)
+					}
+				},
+				fail: function(e) {
+					uni.showToast({
+						title: '请求超时~',
+						icon: 'error'
+					})
+					error.call(self, e)
+				}
+			})
+		})
+	},
+	post: function(url, data, header, timeout = 300000) {
 		let _this = this;
-		header = header || "application/x-www-form-urlencoded";
+		header = header || "application/json";
 		let token = uni.getStorageSync("token");
 		url = this.config("APIHOST") + url;
 		return new Promise((succ, error) => {
@@ -118,16 +151,16 @@ module.exports = {
 							success() {
 								setTimeout(() => {
 									uni.reLaunch({
-										url: '/pages/login/index'
+										url: '/pages/login/login'
 									})
 								}, 1000)
 							}
 						})
-					} else if (result.data.code == '200') {
+					} else if (result.data.code == '200' || result.data.code == '999') {
 						succ.call(self, result.data)
 					} else {
 						uni.showToast({
-							title: result.data.msg,
+							title: result.data.msg || '请求出错',
 							icon: 'none',
 						})
 					}
@@ -158,11 +191,7 @@ module.exports = {
 					"accept": "application/json",
 				},
 				success: function(result) {
-					console.log(result)
-					if (result.data.code == '999999') {
-						// _this.toast(result.data.msg)
-						succ.call(self, result.data)
-					} else if (result.data.code == '666666') {
+					if (result.data.code == '401') {
 						uni.clearStorage()
 						uni.showToast({
 							title: '登陆信息已过期,请重新登陆',
@@ -171,13 +200,18 @@ module.exports = {
 							success() {
 								setTimeout(() => {
 									uni.reLaunch({
-										url: '/pages/login/index'
+										url: '/pages/login/login'
 									})
 								}, 1000)
 							}
 						})
-					} else {
+					} else if (result.data.code == '200') {
 						succ.call(self, result.data)
+					} else {
+						uni.showToast({
+							title: result.data.msg,
+							icon: 'none',
+						})
 					}
 				},
 				fail: function(e) {
@@ -235,7 +269,6 @@ module.exports = {
 	apiGet: function(url, data, header) {
 		header = header || "application/x-www-form-urlencoded";
 		url = this.config("ROOTPATHAUTHER") + url;
-		console.log(url)
 		let token = uni.getStorageSync("token");
 		return new Promise((succ, error) => {
 			uni.request({
@@ -246,7 +279,28 @@ module.exports = {
 					"content-type": header,
 				},
 				success: function(result) {
-					succ.call(self, result.data)
+					if (result.data.code == '401') {
+						uni.clearStorage()
+						uni.showToast({
+							title: '登陆信息已过期,请重新登陆',
+							icon: 'none',
+							mask: true,
+							success() {
+								setTimeout(() => {
+									uni.reLaunch({
+										url: '/pages/login/login'
+									})
+								}, 1000)
+							}
+						})
+					} else if (result.data.code == '200') {
+						succ.call(self, result.data)
+					} else {
+						uni.showToast({
+							title: result.data.msg,
+							icon: 'none',
+						})
+					}
 				},
 				fail: function(e) {
 					uni.showToast({
@@ -261,7 +315,6 @@ module.exports = {
 	vvGet: function(url, data, header) {
 		header = header || "application/x-www-form-urlencoded";
 		url = this.config("ROOTPATHVV") + url;
-		console.log(url)
 		let token = uni.getStorageSync("token");
 		return new Promise((succ, error) => {
 			uni.request({
@@ -272,7 +325,28 @@ module.exports = {
 					"content-type": header,
 				},
 				success: function(result) {
-					succ.call(self, result.data)
+					if (result.data.code == '401') {
+						uni.clearStorage()
+						uni.showToast({
+							title: '登陆信息已过期,请重新登陆',
+							icon: 'none',
+							mask: true,
+							success() {
+								setTimeout(() => {
+									uni.reLaunch({
+										url: '/pages/login/login'
+									})
+								}, 1000)
+							}
+						})
+					} else if (result.data.code == '200') {
+						succ.call(self, result.data)
+					} else {
+						uni.showToast({
+							title: result.data.msg,
+							icon: 'none',
+						})
+					}
 				},
 				fail: function(e) {
 					uni.showToast({
@@ -287,7 +361,6 @@ module.exports = {
 	aiGet: function(url, data, header) {
 		header = header || "application/x-www-form-urlencoded";
 		url = this.config("ROOTPATHAI") + url;
-		console.log(url)
 		let token = uni.getStorageSync("token");
 		return new Promise((succ, error) => {
 			uni.request({
@@ -298,7 +371,28 @@ module.exports = {
 					"content-type": header,
 				},
 				success: function(result) {
-					succ.call(self, result.data)
+					if (result.data.code == '401') {
+						uni.clearStorage()
+						uni.showToast({
+							title: '登陆信息已过期,请重新登陆',
+							icon: 'none',
+							mask: true,
+							success() {
+								setTimeout(() => {
+									uni.reLaunch({
+										url: '/pages/login/login'
+									})
+								}, 1000)
+							}
+						})
+					} else if (result.data.code == '200') {
+						succ.call(self, result.data)
+					} else {
+						uni.showToast({
+							title: result.data.msg,
+							icon: 'none',
+						})
+					}
 				},
 				fail: function(e) {
 					uni.showToast({

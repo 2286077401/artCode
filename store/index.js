@@ -58,7 +58,18 @@ const store = new Vuex.Store({
 		vuex_custom_bar_height: 0
 	},
 	mutations: {
-
+		getImageData(){
+			
+		},
+		changeimageLoad(state,data) {
+			console.log(data)
+			state.imageData = data
+			// state.codeIsLoad = false
+		},
+		changeLoad(state) { 
+			state.imageIsLoad = false
+			state.codeIsLoad = false
+		},
 		$tStore(state, payload) {
 			// 判断是否多层调用，state中为对象存在的情况，例如user.info.score = 1
 			let nameArr = payload.name.split('.')
@@ -95,27 +106,7 @@ const store = new Vuex.Store({
 		loginStatus(state) { //判断登录状态
 			let token = uni.getStorageSync('token');
 			let data = uni.getStorageSync('userInfo');
-			let inviteUrl = window.location.href.split('?')[0]
-			// if (inviteUrl == 'https://hzy.huizhanye.com.cn/huizhanye/phone/#/pages/login/linkreg'){
-			// 	return
-			// }else if(inviteUrl == 'https://hzy.huizhanye.com.cn/huizhanye//phone/#/pages/home/pk/shareTeam/index'){
-			// 	return
-			// }else if(inviteUrl == 'https://hzy.huizhanye.com.cn/huizhanye//phone/#/pages/home/onlineMall/appZfb/index'){
-			// 	return
-			// }else if(inviteUrl == 'https://hzy.huizhanye.com.cn/huizhanye//phone/#/pages/home/onlineMall/locationZFB/index'){
-			// 	return
-			// }else {
-			// 	if (!token || !data) {
-			// 		uni.clearStorage()
-			// 		uni.reLaunch({
-			// 			url: '/pages/login/index'
-			// 		})
-			// 	} else {
-			// 		uni.switchTab({
-			// 			url: '/pages/home/index'
-			// 		})
-			// 	}
-			// }
+			let inviteUrl = window.location.href.split('?')[0] 
 		}
 	},
 	actions: {
@@ -126,26 +117,7 @@ const store = new Vuex.Store({
 			console.log(drwData)
 			state.codeIsLoad = true
 			state.codeImgData = '';
-			// setTimeout(() => {
-			// 	state.codeIsLoad = false;
-			// 	state.codeImgData = {
-			// 		"image_url": "https://midjourney.cdn.zhishuyun.com/attachments/1124768570157564029/1153349181432414390/menris7228__id3731456_63539022-b5aa-44e5-8245-68c8e2619c63.png",
-			// 		"image_id": "1153349181432414390",
-			// 		"progress": 100,
-			// 		"actions": [
-			// 			"upsample1",
-			// 			"upsample2",
-			// 			"upsample3",
-			// 			"upsample4",
-			// 			"reroll",
-			// 			"variation1",
-			// 			"variation2",
-			// 			"variation3",
-			// 			"variation4"
-			// 		],
-			// 		"task_id": "5e09c599-99d9-4b78-bb4c-a88b3d77e60e"
-			// 	}
-			// }, 2000)
+			 
 			if (drwData.prompt == '' || drwData.content == '') {
 				uni.showToast({
 					title: '必填项不能为空！',
@@ -153,18 +125,24 @@ const store = new Vuex.Store({
 				})
 				return false
 			}
-			// arCode(drwData).then((res) => {
-			// 	console.log(res)
-			// 	if (!res.image_url) {
-			// 		uni.showToast({
-			// 			title: res.detail,
-			// 			icon: 'none'
-			// 		})
-			// 	} else {
-			// 		// assuming you have a state for imageRes  
-			// 		state.imageData = res
-			// 	}
-			// })
+			uni.showToast({
+				title: '开始绘制，绘制结果在画夹查看！',
+				icon: 'none'
+			})
+			drwData.socketId = uni.getStorageSync('SOCKET_ID')
+			arCode(drwData).then((res) => {
+				console.log(res)
+				state.codeIsLoad = false;
+				if (!res.image_url) {
+					uni.showToast({
+						title: res.detail,
+						icon: 'none'
+					})
+				} else {
+					// assuming you have a state for imageRes  
+					state.imageData = res
+				}
+			})
 		},
 		mjImageDrw({
 			commit,
@@ -172,47 +150,29 @@ const store = new Vuex.Store({
 		}, drwData) {
 			state.imageIsLoad = true
 			state.imageData = '';
-			setTimeout(() => {
-				state.imageIsLoad = false;
-				state.imageData = {
-					"image_url": "https://midjourney.cdn.zhishuyun.com/attachments/1124768570157564029/1153349181432414390/menris7228__id3731456_63539022-b5aa-44e5-8245-68c8e2619c63.png",
-					"image_id": "1153349181432414390",
-					"progress": 100,
-					"actions": [
-						"upsample1",
-						"upsample2",
-						"upsample3",
-						"upsample4",
-						"reroll",
-						"variation1",
-						"variation2",
-						"variation3",
-						"variation4"
-					],
-					"task_id": "5e09c599-99d9-4b78-bb4c-a88b3d77e60e"
+			drwData.socketId = uni.getStorageSync('SOCKET_ID')
+			mjlow(drwData).then((res) => {
+				console.log(res)
+				if (res.code == 999) {
+					uni.showToast({
+						title: res.msg,
+						icon: 'none'
+					})
+					state.imageIsLoad = false;
+					return
 				}
-			}, 2000)
-
-			// console.log(drwData)
-			// if (drwData.prompt == '' || drwData.drwData == '') {
-			// 	uni.showToast({
-			// 		title: '必填项不能为空！',
-			// 		icon: 'none'
-			// 	})
-			// 	return false
-			// }
-			// mjlow(drwData).then((res) => {
-			// 	console.log(res)
-			// 	if (!res.image_url) {
-			// 		uni.showToast({
-			// 			title: res.detail,
-			// 			icon: 'none'
-			// 		})
-			// 	} else {
-			// 		// assuming you have a state for imageRes  
-			// 		state.imageData = res
-			// 	}
-			// })
+				if (!res.data.image_url) {
+					state.imageIsLoad = true;
+					uni.showToast({
+						title: res.msg,
+						icon: 'none'
+					})
+				} else {
+					state.imageIsLoad = false;
+					// assuming you have a state for imageRes  
+					state.imageData = res.data
+				}
+			})
 		}
 	}
 })

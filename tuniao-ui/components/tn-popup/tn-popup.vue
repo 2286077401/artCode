@@ -354,7 +354,7 @@
 </script>
 
 <style lang="scss" scoped>
-  
+    @import '@/tuniao-ui/theme.scss';
   .tn-popup {
     /* #ifndef APP-NVUE */
     display: block;

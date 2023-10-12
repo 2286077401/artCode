@@ -3,6 +3,11 @@
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
+		<tn-fab :btnList="btnList" :left="left" :right="right" :bottom="bottom" :width="width" :height="height"
+			:iconSize="iconSize" :backgroundColor="backgroundColor" :fontColor="fontColor" :icon="icon"
+			:animationType="animationType" :showMask="showMask" @click="clickFabItem">
+		</tn-fab>
+
 		<view style="position: relative;padding: 0 20rpx;height: 85vh;">
 			<scroll-view scroll-y="true" :scroll-top="scrollTop" :style="{paddingTop:statusBarHeight}" class="scroll-Y"
 				:scroll-with-animation="true" @scroll="scroll">
@@ -13,30 +18,49 @@
 							<view class="chat-item__right-message" @longtap="copy(item.problem)">
 								{{ item.problem }}
 							</view>
-							<image style="width: 80rpx;height: 80rpx;" mode="widthFix" shape="square"
-								:src="item.client_avatar">
+							<image style="width: 80rpx;height: 80rpx;border-radius: 50%;" mode="widthFix" shape="square"
+								src="https://oss.laf.run/nupa44-bits/12aff9074a7a6692e785266073e1ebe1_1.jpg">
 							</image>
 						</view>
 					</uni-transition>
 					<!-- 答案框 -->
-					<uni-transition :show="true" mode="fade-left">
-						<view class="chat-item__left u-flex">
+					<!-- 					<uni-transition :show="false" mode="fade-left" >
+						<view class=" chat-item__left u-flex">
+							<image style="width: 80rpx;" mode="widthFix" src="/static/chatlogo.png" shape="square">
+							</image>
+							<view class="chat-item__left-right">
+								<view class="chat-item__left-name"> GPT </view>
+								<view class="chat-item__left-bottom">
+									<tn-loading></tn-loading>
+								</view>
+							</view>
+						</view>
+					</uni-transition> -->
+					<uni-transition :show="true" mode="fade-left" v-if="item.answer!=''">
+						<view class=" chat-item__left u-flex">
 							<image style="width: 80rpx;" mode="widthFix" src="/static/chatlogo.png" shape="square">
 							</image>
 							<view class="chat-item__left-right">
 								<view class="chat-item__left-name"> GPT </view>
 								<view class="chat-item__left-bottom">
 									<view class="chat-item__left-message" @longtap="copy(item.answer)">
-										<text v-if="item.answer == 'error'">网路错误</text>
-										<text
-											v-if="item.answer != 'error' && item.type === 'text'">{{ item.answer || "思考中..." }}</text>
-										<img v-if="item.type === 'image'" :src="item.answer" />
+										<text v-if="item.answer == 'error'">网络错误</text>
+										<ua-markdown v-if="item.answer != 'error' && item.type === 'text'"
+											:source="item.answer || '加载中...'" :showLine="false" />
 									</view>
-									<u-loading-icon v-if="item.answer == ''"></u-loading-icon>
+									<tn-loading v-if="item.answer == ''"></tn-loading>
 									<u-icon v-if="item.answer == 'error'" name="error"></u-icon>
-									<view style="margin-top:auto;">
-										<u-icon v-if="item.answer && item.answer != 'error'" @tap="copy(item.answer)"
-											name="file-text"></u-icon>
+
+									<view
+										style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+										<textVoice v-if="item.answer && item.answer != 'error'" audioId="audio1"
+											:type="'0'" :url="item.answer" audioColor="#68d7bb">
+										</textVoice>
+										<text v-if="item.answer && item.answer != 'error'" @tap="copy(item.answer)"
+											class="tn-icon-copy-fill" style="width: 100%;text-align: left;"></text>
+										<!-- 		<text v-if="item.answer && item.answer != 'error'" @tap="copy(item.answer)"
+											class="tn-icon-headset"></text> -->
+										<!-- <tn-loading></tn-loading> -->
 									</view>
 								</view>
 							</view>
@@ -47,37 +71,46 @@
 		</view>
 		<!-- 底部输入框 -->
 		<view class="input-box">
-			<input placeholder="请输入内容" border="surround" v-model="problem">
+			<text class="tn-icon-voice" style="font-size: 50rpx;font-weight:bolder;color: #767cf2;"></text>
+			<input :disabled="isLoading" style="flex: 1;" placeholder="请输入内容" border="surround" v-model="problem">
 			</input>
-			<view>
-				<button style="margin: 0 auto;" class="login__info__item__button tn-cool-bg-color-7--reverse tn-color-white"
-					iconColor="#ffffff" color="#98e4f3" size="normal" @tap="getAnswer">
-					发送
+			<view style="padding-right: 20rpx;">
+				<button :disabled="isLoading" style="margin: 0 auto;margin-left: 20rpx;"
+					class="login__info__item__button tn-cool-bg-color-7--reverse tn-color-white" iconColor="#ffffff"
+					color="#98e4f3" size="normal" @tap="getAnswer">
+					<tn-loading v-if="isLoading" style="margin-right: 10rpx;"></tn-loading>发送
 				</button>
 			</view>
 		</view>
 		<!-- 页面内容 -->
 		<view style="padding: 0 25rpx;">
 		</view>
-
-
 	</view>
 </template>
 
 <script>
+	import uaMarkdown from "@/components/ua2-markdown/ua-markdown"
+	import {
+		wenxinChat 
+	} from "@/commit/api.js"
+	import {
+		data
+	} from "../../tuniao-ui/libs/mixin/components_color";
 	export default {
 		name: 'TemplateLoading',
 		components: {
-
+			uaMarkdown
 		},
 		data() {
-			return {
+			return { 
+				isLoading: true,
 				chat: [],
-				openData: [],
+				openData: {
+					"messages": []
+				},
 				problem: '',
 				answer: '',
 				currentAnswerIndex: -1,
-				platform: 'h5',
 				webSocketClient: null,
 				upOption: {
 					use: false,
@@ -120,57 +153,55 @@
 				statusBarHeight: 20
 			}
 		},
-		props: {
-			askInfo: String,
-			typeName: String
-		},
-		watch: {
-			askInfo(newVal, oldVal) {
-				this.askInfo = newVal;
-			},
-			typeName(newVal, oldVal) {
-				this.typeName = newVal;
-				this.chat = [];
-				this.getChat();
-			},
-		},
-		// onHide() {
-		// 	uni.clearStorage('gptType')
-		// },
 		onLoad() {
 			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
 			if (uni.getStorageSync('gptType')) {
 				uni.setNavigationBarTitle({
-					title: uni.getStorageSync('gptType')[0]
+					title: uni.getStorageSync('gptType').templateName
 				});
 				this.chat.push({
 					type: 'text',
-					problem: uni.getStorageSync('gptType')[0],
-					answer: this.askInfo,
+					problem: uni.getStorageSync('gptType').templateName,
+					answer: '',
 				});
+				this.openData.messages.push({
+					role: "user",
+					content: uni.getStorageSync('gptType').content
+				})
+				wenxinChat(this.openData).then((res) => {
+					this.isLoading = false
+					if (res.code == 200) {
+						// this.chat.splice(this.openData.messages.length - 1, 1);
+						this.askInfo = res.data.messages[res.data.messages.length - 1].content
+						this.openData.messages = res.data.messages
+						this.chat.push({
+							type: 'text',
+							problem: "",
+							answer: this.askInfo,
+						});
+
+						console.log(this.chat)
+					} else {
+						this.openData.messages = res.data.messages
+						this.chat.push({
+							type: 'text',
+							problem: '',
+							answer: 'error',
+						});
+
+					}
+				})
 			}
-
-			// this.getChat();
-			const systemInfo = uni.getSystemInfoSync();
-			// 检查当前是否为微信小程序环境
-			const isWechatMiniProgram = systemInfo.platform === 'devtools' || systemInfo.platform === 'mp-weixin';
-			// 检查当前是否为APP环境
-			const isApp = systemInfo.platform === 'android' || systemInfo.platform === 'ios';
-			// 检查当前是否为H5环境
-			const isH5 = typeof window !== 'undefined' && typeof document !== 'undefined';
-
-			if (isWechatMiniProgram) {
-				this.platform = 'isWechat';
-			} else if (isApp) {
-				this.platform = 'isApp';
-			} else if (isH5) {
-				this.platform = 'isH5';
-			}
-
 		},
 		beforeDestroy() {},
-
+		onHide() {
+			this.isLoading = false
+		},
 		methods: {
+			Audio() {
+				uni.$emit('stop')
+			},
+			
 			// 点击悬浮按钮的内容
 			clickFabItem(e) {
 				switch (e.index) {
@@ -179,7 +210,7 @@
 						break;
 					}
 					case 1: {
-						this.openData = []
+						this.openData.messages = []
 						this.chat = []
 						this.getChat()
 						this.$tn.message.toast(`已清屏`)
@@ -212,177 +243,13 @@
 					}
 				});
 			},
-			isJSON(str) {
-				try {
-					JSON.parse(str);
-					return true;
-				} catch (error) {
-					return false;
-				}
-			},
-			getContentFromData(data) {
-				try {
-					if (!this.isJSON(data)) {
-						return "";
-					}
-					const jsonData = JSON.parse(data);
-					if (
-						jsonData &&
-						jsonData.choices &&
-						jsonData.choices[0] &&
-						jsonData.choices[0].delta &&
-						jsonData.choices[0].delta.content
-					) {
-						return jsonData.choices[0].delta.content;
-					} else {
-						return "";
-					}
-				} catch (error) {
-					console.error("Error extracting content from JSON string:", error);
-					return "";
-				}
-			},
-			async connectWebSocket(url) {
-				this.webSocketClient = wx.connectSocket({
-					url: url,
-					timeout: 120000, // 设置超时时间为 120 秒
-					header: {
-						'content-type': 'application/json'
-					},
-					success: () => {
-						console.log('WebSocket connection established.');
-					},
-					fail: (error) => {
-						console.error('WebSocket connection failed:', error);
-					}
-				});
-			},
-			closeWebSocket() {
-				// ... 关闭 WebSocket 的逻辑
-				if (this.webSocketClient) {
-					this.webSocketClient.close();
-					console.log('WebSocket connection closed.');
-				}
-			},
-			async requestWebSocketServer(res) {
-				if (!res || !res.url || !res.apiopen || !res.apiopen.key || !res.apiopen.prompt || !res.apiopen
-					.typeName) {
-					console.error("Invalid response or missing parameters.");
-					return;
-				}
-
-				const key = res.apiopen.key;
-				const prompt = res.apiopen.prompt;
-				const typeName = res.apiopen.typeName;
-
-				// 根据运行环境选择 WebSocket 实现
-				const isWechatMiniProgram = this.platform === 'isWechat';
-
-				const url = res.url;
-
-				const data = JSON.stringify({
-					key,
-					prompt,
-					typeName
-				});
-				console.log('组织的data参数：>>>>', data);
-
-				if (isWechatMiniProgram) {
-					this.connectWebSocket(url);
-
-					wx.onError((error) => {
-						console.error('General error:', error);
-					});
-
-					wx.onSocketOpen(async () => {
-						if (this.webSocketClient.readyState === this.webSocketClient.OPEN) {
-							try {
-								await this.webSocketClient.send({
-									data
-								});
-							} catch (error) {
-								console.error("Error sending data to WebSocket server:", error);
-							}
-						} else {
-							console.error("WebSocket connection is not open.");
-						}
-
-					});
-
-					// 使用微信小程序的函数来注册 WebSocket 事件回调
-
-					wx.onSocketMessage((event) => {
-						if (event.data === '[DONE]') {
-							// 关闭 WebSocket 连接
-							this.webSocketClient.close();
-						}
-						const content = this.getContentFromData(event.data);
-
-						// 更新 answer
-						if (content && this.currentAnswerIndex !== -1) {
-							const index = this.currentAnswerIndex;
-							this.$set(this.chat, index, {
-								...this.chat[index],
-								type: 'text',
-								answer: this.chat[index].answer + content,
-							});
-						}
-
-					});
-
-					wx.onSocketClose((event) => {
-						console.log("WebSocket connection closed. Code:", event.code, "Reason:", event.reason);
-					});
 
 
-					wx.onSocketError((error) => {
-						console.error("WebSocket error:", error);
-					});
 
-				} else {
-					// 实例化 webSocketClient
-					this.webSocketClient = new WebSocket(url);
-					// WebSocket 连接打开事件
-					this.webSocketClient.onopen = async () => {
-						try {
-							await this.webSocketClient.send(data);
-						} catch (error) {
-							console.error("Error sending data to WebSocket server:", error);
-						}
-					};
 
-					// WebSocket 接收数据事件
-					this.webSocketClient.onmessage = (event) => {
-						if (event.data === '[DONE]') {
-							// 关闭 WebSocket 连接
-							this.webSocketClient.close();
-						}
-						const content = this.getContentFromData(event.data);
-
-						// 更新 answer
-						if (content && this.currentAnswerIndex !== -1) {
-							const index = this.currentAnswerIndex;
-							this.$set(this.chat, index, {
-								...this.chat[index],
-								type: 'text',
-								answer: this.chat[index].answer + content,
-							});
-						}
-					};
-
-					// WebSocket 连接关闭事件
-					this.webSocketClient.onclose = () => {
-						console.log("WebSocket connection closed.");
-					};
-
-					// WebSocket 连接错误事件
-					this.webSocketClient.onerror = (error) => {
-						console.error("WebSocket error:", error);
-					};
-				}
-			},
 
 			async getAnswer() {
+
 				let user = uni.getStorageSync('user');
 				this.currentAnswerIndex = this.chat.length
 				if (!this.problem) {
@@ -392,73 +259,64 @@
 					});
 					return
 				}
+				this.isLoading = true
 				this.chat.push({
 					type: 'text',
 					problem: this.problem,
 					answer: '',
 					// client_avatar: this.userInfo.avatar
 				})
-				this.openData.push({
-					"role": "user",
-					"content": this.problem
-				})
 
-				let query = ''
-				this.chat.forEach(item => {
-					query += `\nQ: ${item.problem}\n`
-					query += `A: ${item.answer}。 <|endoftext|>\n`
-
-				})
-				query += `Q: ${this.problem}  + "\nA: `
-				if (this.typeName == 'painting') {
-					query = this.problem
+				let obj = {
+					role: "user",
+					content: this.problem
 				}
-
+				this.openData.messages.push(obj)
+				this.problem = ''
 				setTimeout(() => {
 					this.scrollTop = this.scrollTop + 1;
 				}, 100)
-				this.openData.push({
-					"role": "user",
-					"content": this.problem
-				})
-				this.$http.openai({
-					type: 'chat',
-					typeName: this.typeName,
-					platform: this.platform,
-					data: query
-				}).then((res) => {
-					console.log(res);
-					if (res.code == 0) {
-						if (this.typeName == 'painting') {
-							this.$set(this.chat, currentAnswerIndex, {
-								...this.chat[currentAnswerIndex],
-								answer: res.text,
-								type: 'image'
-							});
-						} else {
-							this.requestWebSocketServer(res);
+				wenxinChat(this.openData).then((res) => {
+					this.isLoading = false
 
-						}
-					} else {
-						this.openData.splice(this.openData.length - 1, 1);
-						this.$set(this.chat, currentAnswerIndex, {
-							...this.chat[currentAnswerIndex],
-							answer: 'error'
+					if (res.code == 200) {
+						this.askInfo = res.data.messages[res.data.messages.length - 1].content
+						this.openData.messages = res.data.messages
+						this.chat.push({
+							type: 'text',
+							problem: "",
+							answer: this.askInfo,
 						});
+						setTimeout(() => {
+							this.scrollTop = this.scrollTop + 1;
+						}, 100)
+					} else {
 						this.$nextTick(() => {
 							// this.mescroll.scrollTo(99999999);
 							this.scrollTop = 999999999;
 						});
-					}
+						this.openData.messages = res.data.messages
+						this.chat.push({
+							type: 'text',
+							problem: '',
+							answer: 'error',
+						});
 
+					}
 				})
-				this.problem = ""
+
+				// this.problem = ""
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.login__info__item__button {
+		letter-spacing: 0;
+		text-indent: 0;
+	}
+
 	.content {
 		background-size: 100% 100%;
 		background-position: center;
@@ -526,7 +384,7 @@
 
 	.scroll-Y {
 		height: 100vh;
-		padding-bottom: calc(220rpx + env(safe-area-inset-bottom));
+		padding-bottom: calc(130rpx + env(safe-area-inset-bottom));
 	}
 
 	.input-box {

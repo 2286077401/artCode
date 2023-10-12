@@ -75,6 +75,22 @@
             }
             
         }
+        ,{
+            "path" : "pages/drwPubil/drwPubil",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "绘画广场",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/drwPubil/detailImage",
+           "style": {
+           	"navigationStyle": "custom"
+           }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

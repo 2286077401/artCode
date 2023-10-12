@@ -1,3 +1,7 @@
+.login__info__item__button.data-v-bf16e7f4 {
+  letter-spacing: 0;
+  text-indent: 0;
+}
 .content.data-v-bf16e7f4 {
   background-size: 100% 100%;
   background-position: center;
@@ -50,7 +54,7 @@
 }
 .scroll-Y.data-v-bf16e7f4 {
   height: 100vh;
-  padding-bottom: calc(220rpx + env(safe-area-inset-bottom));
+  padding-bottom: calc(130rpx + env(safe-area-inset-bottom));
 }
 .input-box.data-v-bf16e7f4 {
   box-sizing: border-box;

@@ -882,7 +882,7 @@
 </script>
 
 <style lang="scss" scoped>
-  
+   @import '@/tuniao-ui/theme.scss';
   .tn-image-upload {
     position: relative;
     

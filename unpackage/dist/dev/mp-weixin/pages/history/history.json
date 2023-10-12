@@ -2,6 +2,8 @@
   "navigationBarTitleText": "绘画记录",
   "enablePullDownRefresh": false,
   "usingComponents": {
+    "tn-tabs": "/tuniao-ui/components/tn-tabs/tn-tabs",
+    "tn-empty": "/tuniao-ui/components/tn-empty/tn-empty",
     "tn-lazy-load": "/tuniao-ui/components/tn-lazy-load/tn-lazy-load"
   }
 }

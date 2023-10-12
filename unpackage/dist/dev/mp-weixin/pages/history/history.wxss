@@ -1,3 +1,25 @@
+.goOnDrow.data-v-24bfa630 {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: #6666667a;
+}
+.components-lazy-load.data-v-24bfa630 {
+  padding-top: 44px;
+}
+.top-fixed.data-v-24bfa630 {
+  position: fixed;
+  background-color: white;
+  box-shadow: 0rpx 0rpx 30rpx 0rpx rgba(0, 0, 0, 0.07);
+  top: 0;
+  width: 100%;
+  transition: all 0.25s ease-out;
+  z-index: 100;
+}
 .content.data-v-24bfa630 {
   display: flex;
   justify-content: space-between;

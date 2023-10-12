@@ -5,6 +5,7 @@
 			<view slot="back" class='tn-custom-nav-bar__back' @click="goBack">
 				<text class='icon tn-icon-left' style="color: white;font-size: 30rpx;"></text>
 				<!-- <text class='icon tn-icon-home-capsule-fill'></text> -->
+				<image src="https://oss.laf.run/nupa44-bits/payImage/ba630570d42311f9c9ff26054c829b1.jpg" style="width: 70%;" mode="widthFix"></image>
 			</view>
 		</tn-nav-bar>
 

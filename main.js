@@ -1,12 +1,13 @@
 import App from './App'
 // 引入全局TuniaoUI
-import TuniaoUI from 'tuniao-ui' 
+import TuniaoUI from 'tuniao-ui'
 import lsLoading from '@/components/ls-loading/components/ls-loading/ls-loading.vue'
- import tabBar from "@/components/tabBar/tabBar.vue"
- 
+import tabBar from "@/components/tabBar/tabBar.vue"
+import socket from "./commit/socket.js"
 import store from '@/store'
 
 Vue.prototype.$store = store
+Vue.prototype.$socket = socket
 let vuexStore = require('@/store/$tn.mixin.js')
 
 Vue.mixin(vuexStore)

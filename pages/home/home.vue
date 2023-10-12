@@ -1,11 +1,13 @@
 <template>
 	<view>
+
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
 		<image src="../../static/1.png" mode="widthFix" class="centerImg"></image>
 		<view class="titleBox">
 			<view class="title">
+				
 				<view>BUG在de我</view>
 				<view>代码在写我</view>
 				<view>螃蟹在剥我的壳</view>
@@ -37,13 +39,15 @@
 	export default {
 		data() {
 			return {
-				isloin: true
+				isloin: true,
+				
 			}
 		},
 		onLoad() {
 			this.isloin = !uni.getStorageSync('token')
 		},
 		methods: {
+	
 			goto(e) {
 				if (e == '/pages/index/index') {
 					uni.reLaunch({
@@ -61,8 +65,6 @@
 </script>
 
 <style scoped lang="scss">
- 
-
 	.centerImg {
 		width: 500rpx;
 		position: absolute;
@@ -87,9 +89,9 @@
 		letter-spacing: -1rpx;
 		// line-height: 95rpx;
 		color: gray;
-		margin: 0 auto; 
+		margin: 0 auto;
 		font-family: 'Courier New', Courier, monospace;
-        
+
 	}
 
 	.titleNex {

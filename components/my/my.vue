@@ -61,12 +61,13 @@
 			<view class="user-info__container tn-flex tn-flex-direction-column tn-flex-col-center tn-flex-row-center"
 				@click="openAuthorizationModal">
 				<view class="user-info__avatar tn-bg-grey--light tn-flex tn-flex-col-center tn-flex-row-center">
-					<image class="tn-shadow-blur" :src="user.avatar ? user.avatar : '../../../static/header.jpg'"
+					<image class="tn-shadow-blur"
+						:src="user.avatar ? user.avatar : 'https://api.multiavatar.com/aaifEvca.png'"
 						style="width: 170rpx;height: 170rpx;background-size: cover;">
 					</image>
 				</view>
 				<view class="user-info__nick-name">
-					{{user.nickname ? user.nickname : '点击授权'}}
+					{{user.name ? user.name : '点击授权'}}
 				</view>
 			</view>
 
@@ -89,7 +90,7 @@
 					<view class="tn-flex-1 tn-padding-sm tn-margin-xs">
 						<view class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 							<view class="">
-								<view class="tn-text-xxl tn-color-blue">{{user.number || 0}}</view>
+								<view class="tn-text-xxl tn-color-blue">{{bancInfo.coin || 0}}</view>
 							</view>
 							<view class="tn-margin-top-xs tn-color-gray tn-text-df tn-text-center">
 								<text class="tn-icon-reload-planet-fill"></text>
@@ -100,7 +101,7 @@
 					<view class="tn-flex-1 tn-padding-sm tn-margin-xs">
 						<view class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 							<view class="">
-								<view class="tn-text-xxl tn-color-red">{{user.broadNumber || 0}}</view>
+								<view class="tn-text-xxl tn-color-red">{{user.getNumber || 0}}</view>
 							</view>
 							<view class="tn-margin-top-xs tn-color-gray tn-text-df tn-text-center">
 								<text class="tn-icon-pyramid"></text>
@@ -164,16 +165,29 @@
 			<view
 				class="about-shadow tn-margin-top-xl tn-padding-top-sm tn-padding-bottom-sm tn-margin-left tn-margin-right">
 				<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
-					<view class="tn-flex tn-flex-col-center" @click="openLandscape">
+					<view class="tn-flex tn-flex-col-center" @click="openLandscape(0)">
 						<view
 							class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-cool-bg-color-1 tn-color-white">
 							<view class="tn-icon-like-fill"></view>
 						</view>
 						<view class="tn-margin-left-sm tn-flex-1">赞赏作者</view>
+						<view class="tn-margin-left-sm tn-color-red tn-icon-pay"></view>
+					</view>
+				</tn-list-cell>
+
+				<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
+					<view class="tn-flex tn-flex-col-center" @click="openLandscape(1)">
+						<view
+							class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-cool-bg-color-2 tn-color-white">
+							<view class="tn-icon-iot-fill"></view>
+						</view>
+						<view class="tn-margin-left-sm tn-flex-1">赚取积分</view>
+
+						<view class="tn-margin-left-sm tn-color-red tn-icon-share-triangle"></view>
 					</view>
 				</tn-list-cell>
 			</view>
-
+			<!-- ҉҉҉҉ -->
 			<!-- 更多信息-->
 			<view
 				class="about-shadow tn-margin-top-xl tn-padding-top-sm tn-padding-bottom-sm tn-margin-left tn-margin-right">
@@ -221,7 +235,7 @@
 							<view class="tn-icon-safe-fill"></view>
 						</view>
 						<view class="tn-margin-left-sm tn-flex-1">用户协议</view>
-						<!-- <view class="tn-margin-left-sm tn-color-red tn-icon-fire-fill"></view> -->
+						<!-- <view class="tn-margin-left-sm tn-color-red tn-icon-pushpin"></view> -->
 					</view>
 				</tn-list-cell>
 				<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
@@ -237,6 +251,17 @@
 						<view class="tn-margin-left-sm tn-color-red tn-icon-fire-fill"></view>
 					</view>
 				</tn-list-cell>
+				<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
+					<view class="tn-flex tn-flex-col-center" @click="logOut">
+						<view
+							class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-cool-bg-color-13 tn-color-white">
+							<view class="tn-icon-logout"></view>
+						</view>
+						<view class="tn-margin-left-sm tn-flex-1">退出登录</view>
+
+						<view class="tn-margin-left-sm tn-color-red tn-icon-logout"></view>
+					</view>
+				</tn-list-cell>
 			</view>
 		</view>
 		<view class="tn-padding-xl"></view>
@@ -245,7 +270,10 @@
 		<tn-landscape :show="show_A" :closeBtn="closeBtn" :closeColor="closeColor" :closeSize="closeSize"
 			:closePosition="closePosition" :closeTop="closeTop" :closeRight="closeRight" :closeBottom="closeBottom"
 			:closeLeft="closeLeft" :mask="mask" :maskCloseable="maskCloseable" @close="closeLandscape">
-			<image src="https://oss.laf.run/nupa44-bits/payImage/wx.jpg" mode="widthFix"></image>
+			<image v-if="type==0" src="https://oss.laf.run/nupa44-bits/payImage/wx.jpg" mode="widthFix"></image>
+			<l-painter v-else>
+				<l-painter-qrcode text="limeui.qcoon.cn" css="width: 300rpx; height: 300rpx" />
+			</l-painter>
 		</tn-landscape>
 		<!-- <wx-user-info-modal v-model="showAuthorizationModal" @updated="updatedUserIn'foEvent"></wx-user-info-modal> -->
 	</view>
@@ -257,6 +285,9 @@
 	// import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 	// import NavIndexButton from '@/libs/components/nav-index-button.vue'
 	import tnListCell from "@/tuniao-ui/components/tn-list-cell/tn-list-cell.vue"
+	import {
+		getBanlace
+	} from "@/commit/api.js"
 	export default {
 		name: 'about-demo-1',
 		// mixins: [template_page_mixin],
@@ -277,6 +308,8 @@
 		},
 		data() {
 			return {
+				type: 0,
+				bancInfo: "",
 				user: {},
 				show_A: false,
 				closeBtn: false,
@@ -295,22 +328,31 @@
 		},
 
 		created() {
-			// this.userInfo()
+			this.user = uni.getStorageSync('userInfo')
+		},
+		mounted() {
+			this.getBance()
 		},
 		methods: {
+			getBance() {
+				getBanlace().then((res) => {
+					if (res.code == 200) {
+						this.bancInfo = res.data
+					}
+				})
+			},
+			logOut() {
+				uni.clearStorage()
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
+			},
 			goto(e) {
 				uni.navigateTo({
 					url: e
 				})
 			},
-			userInfo() {
-				this.$http.user({
-					action: 'checkToken'
-				}).then((res) => {
-					console.log(res);
-					this.user = res
-				})
-			},
+
 			// 打开获取用户信息弹框
 			openAuthorizationModal() {
 				console.log(!this.user.nickname)
@@ -344,7 +386,8 @@
 				console.log('获取到的用户信息', info)
 			},
 			// 打开压屏窗
-			openLandscape() {
+			openLandscape(type) {
+				this.type = type
 				this.show_A = true
 			},
 			// 关闭压屏窗

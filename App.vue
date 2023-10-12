@@ -1,14 +1,22 @@
 <script>
+	import {
+		mapMutations
+	} from 'vuex';
 	export default {
+		methods: {
+			...mapMutations(['changeLoad']),
+		},
 		onLaunch: function() {
 			console.log('App Launch')
+			this.$socket.connectWebSocket()
 		},
 		onShow: function() {
-			console.log('App Show')
+			console.log('App Show', this.imageIsLoad)
 		},
 		onHide: function() {
+			this.changeLoad()
 			console.log('App Hide')
-		}
+		},
 	}
 </script>
 

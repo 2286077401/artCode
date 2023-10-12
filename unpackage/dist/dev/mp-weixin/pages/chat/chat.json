@@ -2,6 +2,10 @@
   "navigationBarTitleText": "聊天",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "uni-transition": "/uni_modules/uni-transition/components/uni-transition/uni-transition"
+    "tn-fab": "/tuniao-ui/components/tn-fab/tn-fab",
+    "uni-transition": "/uni_modules/uni-transition/components/uni-transition/uni-transition",
+    "tn-loading": "/tuniao-ui/components/tn-loading/tn-loading",
+    "text-voice": "/components/textVoice/textVoice",
+    "ua-markdown": "/components/ua2-markdown/ua-markdown"
   }
 }

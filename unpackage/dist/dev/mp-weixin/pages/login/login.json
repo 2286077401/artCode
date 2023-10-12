@@ -2,5 +2,7 @@
   "navigationStyle": "custom",
   "navigationBarTitleText": "登录",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "tn-verification-code": "/tuniao-ui/components/tn-verification-code/tn-verification-code"
+  }
 }

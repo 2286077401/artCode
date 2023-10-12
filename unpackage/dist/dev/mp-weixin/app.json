@@ -8,7 +8,9 @@
     "pages/60s/60s",
     "pages/webView/webView",
     "pages/history/history",
-    "pages/technology/technology"
+    "pages/technology/technology",
+    "pages/drwPubil/drwPubil",
+    "pages/drwPubil/detailImage"
   ],
   "subPackages": [],
   "window": {

@@ -31,7 +31,7 @@
 								<view class="tn-icon-phone"></view>
 							</view>
 							<view class="login__info__item__input__content">
-								<input maxlength="20" placeholder-class="input-placeholder" v-model="username"
+								<input maxlength="20" placeholder-class="input-placeholder" v-model="mobile"
 									placeholder="请输入手机号/邮箱/用户名" />
 							</view>
 						</view>
@@ -54,37 +54,63 @@
 						<view
 							class="login__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left">
 							<view class="login__info__item__input__left-icon">
-								<view class="tn-icon-phone"></view>
+								<view class="tn-icon-my-lack"></view>
 							</view>
 							<view class="login__info__item__input__content">
-								<input maxlength="20" placeholder-class="input-placeholder" placeholder="请输入手机号/邮箱/用户名"
+								<input maxlength="20" placeholder-class="input-placeholder" placeholder="请输入用户昵称"
 									v-model="username" />
 							</view>
 						</view>
-
 						<view
+							class="login__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left">
+							<view class="login__info__item__input__left-icon">
+								<view class="tn-icon-phone"></view>
+							</view>
+							<view class="login__info__item__input__content">
+								<input maxlength="11" type="number" placeholder-class="input-placeholder"
+									placeholder="请输入手机号" v-model="mobile" />
+							</view>
+						</view>
+
+						<!-- <view
 							class="login__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left">
 							<view class="login__info__item__input__left-icon">
 								<view class="tn-icon-safe"></view>
 							</view>
 							<view
 								class="login__info__item__input__content login__info__item__input__content--verify-code">
-								<input placeholder-class="input-placeholder" :password="!showPassword"
-									v-model="password" placeholder="请输入登录密码" />
+								<input v-model="code" placeholder-class="input-placeholder" placeholder="请输入验证码" />
 							</view>
-						</view>
-
+							<view class="login__info__item__input__right-verify-code" @tap.stop="getCode">
+								<tn-button backgroundColor="#01BEFF" fontColor="#FFFFFF" size="sm" padding="5rpx 10rpx"
+									width="100%" shape="round">{{ tips }}</tn-button>
+							</view>
+						</view> -->
 						<view
 							class="login__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left">
 							<view class="login__info__item__input__left-icon">
 								<view class="tn-icon-lock"></view>
 							</view>
 							<view class="login__info__item__input__content">
-								<input :password="!showPassword" v-model="password_s"
-									placeholder-class="input-placeholder" placeholder="请输入登录密码" />
+								<input :password="!showPassword" v-model="password"
+									placeholder-class="input-placeholder" placeholder="请确认登录密码" />
 							</view>
 							<view class="login__info__item__input__right-icon" @click="showPassword = !showPassword">
 								<view :class="[showPassword ? 'tn-icon-eye' : 'tn-icon-eye-hide']"></view>
+							</view>
+						</view>
+						<view
+							class="login__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left">
+							<view class="login__info__item__input__left-icon">
+								<view class="tn-icon-lock"></view>
+							</view>
+							<view class="login__info__item__input__content">
+								<input :password="!showPassword_s" v-model="password_s"
+									placeholder-class="input-placeholder" placeholder="请确认登录密码" />
+							</view>
+							<view class="login__info__item__input__right-icon"
+								@click="showPassword_s = !showPassword_s">
+								<view :class="[showPassword_s ? 'tn-icon-eye' : 'tn-icon-eye-hide']"></view>
 							</view>
 						</view>
 					</block>
@@ -115,15 +141,16 @@
 		</view>
 
 		<!-- 验证码倒计时 -->
-		<!-- 	<tn-verification-code ref="code" uniqueKey="login-demo-4" :seconds="60" @change="codeChange">
-		</tn-verification-code> -->
+		<tn-verification-code ref="code" uniqueKey="login-demo-4" :seconds="60" @change="codeChange">
+		</tn-verification-code>
 	</view>
 </template>
 
 <script>
 	// import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 	import {
-		login
+		login,
+		useRes
 	} from '@/commit/api.js';
 	import {
 		mapMutations
@@ -141,12 +168,15 @@
 				},
 				// 是否显示密码
 				showPassword: false,
+				showPassword_s: false,
 				// 倒计时提示文字
 				tips: '获取验证码',
-				username: '18300001111',
-				password: '1',
+				username: '',
+				mobile: '',
+				password: '',
 				password_s: '',
-				needPermission: false
+				needPermission: false,
+				code: ''
 			}
 		},
 		onLoad(e) {
@@ -162,7 +192,7 @@
 			...mapMutations(['login']),
 			userLogin(n) {
 				if (n == 0) {
-					if (!this.username || !this.password) {
+					if (!this.mobile || !this.password) {
 						uni.showToast({
 							title: '账号或密码不能为空',
 							icon: 'none'
@@ -170,7 +200,7 @@
 						return false;
 					}
 					login({
-						mobile: this.username,
+						mobile: this.mobile,
 						pwd: this.password
 					}).then((res) => {
 						this.login(res)
@@ -183,14 +213,50 @@
 						})
 					})
 				} else {
+					if (this.username == '') {
+						uni.showToast({
+							title: '请输入昵称',
+							icon: 'none'
+						})
+						return
+					}
+					if (this.mobile == '') {
+						uni.showToast({
+							title: '请输入手机号',
+							icon: 'none'
+						})
+						return
+					}
 					if (this.password != this.password_s) {
 						uni.showToast({
 							title: '两次输入的密码不一致',
 							icon: 'none'
 						})
-						return false
+						return
 					}
+					useRes({
+						mobile: this.mobile,
+						pwd: this.password,
+						name: this.username
+					}).then((res) => {
+						console.log(res)
+						if (res.code == 200) {
+							uni.showToast({
+								title: '注册成功',
+								icon: 'none'
+							})
+							setTimeout(() => {
+								console.log('===')
+								this.modeSwitch(0)
+							}, 2000)
+						} else {
+							uni.showToast({
+								title: res.msg,
+								icon: 'none'
+							})
+						}
 
+					})
 				}
 			},
 			// 切换模式
@@ -229,7 +295,7 @@
 		z-index: 1;
 	}
 
-	 
+
 	.login__bg--bottom {
 		bottom: -10rpx;
 		left: 0;

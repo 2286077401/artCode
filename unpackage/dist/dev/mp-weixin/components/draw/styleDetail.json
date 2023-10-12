@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "tn-rate": "/tuniao-ui/components/tn-rate/tn-rate",
+    "tn-popup": "/tuniao-ui/components/tn-popup/tn-popup"
+  },
+  "component": true
+}
