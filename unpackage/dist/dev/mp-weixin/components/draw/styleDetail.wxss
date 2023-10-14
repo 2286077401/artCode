@@ -8,7 +8,7 @@
   overflow-y: scroll;
 }
 .box.data-v-43265ad2 {
-  background-color: #606266;
+  color: #666666;
   width: 600rpx;
   text-align: center;
   max-height: 70vh;

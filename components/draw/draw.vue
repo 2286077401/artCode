@@ -1,14 +1,13 @@
 <template>
-	<view class="box"> 
+	<view class="box">
 		<view class="box_top"> <text class="tn-icon-constellation" @click="tn('/pages/drwPubil/drwPubil')"></text>前往画廊
 		</view>
 		<view class="titleNav">
 			<text>描述语句</text>
 			<view style="display: flex;">
-				<text @click="showProm">内置提示词</text>
+				<!-- <text @click="showProm">内置提示词</text> -->
 				<text style="margin-left: 20rpx;" @click="showPop = true">参数详情</text>
 			</view>
-
 		</view>
 		<view class="topCenter">
 			<textarea placeholder="例如：一只猫咪懒洋洋的躺在窗边的桌子上晒着太阳" class="textarer" maxlength="500"
@@ -105,6 +104,7 @@
 				<ls-loading :fontSize='30' text="绘制中,请稍后" :embed='true' :animation="'progress'"></ls-loading>
 			</view>
 			<image v-if="imageData!=''" :src="imageData.image_url" style="width: 100%;" mode="widthFix"></image>
+		 
 			<view v-if="imageData!='' && !isSave " class="grid-container">
 				<view class="grid-item" v-for="item in 4" @click="choseImageIndex(item)">
 					<view v-if="ImageIndex==item" class="centerBox">
@@ -123,8 +123,32 @@
 		<tn-popup v-model="showPop" mode="center" length="80%" height="70%">
 			<styleDetail @close='showPop=false'></styleDetail>
 		</tn-popup>
-
-
+		<tn-popup v-model="showPramList" mode="center" length="80%" height="70%">
+			<tn-subsection :list="menuLisTitle" mode="button" :borderRadius="0" backgroundColor="tn-cool-bg-color-9"
+				buttonColor="tn-cool-bg-color-7" inactiveColor="#FFFFFF" activeColor="#FFFFFF"
+				@change='changeData'></tn-subsection>
+			<view class="tn-flex tn-flex-row-between tn-flex-col-center tn-padding-top-xl tn-margin">
+				<view class="tn-flex justify-content-item">
+					<view class="tn-bg-black tn-color-white tn-text-center"
+						style="border-radius: 100rpx;margin-right: 8rpx;width: 45rpx;height: 45rpx;line-height: 45rpx;">
+						<text class="tn-icon-rocket" style="font-size: 30rpx;"></text>
+					</view>
+					<view class="tn-text-lg tn-padding-right-xs tn-text-bold">风格选择</view>
+				</view>
+				<view class="justify-content-item tn-text-df tn-color-grey">
+					<text class="tn-padding-xs">多选</text>
+					<text class="tn-icon-constellation"></text>
+				</view>
+			</view>
+			<view class="tn-margin tn-text-justify tn-padding-bottom">
+				<view v-for="(item, index) in menuChild" :key="index"
+					class="tn-tag-content__item tn-margin-right tn-round tn-text-sm tn-text-bold"
+					:class="[styleIndex==index ? `tn-bg-purplered--light tn-color-gray` : 'tn-bg-gray--light tn-color-gray--dark']"
+					@click="handleMannerClick(index)">
+					<text class="tn-padding-right-xs tn-icon-brand"></text> {{ item.title }}
+				</view>
+			</view>
+		</tn-popup>
 	</view>
 </template>
 
@@ -154,6 +178,7 @@
 		},
 		data() {
 			return {
+				showPramList: false,
 				showPop: false,
 				choseSize: 90,
 				sizeList: [{
@@ -306,6 +331,9 @@
 				},
 				ImageIndex: '9999',
 				menuList: [],
+				menuLisTitle: [],
+				menuChild: [],
+				styleIndex: 0, //风格选择
 				randomStyle: "",
 			}
 		},
@@ -316,26 +344,28 @@
 		},
 
 		mounted() {
-			this.getProList()
-			this.getStatus()
-		},
+			// this.getProList()
+			// this.getStatus()
+		}, 
 		methods: {
+			changeData(e) {
+				this.menuChild = this.menuList[e.index].list
+				console.log(this.menuChild)
+			},
 			getSocketResu() {
-
 				// let imageData = uni.getStorageSync('IMAGE_DATA')
 				this.getStatus()
 			},
 			getStatus() {
 				gitUserState().then((res) => {
 					if (res.code == 200) {
-						console.log(res.isLoading)
 						if (res.isLoading) {
 							uni.showToast({
 								title: '正在绘制，具体绘制结果在画夹查看',
 								icon: "none"
 							})
 							// this.imageIsLoad = true
-						} 
+						}
 						// else {
 						// 	this.$store.commit('changeimageLoad', res.data);
 						// }
@@ -357,24 +387,36 @@
 					this.drwData.prompt = this.drwData.prompt.replace(new RegExp("--ar\\s+\\S+", "g"), "")
 					this.drwData.prompt = this.drwData.prompt.replace(/(^\s*)|(\s*$)/g, "") + ' ' + e
 				}
-
 				this.choseSize = index
 			},
 			showProm() {
-				uni.showToast({
-					title: '暂未开放',
-					icon: 'none'
-				})
+				this.showPramList = true
 			},
 			getProList() {
-				gitDrowproList().then((res) => {
-					if (res.code == 200) {
-						this.menuList = res.data
-						let randomData = this.menuList[Math.floor(Math.random() * this.menuList.length)].list;
-						let data = randomData[Math.floor(Math.random() * randomData.length)]
-						this.randomStyle = data.detail + data.keyword
-					}
-				})
+				this.menuLisTitle = []
+				if (!uni.getStorageSync('MENU_LIST')) {
+					gitDrowproList().then((res) => {
+						if (res.code == 200) {
+							console.log(res)
+							this.menuList = res.data
+							uni.setStorageSync('MENU_LIST', res.data)
+							let randomData = this.menuList[Math.floor(Math.random() * this.menuList.length)].list;
+							let data = randomData[Math.floor(Math.random() * randomData.length)]
+							this.randomStyle = data.detail + data.keyword
+
+							this.menuList.map((res) => {
+								this.menuLisTitle.push(res.type)
+							})
+						}
+					})
+				} else {
+					this.menuList = uni.getStorageSync('MENU_LIST')
+					this.menuList.map((res) => {
+						this.menuLisTitle.push(res.type)
+					})
+					console.log(this.menuLisTitle)
+				}
+
 			},
 			getRandomStyle() {
 				if (this.drwData.prompt.length >= 500) {
@@ -421,8 +463,6 @@
 										success: modalSuccess => {
 											wx.openSetting({
 												success(settingdata) {
-													console.log("settingdata",
-														settingdata)
 													if (settingdata
 														.authSetting[
 															'scope.writePhotosAlbum'
@@ -498,11 +538,11 @@
 			},
 			// 处理风格点击事件
 			handleMannerClick(index) {
-				this.manner[index].select = !this.manner[index].select
+				this.styleIndex = index
 			},
 			// 处理艺术家点击事件
 			handleArtistClick(index) {
-				this.artist[index].select = !this.artist[index].select
+
 			},
 			choseImageIndex(index) {
 				this.ImageIndex = index

@@ -346,8 +346,7 @@
             this.getFabBtnRectInfo()
           }, 10)
           return
-        }
-        console.log(btnRectInfo);
+        } 
         this.systemInfo = {
           width: systemInfo.windowWidth,
           height: systemInfo.windowHeight

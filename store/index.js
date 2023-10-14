@@ -61,8 +61,7 @@ const store = new Vuex.Store({
 		getImageData(){
 			
 		},
-		changeimageLoad(state,data) {
-			console.log(data)
+		changeimageLoad(state,data) { 
 			state.imageData = data
 			// state.codeIsLoad = false
 		},
@@ -113,8 +112,7 @@ const store = new Vuex.Store({
 		codeDrw({
 			commit,
 			state
-		}, drwData) {
-			console.log(drwData)
+		}, drwData) { 
 			state.codeIsLoad = true
 			state.codeImgData = '';
 			 
@@ -130,8 +128,7 @@ const store = new Vuex.Store({
 				icon: 'none'
 			})
 			drwData.socketId = uni.getStorageSync('SOCKET_ID')
-			arCode(drwData).then((res) => {
-				console.log(res)
+			arCode(drwData).then((res) => { 
 				state.codeIsLoad = false;
 				if (!res.image_url) {
 					uni.showToast({
@@ -151,8 +148,7 @@ const store = new Vuex.Store({
 			state.imageIsLoad = true
 			state.imageData = '';
 			drwData.socketId = uni.getStorageSync('SOCKET_ID')
-			mjlow(drwData).then((res) => {
-				console.log(res)
+			mjlow(drwData).then((res) => { 
 				if (res.code == 999) {
 					uni.showToast({
 						title: res.msg,

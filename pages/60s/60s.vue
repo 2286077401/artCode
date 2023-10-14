@@ -165,8 +165,7 @@
 									})
 								}
 							},
-							fail(e) {
-								console.log(e)
+							fail(e) { 
 								uni.showToast({
 									title: '保存失败',
 									icon: 'none'
@@ -208,8 +207,7 @@
 				// #endif
 			},
 
-			open(e) {
-				console.log(e)
+			open(e) { 
 				uni.navigateTo({
 					url: '/pages/webView/webView?url=' + e,
 				})
@@ -222,8 +220,7 @@
 				uni.showLoading({
 					title: '加载中...'
 				})
-				get60s().then((res) => {
-					console.log(res)
+				get60s().then((res) => { 
 					if (!res.data) {
 						uni.hideLoading()
 						uni.showToast({

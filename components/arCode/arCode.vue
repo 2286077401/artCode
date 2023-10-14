@@ -518,8 +518,7 @@
 				// })
 				// return; 
 				// this.codeData = item.prompt
-				Object.assign(this.codeData, item.prompt);
-				console.log(this.codeData)
+				Object.assign(this.codeData, item.prompt); 
 			},
 			getCodeProList() {
 				getCodePro().then((res) => {

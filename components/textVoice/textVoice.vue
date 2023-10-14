@@ -11,7 +11,7 @@
 			</view>
 			<view class='ml-3'>{{durationS ? durationS   : ''}}</view>
 		</view>
-		<view class="flex" v-if='type==0&&url' @click='play(audioId)'>
+		<view class="flex" v-if='type==0&&url&&!voiceLoading' @click='play(audioId)'>
 			<view>
 				<view class="wifi-symbol " style="margin-left: 10px;" :class="status?'active':''">
 					<view class="wifi-circleb first"></view>
@@ -19,24 +19,26 @@
 					<view class="wifi-circleb third"></view>
 				</view>
 			</view>
-			<view class='ml-3b' style="margin-left: -20rpx;">{{durationS ? durationS   : ''}}</view>
+			<view class='ml-3b'style="margin-left: -20rpx;">{{durationS ? durationS   : ''}}</view>
 		</view>
+		<tn-loading v-if="voiceLoading"></tn-loading>
 	</view>
 
 </template>
 
 <script>
-	import { 
+	import {
 		textToAudio
 	} from "@/commit/api.js"
 	export default {
 		name: 'textVoice',
 		data() {
 			return {
+				voiceLoading: false,
 				context: null,
 				duration: 100,
 				status: false,
-				durationS: "0\"",
+				durationS: "",
 			}
 		},
 		props: {
@@ -56,16 +58,17 @@
 		},
 		created() {
 			this.context = uni.createInnerAudioContext();
-			this.getVoiceUrl()
+
 		},
 		methods: {
 			getVoiceUrl() {
+
 				textToAudio({
 					text: this.url
 				}).then((res) => {
+					this.voiceLoading = false
 					if (res.code == 200) {
-						this.context.src = res.data.url
-						console.log(this.context)
+						this.context.src = res.data.url 
 						this.onEnded();
 						uni.$on('stop', (id) => {
 							if (id && id != this.audioId) {
@@ -84,7 +87,9 @@
 
 				})
 			},
-			play(id) { //点击播放
+			async play(id) { //点击播放
+				this.voiceLoading = true
+				await this.getVoiceUrl()
 				if (this.status) {
 					this.context.pause();
 					this.status = !this.status;

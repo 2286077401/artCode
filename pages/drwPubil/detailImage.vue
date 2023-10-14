@@ -195,8 +195,7 @@
 										icon: 'none',
 									});
 								},
-								fail: function(e) {
-									console.log(e);
+								fail: function(e) { 
 									uni.showToast({
 										title: '图片保存失败',
 										icon: 'none',
@@ -246,9 +245,7 @@
 										modalType: false,
 										success: modalSuccess => {
 											wx.openSetting({
-												success(settingdata) {
-													console.log("settingdata",
-														settingdata)
+												success(settingdata) { 
 													if (settingdata
 														.authSetting[
 															'scope.writePhotosAlbum'

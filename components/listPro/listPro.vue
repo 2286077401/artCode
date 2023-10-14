@@ -52,7 +52,8 @@
 
 							</view>
 							<view class="">
-								<button class="nextBtn" @click="goto(item)">开始对话</button>
+								<button class="nextBtn" @click="goto('/pages/chat/chat',item)">文心一言</button>
+								<button class="nextBtn" @click="goto('/pages/xh2model/xh2model',item)">星火大模型2.0</button>
 							</view>
 						</view>
 					</view>
@@ -89,14 +90,13 @@
 					} 
 				}, 1000);
 			},
-			goto(item) {
+			goto(path,item) {
 				uni.setStorageSync('gptType', item)
 				uni.navigateTo({
-					url: '/pages/chat/chat'
+					url: path
 				})
 			},
-			showDetail(index) {
-				console.log(index)
+			showDetail(index) { 
 				this.indexData = index
 			},
 			getPromptsList() {
@@ -109,6 +109,7 @@
 					}
 				});
 			},
+			//随机图像
 			generateRandomString() {
 				const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 				let result = "";

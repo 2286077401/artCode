@@ -1,5 +1,5 @@
 <template>
-	<view class="template-loading content">
+	<view class="">
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
@@ -91,7 +91,7 @@
 <script>
 	import uaMarkdown from "@/components/ua2-markdown/ua-markdown"
 	import {
-		wenxinChat 
+		wenxinChat
 	} from "@/commit/api.js"
 	import {
 		data
@@ -102,8 +102,8 @@
 			uaMarkdown
 		},
 		data() {
-			return { 
-				isLoading: true,
+			return {
+				isLoading: false,
 				chat: [],
 				openData: {
 					"messages": []
@@ -178,9 +178,7 @@
 							type: 'text',
 							problem: "",
 							answer: this.askInfo,
-						});
-
-						console.log(this.chat)
+						}); 
 					} else {
 						this.openData.messages = res.data.messages
 						this.chat.push({
@@ -196,12 +194,17 @@
 		beforeDestroy() {},
 		onHide() {
 			this.isLoading = false
+			this.Audio()
 		},
+		onUnload() {
+			this.isLoading = false
+			this.Audio()
+		}, 
 		methods: {
 			Audio() {
 				uni.$emit('stop')
 			},
-			
+
 			// 点击悬浮按钮的内容
 			clickFabItem(e) {
 				switch (e.index) {

@@ -22,9 +22,8 @@
 						<tn-lazy-load @click="tn('/pages/drwPubil/detailImage',item)" :index="index"
 							:image="item.image_url" :threshold="-450" :height="'100%'"
 							imgMode="widthFix"></tn-lazy-load>
-						<view v-if="!item.isLoading" class="goOnDrow" @click="goDrow(item)">继续绘制</view>
+						<!-- <view v-if="!item.isLoading" class="goOnDrow" @click="goDrow(item)">继续绘制</view> -->
 					</view>
-
 				</block>
 			</view>
 			<!-- <tn-load-more :status="status" @loadmore="getData"></tn-load-more> -->
@@ -55,7 +54,6 @@
 		},
 		onLoad() {
 			this.getData()
-			console.log(this.$socket)
 		},
 		onReachBottom() {
 			uni.$emit('tOnLazyLoadReachBottom')
@@ -63,10 +61,10 @@
 		},
 		methods: {
 			goDrow(item) {
-				console.log(item)
 				this.$store.commit('changeimageLoad', item);
 				uni.navigateTo({
-					url:'/pages/index/index?index=1'
+					url: '/pages/index/index?index=1'
+					// url: '/pages/index/index?index=1&isSave=false'
 				})
 			},
 			// 跳转
@@ -81,7 +79,6 @@
 				this.getData()
 			},
 			seePic(item) {
-				console.log(item)
 				uni.previewImage({
 					urls: [item.src]
 				})

@@ -63,8 +63,7 @@
 			}
 		},
 		methods: {
-			open(path) {
-				console.log(path)
+			open(path) { 
 				uni.navigateTo({
 					url: '/pages/webView/webView?url=' + path
 				})

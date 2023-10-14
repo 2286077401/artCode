@@ -45,7 +45,7 @@
 	}
 
 	page {
-		font-size: 28rpx;
+		font-size: 28rpx; 
 		// --animate-duration: 1s;
 		// --animate-delay: 1s;
 		// --animate-repeat: 1;

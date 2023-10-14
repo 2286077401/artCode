@@ -172,7 +172,7 @@
 </script>
 
 <style lang="scss" scoped>
-  
+    @import '@/tuniao-ui/theme.scss';
   $tn-steps-item-number-width: 44rpx;
   $tn-steps-item-dot-width: 20rpx;
   

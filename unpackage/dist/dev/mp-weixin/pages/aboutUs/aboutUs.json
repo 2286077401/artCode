@@ -1,6 +1,7 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
-    "tn-nav-bar": "/tuniao-ui/components/tn-nav-bar/tn-nav-bar"
+    "tn-nav-bar": "/tuniao-ui/components/tn-nav-bar/tn-nav-bar",
+    "tn-popup": "/tuniao-ui/components/tn-popup/tn-popup"
   }
 }

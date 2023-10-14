@@ -40,14 +40,12 @@
 		data() {
 			return {
 				isloin: true,
-				
 			}
 		},
 		onLoad() {
 			this.isloin = !uni.getStorageSync('token')
 		},
 		methods: {
-	
 			goto(e) {
 				if (e == '/pages/index/index') {
 					uni.reLaunch({

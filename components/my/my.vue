@@ -301,8 +301,7 @@
 			number: [String, Number],
 		},
 		watch: {
-			number(e) {
-				console.log(e);
+			number(e) { 
 				this.userInfo()
 			}
 		},
@@ -354,8 +353,7 @@
 			},
 
 			// 打开获取用户信息弹框
-			openAuthorizationModal() {
-				console.log(!this.user.nickname)
+			openAuthorizationModal() { 
 				if (!this.user.nickname) {
 					this.showAuthorizationModal = true
 				}
@@ -381,9 +379,7 @@
 				}).then((res) => {
 					this.showAuthorizationModal = false
 					this.userInfo()
-				})
-				console.log(result.filePath);
-				console.log('获取到的用户信息', info)
+				})  
 			},
 			// 打开压屏窗
 			openLandscape(type) {

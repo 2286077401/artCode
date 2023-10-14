@@ -2,9 +2,16 @@
 	<view>
 		<view class="box">
 			<view class="showTitle" style="display: flex;justify-content: space-between;">
-				<text>参数命令总览</text><text @click="close">关闭</text>
+				<view class="tn-flex justify-content-item">
+					<view class="tn-bg-black tn-color-white tn-text-center"
+						style="border-radius: 100rpx;margin-right: 8rpx;width: 45rpx;height: 45rpx;line-height: 45rpx;">
+						<text class="tn-icon-rocket" style="font-size: 30rpx;"></text>
+					</view>
+					<view class="tn-text-lg tn-padding-right-xs tn-text-bold tn-color-black">参数命令总览</view>
+				</view>
+				<text class="tn-color-black" @click="close">关闭</text>
 			</view>
-			<view class="boxList">
+			<view class="boxList tn-color-black">
 				<view class="f1 fw">
 					参数
 				</view>
@@ -15,27 +22,27 @@
 					使用频率
 				</view>
 			</view>
-			<view class="boxList" v-for="(item,index) in arglData" @click="showPop(item)">
+			<view class="boxList tn-color-black" v-for="(item,index) in arglData" @click="showPop(item)">
 				<view class="f1">
 					{{item.arg}}
 				</view>
 				<view class="f1">
 					{{item.intro}}
 				</view>
-				<view class="f1">
+				<view class="f1 ">
 					<tn-rate :disabled="true" :count="5" v-model="item.rate"></tn-rate>
 				</view>
 			</view>
 		</view>
 
 		<tn-popup v-model="show" mode="center" length="80%">
-			<view class="showTitle">
+			<view class="showTitle tn-color-black">
 				{{title}}
 			</view>
-			<view class="showCenter">
+			<view class="showCenter tn-color-black">
 				<image :src="imageSrc" mode="widthFix" style="width: 100%;"></image>
 			</view>
-			<view style="font-size: 10rpx;">
+			<view style="font-size: 10rpx; tn-color-black">
 				[注] 苹果系统会自动将双连字符(--)更改为破折号(——), 这都不会影响结果.
 			</view>
 		</tn-popup>
@@ -113,7 +120,6 @@
 			},
 			showPop(e) {
 				let t = this
-				console.log(e)
 				t.title = e.intro
 				t.show = true;
 				if ("模型V1-5.1" == t.title || "漫画风格" == t.title || "写实风格" == t.title || "二次元风格" == t.title) {
@@ -137,7 +143,6 @@
 				} else if ("四方连续" == t.title) {
 					t.imageSrc = 'https://oss.laf.run/nupa44-bits/sflx.jpg'
 				}
-				console.log(t.title)
 				// 
 				// 
 			}
@@ -160,7 +165,8 @@
 
 
 	.box {
-		background-color: #606266;
+		// background-color: #606266;
+		color: #666666;
 		width: 600rpx;
 		text-align: center;
 		max-height: 70vh;
@@ -170,7 +176,7 @@
 		color: white;
 		transform: translate(-50%, -50%);
 		overflow-y: scroll;
-   
+
 		padding: 20rpx;
 
 		.boxList {

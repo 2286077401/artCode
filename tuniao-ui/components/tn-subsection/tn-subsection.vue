@@ -117,7 +117,7 @@
         },
         // 当前选中的滑块
         currentIndex: this.current,
-        buttonPadding: 3,
+        buttonPadding: 0,
         // 组件初始化的是否current变换不应该震动
         firstVibrateShort: true
       }
@@ -293,7 +293,7 @@
           }
           // 将每个分段器的宽度放入listInfo中
           res.map((item, index) => {
-            this.listInfo[index].width = item.width
+            this.listInfo[index].width = item.width-8
           })
           // 初始化滑块的宽度
           if (this.mode === 'subsection') {
@@ -311,7 +311,7 @@
         let left = 0
         // 计算当前活跃item到组件左边的距离
         this.listInfo.map((item, index) => {
-          if (index < this.currentIndex) left += item.width
+          if (index < this.currentIndex) left += item.width+2
         })
         // 根据不同的模式，计算滑块的位置
         if (this.mode === 'subsection') {
@@ -337,7 +337,7 @@
 </script>
 
 <style lang="scss" scoped>
-  
+    @import '@/tuniao-ui/theme.scss';
   .tn-subsection {
     /* #ifndef APP-PLUS */
     display: flex;

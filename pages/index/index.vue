@@ -1,6 +1,5 @@
 <template>
 	<view class="content">
-
 		<view v-if="tabberPageLoadFlag[0]" :style="{display: currentIndex === 0 ? '' : 'none'}">
 			<scroll-view class="custom-tabbar-page" scroll-y enable-back-to-top @scrolltolower="tabbarPageScrollLower">
 				<listPro ref="listPro"></listPro>
@@ -8,7 +7,7 @@
 		</view>
 		<view v-if="tabberPageLoadFlag[1]" :style="{display: currentIndex === 1 ? '' : 'none'}">
 			<scroll-view class="custom-tabbar-page" scroll-y enable-back-to-top @scrolltolower="tabbarPageScrollLower">
-				<draw ref="draw"></draw>
+				<draw ref="draw"  ></draw>
 			</scroll-view>
 		</view>
 		<view v-if="tabberPageLoadFlag[2]" :style="{display: currentIndex === 2 ? '' : 'none'}">
@@ -39,6 +38,7 @@
 		components: {},
 		data() {
 			return {
+				isSave: true,
 				// 自定义底栏对应页面的加载情况
 				tabberPageLoadFlag: [],
 				// 底部tabbar菜单数据
@@ -80,7 +80,8 @@
 			}
 		},
 		onLoad(options) {
-			const index = Number(options.index || 0)
+			console.log(options)
+			const index = Number(options.index || 0) 
 			// 根据底部tabbar菜单列表设置对应页面的加载情况
 			this.tabberPageLoadFlag = this.tabbarList.map((item, tabbar_index) => {
 				return index === tabbar_index

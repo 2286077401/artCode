@@ -203,8 +203,7 @@
 						mobile: this.mobile,
 						pwd: this.password
 					}).then((res) => {
-						this.login(res)
-						console.log(res)
+						this.login(res) 
 						uni.reLaunch({
 							url: '/pages/index/index',
 							fail(e) {
@@ -238,15 +237,13 @@
 						mobile: this.mobile,
 						pwd: this.password,
 						name: this.username
-					}).then((res) => {
-						console.log(res)
+					}).then((res) => { 
 						if (res.code == 200) {
 							uni.showToast({
 								title: '注册成功',
 								icon: 'none'
 							})
-							setTimeout(() => {
-								console.log('===')
+							setTimeout(() => { 
 								this.modeSwitch(0)
 							}, 2000)
 						} else {

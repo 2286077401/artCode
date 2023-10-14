@@ -10,7 +10,8 @@
     "pages/history/history",
     "pages/technology/technology",
     "pages/drwPubil/drwPubil",
-    "pages/drwPubil/detailImage"
+    "pages/drwPubil/detailImage",
+    "pages/xh2model/xh2model"
   ],
   "subPackages": [],
   "window": {

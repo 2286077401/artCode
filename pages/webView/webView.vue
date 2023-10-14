@@ -14,8 +14,7 @@
 		methods: {
 
 		},
-		onLoad(option) {
-			console.log(option)
+		onLoad(option) { 
 			this.url = option.url
 		}
 	}

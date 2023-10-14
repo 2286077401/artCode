@@ -5,15 +5,24 @@
 			<view slot="back" class='tn-custom-nav-bar__back' @click="goBack">
 				<text class='icon tn-icon-left' style="color: white;font-size: 30rpx;"></text>
 				<!-- <text class='icon tn-icon-home-capsule-fill'></text> -->
-				<image src="https://oss.laf.run/nupa44-bits/payImage/ba630570d42311f9c9ff26054c829b1.jpg" style="width: 70%;" mode="widthFix"></image>
+
 			</view>
 		</tn-nav-bar>
-
+		<tn-popup v-model="show" mode='center'>
+			<view>
+				<image src="https://oss.laf.run/nupa44-bits/payImage/ba630570d42311f9c9ff26054c829b1.jpg"
+					style="width:400rpx;" mode="widthFix"></image>
+			</view>
+			<view class="tn-text-center tn-cool-bg-color-7"
+				@click="saveImage('https://oss.laf.run/nupa44-bits/payImage/ba630570d42311f9c9ff26054c829b1.jpg')">
+				保存
+			</view>
+		</tn-popup>
 
 		<!-- 流星-->
 		<view class="tn-satr">
 			<view class="sky"></view>
-			<view class="stars">
+			<view class="stars" @click="show = true">
 				<view class="falling-stars">
 					<view class="star-fall"></view>
 					<view class="star-fall"></view>
@@ -55,7 +64,7 @@
 		<view class="user-info__container tn-flex tn-flex-direction-column tn-flex-col-center tn-flex-row-center">
 			<view class="user-info__avatar tn-flex tn-flex-col-center tn-flex-row-center">
 				<view class="tn-shadow-blur" style=" width: 170rpx;height: 170rpx;background-size: cover;">
-					<image src="../../static/head.jpg" style="width: 170rpx;border-radius: 50%;" mode="widthFix">
+					<image src="https://oss.laf.run/nupa44-bits/12aff9074a7a6692e785266073e1ebe1_1.jpg" style="width: 170rpx;border-radius: 50%;" mode="widthFix">
 					</image>
 				</view>
 			</view>
@@ -99,9 +108,83 @@
 		name: 'TemplateWave',
 
 		data() {
-			return {}
+			return {
+				show: false
+			}
 		},
 		methods: {
+			saveImage(item) {
+				// #ifdef MP-WEIXIN
+				wx.showLoading({
+					title: '加载中...'
+				});
+				//wx.downloadFile方法：下载文件资源到本地
+				wx.downloadFile({
+					url: item, //图片地址
+					success: function(res) {
+						//wx.saveImageToPhotosAlbum方法：保存图片到系统相册
+						wx.saveImageToPhotosAlbum({
+							filePath: res.tempFilePath, //图片文件路径
+							success: function(data) {
+								wx.hideLoading(); //隐藏 loading 提示框
+								wx.showModal({
+									title: '提示',
+									content: '保存成功',
+									modalType: false,
+								})
+							},
+							// 接口调用失败的回调函数
+							fail: function(err) {
+								if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err
+									.errMsg === "saveImageToPhotosAlbum:fail auth deny" || err
+									.errMsg === "saveImageToPhotosAlbum:fail authorize no response"
+								) {
+									wx.showModal({
+										title: '提示',
+										content: '需要您授权保存相册',
+										modalType: false,
+										success: modalSuccess => {
+											wx.openSetting({
+												success(settingdata) {
+													if (settingdata
+														.authSetting[
+															'scope.writePhotosAlbum'
+														]) {
+														wx.showModal({
+															title: '提示',
+															content: '获取权限成功,再次点击按钮即可保存',
+															modalType: false,
+														})
+													} else {
+														wx.showModal({
+															title: '提示',
+															content: '获取权限失败，将无法保存到相册',
+															modalType: false,
+														})
+													}
+												},
+												fail(failData) {
+													console.log("failData",
+														failData)
+												},
+												complete(finishData) {
+													console.log("finishData",
+														finishData)
+												}
+											})
+										}
+									})
+								}
+							},
+							complete(res) {
+								wx.hideLoading();
+							}
+						})
+					}
+				})
+				// #endif
+			},
+
 			goBack() {
 				uni.navigateBack()
 			}

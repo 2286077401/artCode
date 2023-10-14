@@ -92,8 +92,7 @@ module.exports = {
 			})
 		})
 	},
-	userRes: function(url, data) {
-		console.log(data)
+	userRes: function(url, data) { 
 		url = configdata.APIHOST + url;
 		return new Promise((succ, error) => {
 			uni.request({

@@ -1,8 +1,10 @@
 {
   "component": true,
   "usingComponents": {
+    "draw-tn-waterfall-right": "/components/draw/draw-tn-waterfall-right",
     "tn-empty": "/tuniao-ui/components/tn-empty/tn-empty",
     "tn-popup": "/tuniao-ui/components/tn-popup/tn-popup",
+    "tn-subsection": "/tuniao-ui/components/tn-subsection/tn-subsection",
     "style-detail": "/components/draw/styleDetail"
   }
 }

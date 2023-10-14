@@ -91,6 +91,15 @@
            }
             
         }
+        ,{
+            "path" : "pages/xh2model/xh2model",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "星火大模型2.0",
+                "enablePullDownRefresh": false
+            }
+            
+        } 
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
