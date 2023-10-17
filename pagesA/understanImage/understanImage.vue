@@ -19,9 +19,8 @@
 										</view>
 									</view>
 									<view class="tn-padding-right tn-color-black">
-										<view class="tn-padding-left-sm tn-text-bold tn-margin-top-sm"
-											style="max-width: 62vw;">
-											星火
+										<view class="tn-padding-left-sm tn-text-bold" style="max-width: 62vw;">
+											GTP
 										</view>
 										<view class="tn-flex tn-flex-col-center">
 											<view class="tn-bg-gray--light tn-margin-sm tn-padding-sm"
@@ -88,7 +87,7 @@
 							<view class="justify-content-item">
 								<view class="tn-flex tn-flex-col-top tn-flex-row-left">
 									<view class="tn-padding-left tn-color-black">
-										<view class="tn-padding-right tn-text-bold tn-margin-top-sm tn-text-right"
+										<view class="tn-padding-right tn-text-bold tn-text-right"
 											style="max-width: 62vw;">
 											我
 										</view>
@@ -99,9 +98,16 @@
 													class="tn-icon-warning-fill tn-color-purplered tn-text-xxl"></text>
 											</view>
 											<view class="tn-bg-gray--light tn-margin-sm tn-padding-sm"
-												style="max-width: 62vw;border-radius: 15rpx 0 15rpx 15rpx;">
+												style="max-width: 62vw;border-radius: 15rpx 0 15rpx 15rpx;"
+												v-if="item.content_type=='text'">
 												<ua-markdown :source="item.content || '加载中...'" :showLine="false" />
-
+											</view>
+											<view class="tn-bg-gray--light tn-margin-sm"
+												style="max-width: 62vw;border-radius: 15rpx 0 15rpx 15rpx;overflow: hidden;"
+												v-else>
+												<image :src="'data:image/jpeg;base64,'+item.content"
+													style="width: 62vw;margin: 0 auto;text-align: center;"
+													mode="widthFix"></image>
 											</view>
 										</view>
 									</view>
@@ -127,7 +133,14 @@
 						<view class="tn-flex tn-flex-row-center tn-flex-col-center tn-padding-right tn-padding-left-sm">
 							<view
 								class="icon27__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-color-gray">
-								<view class="tn-icon-add-circle"></view>
+								<!-- <tn-image-upload :customBtn="true">
+									<view slot="addBtn" class="tn-image-upload__custom-btn" hover-class="tn-hover-class"
+										hover-stay-time="150">
+										<view class="tn-icon-add-circle"></view>
+									</view>
+								</tn-image-upload> -->
+								<view class="tn-icon-add-circle" @click="choseImage"></view>
+
 							</view>
 							<!-- <view class="icon27__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-text-shadow-orange">
 		            <view class="">??</view>
@@ -143,8 +156,10 @@
 							<!-- <view class="topic__info__item__input__left-icon">
 		            <view class="tn-icon-emoji-good"></view>
 		          </view> -->
-							<view class="topic__info__item__input__content">
-								<input v-model="TEXT" maxlength="20" :disabled="isLoading"
+							<view class="topic__info__item__input__content  tn-flex">
+								<image v-if="talkImage!=''" :src="talkImage" style="width: 40rpx;height: 40rpx;"
+									mode="scaleToFill" @click="seeImage([talkImage])"></image>
+								<input style="padding-left: 15rpx;" v-model="TEXT" maxlength="20" :disabled="isLoading"
 									placeholder-class="input-placeholder" placeholder="请输入内容" :cursor-spacing="18" />
 							</view>
 						</view>
@@ -176,6 +191,7 @@
 	import CryptoJS from '@/commit/crypto-js/crypto-js.js'
 	import parser from '@/commit/fast-xml-parser/src/parser'
 	import * as utf8 from "utf8"
+	let convert = require('@/pagesA/tool/tool.js')
 	export default {
 		components: {
 			uaMarkdown
@@ -184,7 +200,6 @@
 		// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
 		data() {
 			return {
-
 				isLoading: false,
 				TEXT: '',
 				APPID: '4ae5ca01', // 控制台获取填写
@@ -202,21 +217,12 @@
 				}],
 				statusBarHeight: 20,
 				firstTrigger: false,
+				talkImage: "",
+				imgBase64: "",
 			}
 		},
 		onLoad() {
-			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
-			if (uni.getStorageSync('gptType')) {
-				uni.setNavigationBarTitle({
-					title: uni.getStorageSync('gptType').templateName
-				}); 
-				this.TEXT = uni.getStorageSync('gptType').content
-				// this.historyTextList.push({
-				// 	"role": "user",
-				// 	"content": this.TEXT
-				// })
-				this.sendToSpark()
-			}
+
 		},
 		watch: {
 			sparkResult(data) {
@@ -238,6 +244,46 @@
 		},
 
 		methods: {
+			seeImage(data) {
+				uni.previewImage({
+					urls: data,
+					longPressActions: {
+						itemList: ['发送给朋友', '保存图片', '收藏'],
+						success: function(data) {
+							console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+						},
+						fail: function(err) {
+							console.log(err.errMsg);
+						}
+					}
+				});
+			},
+			choseImage() {
+				const that = this
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['compressed'],
+					sourceType: ['album', 'camera'],
+					success: function(res) {
+						console.log(res.tempFilePaths[0])
+						that.talkImage = res.tempFilePaths[0]
+						convert.toBase64(res.tempFilePaths[0]).then((res) => {
+							that.imgBase64 = res
+							that.historyTextList.push({
+								"role": "user",
+								"content": res,
+								"content_type": "image"
+							})
+						})
+					},
+					fail() {
+						uni.showToast({
+							title: '选择失败',
+							icon: "none"
+						})
+					}
+				});
+			},
 			scrollUpdata() {
 				uni.pageScrollTo({
 					scrollTop: 9999,
@@ -247,9 +293,10 @@
 					},
 					fail(err) {
 						console.log(err)
+
 					}
 				})
-			}, 
+			},
 			copy(val) {
 				uni.setClipboardData({
 					data: this.answer || val,
@@ -278,6 +325,9 @@
 				this.socketTask = uni.connectSocket({
 					//url: encodeURI(encodeURI(myUrl).replace(/\+/g, '%2B')),
 					url: myUrl,
+					header: {
+						'Content-Type': 'application/json;charset=UTF-8'
+					},
 					method: 'GET',
 					success: res => {
 						realThis.isLoading = true;
@@ -294,18 +344,21 @@
 				realThis.socketTask.onOpen((res) => {
 					this.historyTextList.push({
 						"role": "user",
-						"content": this.TEXT
+						"content": realThis.TEXT,
+						"content_type": "text"
 					})
 					let params = {
 						"header": {
 							"app_id": this.APPID,
-							"uid": "aef9f963-7"
+							"uid": "39769795890"
 						},
 						"parameter": {
 							"chat": {
-								"domain": "generalv2",
+								"domain": "general",
 								"temperature": 0.5,
-								"max_tokens": 1024
+								"top_k": 4,
+								"max_tokens": 2028,
+								"auditing": "default"
 							}
 						},
 						"payload": {
@@ -321,6 +374,7 @@
 						data: JSON.stringify(params),
 						success() {
 							realThis.TEXT = ''
+							realThis.talkImage = ''
 						}
 					});
 				});
@@ -328,6 +382,15 @@
 				// 接受到消息时
 				realThis.socketTask.onMessage((res) => {
 					let obj = JSON.parse(res.data)
+					console.log(obj)
+					if (obj.header.code == 10003) {
+						this.historyTextList.push({
+							"role": "assistant",
+							"content": '请选择图片上传！'
+						})
+						realThis.isLoading = false
+						return
+					}
 					if (obj.header.code == 10013) {
 						this.historyTextList.push({
 							"role": "assistant",
@@ -369,7 +432,7 @@
 							} */
 							setTimeout(() => {
 								realThis.socketTask.close({
-									success(res) { 
+									success(res) {
 										realThis.isLoading = false
 										realThis.sparkResult = ''
 									},
@@ -384,14 +447,16 @@
 			},
 			// 鉴权
 			getWebSocketUrl() {
-				return new Promise((resolve, reject) => { 
-					var url = "wss://spark-api.xf-yun.com/v2.1/chat";
+				return new Promise((resolve, reject) => {
+					// https://spark-api.xf-yun.com/v1.1/chat  V1.5 domain general
+					// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
+					var url = "wss://spark-api.cn-huabei-1.xf-yun.com/v2.1/image";
 					var host = "spark-api.xf-yun.com";
 					var apiKeyName = "api_key";
 					var date = new Date().toGMTString();
 					var algorithm = "hmac-sha256";
 					var headers = "host date request-line";
-					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2.1/chat HTTP/1.1`;
+					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2.1/image HTTP/1.1`;
 					var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, this.APISecret);
 					var signature = CryptoJS.enc.Base64.stringify(signatureSha);
 					var authorizationOrigin =
@@ -419,7 +484,8 @@
 	.topic__info__item__input__content {
 		width: 80%;
 		padding-top: 0px;
-		padding-left: 15px;
+		padding-left: 10rpx;
+		z-index: 1000;
 	}
 
 	.topic__info__item__input {

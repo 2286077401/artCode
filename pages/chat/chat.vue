@@ -71,7 +71,7 @@
 		</view>
 		<!-- 底部输入框 -->
 		<view class="input-box">
-			<text class="tn-icon-voice" style="font-size: 50rpx;font-weight:bolder;color: #767cf2;"></text>
+			<!-- <text class="tn-icon-voice" style="font-size: 50rpx;font-weight:bolder;color: #767cf2;"></text> -->
 			<input :disabled="isLoading" style="flex: 1;" placeholder="请输入内容" border="surround" v-model="problem">
 			</input>
 			<view style="padding-right: 20rpx;">

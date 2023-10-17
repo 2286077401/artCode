@@ -274,7 +274,7 @@
 	.list {
 		width: 100%;
 		border-radius: 25rpx;
-		background: #f5f8fcbf;
+		background: #e4e4e4bf;
 		margin: 0 auto;
 		padding: 20rpx;
 

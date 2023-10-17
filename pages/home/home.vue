@@ -6,8 +6,7 @@
 		</view>
 		<image src="../../static/1.png" mode="widthFix" class="centerImg"></image>
 		<view class="titleBox">
-			<view class="title">
-				
+			<view class="title"> 
 				<view>BUG在de我</view>
 				<view>代码在写我</view>
 				<view>螃蟹在剥我的壳</view>
@@ -17,7 +16,7 @@
 			<view class="titleNex"> by <span style="color: royalblue;font-weight: bolder;padding-left: 20rpx;">
 					Bits迪迦.</span> </view>
 			<view style="color: #c3c3c3;">
-				MTYxMTAz5oiR5oOz5L2g5LqG
+				5LiN6KeB6bK45LiN6KeB6bm/5LiN6KeB5L2g
 			</view>
 		</view>
 		<view class="btnbox" v-if="isloin">
@@ -80,16 +79,13 @@
 		text-align: center;
 	}
 
-	.title {
-		// width: 55vw;
+	.title { 
 		font-size: 30rpx;
 		font-weight: 600;
-		letter-spacing: -1rpx;
-		// line-height: 95rpx;
+		letter-spacing: 1rpx; 
 		color: gray;
-		margin: 0 auto;
-		font-family: 'Courier New', Courier, monospace;
-
+		margin: 0 auto;  
+		line-height: 40rpx;
 	}
 
 	.titleNex {
@@ -100,7 +96,7 @@
 		line-height: 64rpx;
 		color: rgba(148, 155, 165, 1);
 		margin: 0 auto;
-		margin-top: 20rpx;
+		margin-top: 15rpx;
 	}
 
 	.loginBox {

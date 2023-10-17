@@ -39,68 +39,72 @@
 				"navigationStyle": "custom"
 			}
 
-		},{
-            "path" : "pages/60s/60s",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "每日资讯",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/webView/webView",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/history/history",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "绘画记录",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/technology/technology",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "技术支持",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/drwPubil/drwPubil",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "绘画广场",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/drwPubil/detailImage",
-           "style": {
-           	"navigationStyle": "custom"
-           }
-            
-        }
-        ,{
-            "path" : "pages/xh2model/xh2model",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "星火大模型2.0",
-                "enablePullDownRefresh": false
-            }
-            
-        } 
-    ],
+		}, {
+			"path": "pages/60s/60s",
+			"style": {
+				"navigationBarTitleText": "每日资讯",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/webView/webView",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/history/history",
+			"style": {
+				"navigationBarTitleText": "绘画记录",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/technology/technology",
+			"style": {
+				"navigationBarTitleText": "技术支持",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/drwPubil/drwPubil",
+			"style": {
+				"navigationBarTitleText": "绘画广场",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/drwPubil/detailImage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+
+		}, {
+			"path": "pages/xh2model/xh2model",
+			"style": {
+				"navigationBarTitleText": "星火大模型2.0",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
+	"subPackages": [{
+		"root": "pagesA",
+		"pages": [{
+			"path": "understanImage/understanImage",
+			"style": {
+				"navigationBarTitleText": "图片理解"
+			}
+		}, {
+			"path": "textImage/textImage",
+			"style": {
+				"navigationBarTitleText": "文生图",
+				"enablePullDownRefresh": false
+			}
+
+		}]
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

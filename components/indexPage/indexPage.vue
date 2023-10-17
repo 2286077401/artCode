@@ -32,24 +32,25 @@
 					</view>
 				</view>
 				<view class="tn-flex-1 tn-padding-sm tn-margin-xs tn-radius">
-					<view class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
+					<view @click="goto('/pagesA/understanImage/understanImage')"
+						class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 						<view
 							class="icon12__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-main-gradient-purple--light tn-color-purple">
 							<view class="tn-icon-light-fill tn-three"></view>
 						</view>
 						<view class="tn-color-black tn-text-center">
-							<text class="tn-text-ellipsis">热门排行</text>
+							<text class="tn-text-ellipsis">图片理解</text>
 						</view>
 					</view>
 				</view>
 				<view class="tn-flex-1 tn-padding-sm tn-margin-xs tn-radius">
-					<view class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
+					<view  @click="goto('/pagesA/textImage/textImage')" class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 						<view
 							class="icon12__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-main-gradient-indigo--light tn-color-indigo">
 							<view class="tn-icon-star-fill tn-three"></view>
 						</view>
 						<view class="tn-color-black tn-text-center">
-							<text class="tn-text-ellipsis">文艺可爱</text>
+							<text class="tn-text-ellipsis">文生图</text>
 						</view>
 					</view>
 				</view>
@@ -402,7 +403,7 @@
 	.template-wallpaper {
 		height: 100vh;
 		overflow-y: scroll;
-		 
+
 		padding-top: 150rpx;
 	}
 

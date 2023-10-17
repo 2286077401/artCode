@@ -205,18 +205,7 @@
 			}
 		},
 		onLoad() {
-			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
-			if (uni.getStorageSync('gptType')) {
-				uni.setNavigationBarTitle({
-					title: uni.getStorageSync('gptType').templateName
-				}); 
-				this.TEXT = uni.getStorageSync('gptType').content
-				// this.historyTextList.push({
-				// 	"role": "user",
-				// 	"content": this.TEXT
-				// })
-				this.sendToSpark()
-			}
+			 
 		},
 		watch: {
 			sparkResult(data) {
@@ -249,7 +238,7 @@
 						console.log(err)
 					}
 				})
-			}, 
+			},
 			copy(val) {
 				uni.setClipboardData({
 					data: this.answer || val,
@@ -272,13 +261,33 @@
 				this.isLoading = true
 				this.firstTrigger = false
 				let myUrl = await this.getWebSocketUrl();
+				console.log(myUrl)
 				this.tempRes = "";
 				// this.sparkResult = "";
 				let realThis = this;
-				this.socketTask = uni.connectSocket({
+				let params = {
+					"header": {
+						"app_id": this.APPID,
+						"uid": "aef9f963-7"
+					},
+					"parameter": {
+						"chat": {
+							"domain": "generalv2",
+							"temperature": 0.5,
+							"max_tokens": 1024
+						}
+					},
+					"payload": {
+						"message": {
+							"text": this.historyTextList
+						}
+					}
+				};
+				uni.request({
 					//url: encodeURI(encodeURI(myUrl).replace(/\+/g, '%2B')),
 					url: myUrl,
 					method: 'GET',
+					data:params,
 					success: res => {
 						realThis.isLoading = true;
 					}
@@ -369,7 +378,7 @@
 							} */
 							setTimeout(() => {
 								realThis.socketTask.close({
-									success(res) { 
+									success(res) {
 										realThis.isLoading = false
 										realThis.sparkResult = ''
 									},
@@ -384,14 +393,16 @@
 			},
 			// 鉴权
 			getWebSocketUrl() {
-				return new Promise((resolve, reject) => { 
-					var url = "wss://spark-api.xf-yun.com/v2.1/chat";
+				return new Promise((resolve, reject) => {
+					// https://spark-api.xf-yun.com/v1.1/chat  V1.5 domain general
+					// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
+					var url = "wss://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti";
 					var host = "spark-api.xf-yun.com";
 					var apiKeyName = "api_key";
 					var date = new Date().toGMTString();
 					var algorithm = "hmac-sha256";
 					var headers = "host date request-line";
-					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2.1/chat HTTP/1.1`;
+					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2.1/tti HTTP/1.1`;
 					var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, this.APISecret);
 					var signature = CryptoJS.enc.Base64.stringify(signatureSha);
 					var authorizationOrigin =

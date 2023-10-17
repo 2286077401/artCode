@@ -18,10 +18,10 @@
 .title.data-v-92bb8f34 {
   font-size: 30rpx;
   font-weight: 600;
-  letter-spacing: -1rpx;
+  letter-spacing: 1rpx;
   color: gray;
   margin: 0 auto;
-  font-family: 'Courier New', Courier, monospace;
+  line-height: 40rpx;
 }
 .titleNex.data-v-92bb8f34 {
   width: 90%;
@@ -31,7 +31,7 @@
   line-height: 64rpx;
   color: #949ba5;
   margin: 0 auto;
-  margin-top: 20rpx;
+  margin-top: 15rpx;
 }
 .loginBox.data-v-92bb8f34 {
   width: 300rpx;

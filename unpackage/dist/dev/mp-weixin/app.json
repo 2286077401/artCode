@@ -13,7 +13,15 @@
     "pages/drwPubil/detailImage",
     "pages/xh2model/xh2model"
   ],
-  "subPackages": [],
+  "subPackages": [
+    {
+      "root": "pagesA",
+      "pages": [
+        "understanImage/understanImage",
+        "textImage/textImage"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
