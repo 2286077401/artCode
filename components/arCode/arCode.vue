@@ -518,7 +518,7 @@
 				// })
 				// return; 
 				// this.codeData = item.prompt
-				Object.assign(this.codeData, item.prompt); 
+				Object.assign(this.codeData, item.prompt);
 			},
 			getCodeProList() {
 				getCodePro().then((res) => {
@@ -759,7 +759,7 @@
 	.box {
 		background: linear-gradient(-120deg, #9A5CE5, #01BEFF, #00F5D4, #43e97b);
 		padding: 20rpx;
-		padding-top: 180rpx;
+		padding-top: 30rpx;
 		height: 100vh;
 		overflow-y: scroll;
 		padding-bottom: 150rpx;

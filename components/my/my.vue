@@ -1,8 +1,6 @@
 <template>
-	<view class="template-about tn-safe-area-inset-bottom">
-		<view class="login__bg login__bg--top">
-			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
-		</view>
+	<view class="template-about tn-safe-area-inset-bottom" style="padding-bottom: 50rpx;">
+
 		<view class="top-backgroup">
 			<image src="@/static/summer.jpg" mode='widthFix' class='backgroud-image'>
 			</image>
@@ -79,7 +77,7 @@
 					<view class="tn-flex-1 tn-padding-sm tn-margin-xs">
 						<view class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 							<view class="">
-								<view class="tn-text-xxl tn-color-orange">{{user.openNum || 0}}</view>
+								<view class="tn-text-xxl tn-color-orange">{{user.openNum || '无限'}}</view>
 							</view>
 							<view class="tn-margin-top-xs tn-color-gray tn-text-df tn-text-center">
 								<text class="tn-icon-fire"></text>
@@ -127,7 +125,8 @@
 							</view>
 						</view>
 					</view>
-					<view class="tn-padding-sm tn-margin-xs tn-radius" @click="toPage('/pages/my/integral')">
+					<view class="tn-padding-sm tn-margin-xs tn-radius"
+						@click="toPage('/pagesA/blanceDetal/blanceDetal')">
 						<view class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 							<view class="icon12__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-bg-orange">
 								<view class="tn-icon-ticket" style="color: #080808;"></view>
@@ -272,7 +271,9 @@
 			:closeLeft="closeLeft" :mask="mask" :maskCloseable="maskCloseable" @close="closeLandscape">
 			<image v-if="type==0" src="https://oss.laf.run/nupa44-bits/payImage/wx.jpg" mode="widthFix"></image>
 			<l-painter v-else>
-				<l-painter-qrcode text="limeui.qcoon.cn" css="width: 300rpx; height: 300rpx" />
+				<l-painter-qrcode
+					text="https://weixin.qq.com/g/AwYAAIHeGIyEzYHibOiUh0D4U1kmtLO2fuKOFP5djMoc39J2FFFun9r2wCv1FODA"
+					css="width: 300rpx; height: 300rpx" />
 			</l-painter>
 		</tn-landscape>
 		<!-- <wx-user-info-modal v-model="showAuthorizationModal" @updated="updatedUserIn'foEvent"></wx-user-info-modal> -->
@@ -301,7 +302,7 @@
 			number: [String, Number],
 		},
 		watch: {
-			number(e) { 
+			number(e) {
 				this.userInfo()
 			}
 		},
@@ -353,7 +354,7 @@
 			},
 
 			// 打开获取用户信息弹框
-			openAuthorizationModal() { 
+			openAuthorizationModal() {
 				if (!this.user.nickname) {
 					this.showAuthorizationModal = true
 				}
@@ -379,12 +380,24 @@
 				}).then((res) => {
 					this.showAuthorizationModal = false
 					this.userInfo()
-				})  
+				})
 			},
 			// 打开压屏窗
-			openLandscape(type) {
-				this.type = type
-				this.show_A = true
+			openLandscape(type) { 
+				// this.show_A = true
+				if (type == 1) {
+					uni.previewImage({
+						urls: ['https://oss.laf.run/nupa44-bits/qun.jpg'], 
+					})
+				} else {
+					
+					uni.previewImage({
+						urls: ['https://oss.laf.run/nupa44-bits/payImage/wx.jpg'], 
+					})
+					// this.type = type
+					// this.show_A = true
+				}
+
 			},
 			// 关闭压屏窗
 			closeLandscape() {
@@ -411,6 +424,8 @@
 
 			},
 			show() {
+				// https://baike.baidu.com/item/%E7%94%9F%E6%88%90%E5%BC%8F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86%E5%8A%9E%E6%B3%95/62876544
+				// 注意：本 API 属于生成式人工智能 API，背后部分技术基于 Midjourney，为避免跨境数据传输给国家和企业带来的安全风险，请务必在使用时不要输入带有国家和企业机密的相关信息，同时本 API 也会严格遵循中华人民共和国《生成式人工智能服务管理办法》严格把控和过滤相关敏感、不道德、侵权等信息。
 				uni.showToast({
 					title: '暂未开放',
 					icon: 'none'

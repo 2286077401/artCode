@@ -5,10 +5,12 @@ const toBase64 = (path) => {
 		// #ifdef APP-PLUS		
 		plus.io.resolveLocalFileSystemURL(path, (entry) => {
 			entry.file((file) => {
-				let fileReader = new plus.io.FileReader() fileReader.readAsDataURL(
-					file) fileReader.onloadend = (evt) => {
-						let base64 = evt.target.result.split(",")[1] resolve(base64)
-					}
+				let fileReader = new plus.io.FileReader()
+				fileReader.readAsDataURL(file) 
+				fileReader.onloadend = (evt) => {
+					let base64 = evt.target.result.split(",")[1] 
+					resolve(base64)
+				}
 			})
 		})
 		// #endif	

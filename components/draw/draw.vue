@@ -105,7 +105,7 @@
 			</view>
 			<image v-if="imageData!=''" :src="imageData.image_url" style="width: 100%;" mode="widthFix"></image>
 		 
-			<view v-if="imageData!='' && !isSave " class="grid-container">
+			<view v-if="imageData!=''" class="grid-container">
 				<view class="grid-item" v-for="item in 4" @click="choseImageIndex(item)">
 					<view v-if="ImageIndex==item" class="centerBox">
 						<view class='aganBtn' @click="useImage('variation'+item,'v')">精修</view>
@@ -344,7 +344,7 @@
 		},
 
 		mounted() {
-			// this.getProList()
+			this.getProList()
 			// this.getStatus()
 		}, 
 		methods: {
@@ -732,7 +732,7 @@
 	.box {
 		background: linear-gradient(-120deg, #9A5CE5, #01BEFF, #00F5D4, #43e97b);
 		padding: 20rpx;
-		padding-top: 180rpx;
+		padding-top: 30rpx;
 		height: 100vh;
 		overflow-y: scroll;
 		padding-bottom: 150rpx;

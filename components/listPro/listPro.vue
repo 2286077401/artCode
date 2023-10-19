@@ -128,7 +128,7 @@
 
 <style lang="scss" scoped>
 	.content{
-		padding-top:180rpx ;
+		padding-top:30rpx ;
 	}
 	.custom-nav {
 		height: 100%;

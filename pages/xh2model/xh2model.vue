@@ -3,7 +3,10 @@
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
-
+		<tn-fab :btnList="btnList" :left="left" :right="right" :bottom="bottom" :width="width" :height="height"
+			:iconSize="iconSize" :backgroundColor="backgroundColor" :fontColor="fontColor" :icon="icon"
+			:animationType="animationType" :showMask="showMask" @click="clickFabItem">
+		</tn-fab>
 		<scroll-view :scroll-y="true" :style="{paddingTop:statusBarHeight}" class="scroll-Y"
 			:scroll-with-animation="true">
 			<!-- :style="{paddingTop: vuex_custom_bar_height + 'px'}" -->
@@ -184,7 +187,36 @@
 		// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
 		data() {
 			return {
-
+				left: 'auto',
+				right: 40,
+				bottom: 300,
+				width: 64,
+				height: 64,
+				iconSize: 48,
+				backgroundColor: '#01BEFF',
+				fontColor: '#FFFFFF',
+				icon: 'open',
+				animationType: 'around',
+				showMask: true,
+				btnList: [{
+						icon: 'link',
+						text: '链接',
+						bgColor: '#E72F8C'
+					},
+					{
+						icon: 'clear',
+						text: '清屏',
+						textSize: 32,
+						bgColor: '#FF7043'
+					},
+					{
+						icon: 'share-triangle',
+						text: '分享',
+						iconSize: 32,
+						iconColor: '#AAAAAA',
+						bgColor: '#24F083',
+					}
+				],
 				isLoading: false,
 				TEXT: '',
 				APPID: '4ae5ca01', // 控制台获取填写
@@ -209,7 +241,7 @@
 			if (uni.getStorageSync('gptType')) {
 				uni.setNavigationBarTitle({
 					title: uni.getStorageSync('gptType').templateName
-				}); 
+				});
 				this.TEXT = uni.getStorageSync('gptType').content
 				// this.historyTextList.push({
 				// 	"role": "user",
@@ -236,8 +268,38 @@
 
 			}
 		},
-
 		methods: {
+			getChat() {
+				this.historyTextList = [];
+			},
+			// 点击悬浮按钮的内容
+			clickFabItem(e) {
+				switch (e.index) {
+					case 0: {
+						uni.showToast({
+							title: '暂未开放',
+							icon: 'none'
+						})
+						break;
+					}
+					case 1: {
+						this.historyTextList = []
+						this.getChat()
+						uni.showToast({
+							title: '已清屏',
+							icon: 'none'
+						})
+						break;
+					}
+					case 2: {
+						uni.showToast({
+							title: '暂未开放',
+							icon: 'none'
+						})
+						break;
+					}
+				}
+			},
 			scrollUpdata() {
 				uni.pageScrollTo({
 					scrollTop: 9999,
@@ -249,7 +311,7 @@
 						console.log(err)
 					}
 				})
-			}, 
+			},
 			copy(val) {
 				uni.setClipboardData({
 					data: this.answer || val,
@@ -321,6 +383,7 @@
 						data: JSON.stringify(params),
 						success() {
 							realThis.TEXT = ''
+							realThis.isLoading = false
 						}
 					});
 				});
@@ -358,7 +421,6 @@
 						})
 					}
 					if (temp.header.code === 0) {
-
 						if (res.data && temp.header.status === 2) {
 							// realThis.sparkResult = realThis.sparkResult +
 							// 	"\r\n**********************************************"
@@ -369,7 +431,7 @@
 							} */
 							setTimeout(() => {
 								realThis.socketTask.close({
-									success(res) { 
+									success(res) {
 										realThis.isLoading = false
 										realThis.sparkResult = ''
 									},
@@ -384,7 +446,7 @@
 			},
 			// 鉴权
 			getWebSocketUrl() {
-				return new Promise((resolve, reject) => { 
+				return new Promise((resolve, reject) => {
 					var url = "wss://spark-api.xf-yun.com/v2.1/chat";
 					var host = "spark-api.xf-yun.com";
 					var apiKeyName = "api_key";
@@ -409,6 +471,10 @@
 	/deep/.input-placeholder {
 		font-size: 30rpx;
 		color: #7C8191;
+	}
+
+	/deep/.ua__markdown p {
+		margin: 0;
 	}
 
 	.login__info__item__button {

@@ -3,9 +3,8 @@
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
-
-		<scroll-view :scroll-y="true" :style="{paddingTop:statusBarHeight}" class="scroll-Y"
-			:scroll-with-animation="true">
+		<!-- :style="{paddingTop:statusBarHeight}" -->
+		<scroll-view :scroll-y="true" class="scroll-Y" :scroll-with-animation="true">
 			<!-- :style="{paddingTop: vuex_custom_bar_height + 'px'}" -->
 			<view class="" v-for="(item,index) in historyTextList" :key="index">
 				<view class="tn-text-justify">
@@ -19,9 +18,9 @@
 										</view>
 									</view>
 									<view class="tn-padding-right tn-color-black">
-										<view class="tn-padding-left-sm tn-text-bold" style="max-width: 62vw;">
+										<!-- 			<view class="tn-padding-left-sm tn-text-bold" style="max-width: 62vw;">
 											GTP
-										</view>
+										</view> -->
 										<view class="tn-flex tn-flex-col-center">
 											<view class="tn-bg-gray--light tn-margin-sm tn-padding-sm"
 												style="max-width: 62vw;border-radius: 0 15rpx 15rpx 15rpx;">
@@ -87,10 +86,10 @@
 							<view class="justify-content-item">
 								<view class="tn-flex tn-flex-col-top tn-flex-row-left">
 									<view class="tn-padding-left tn-color-black">
-										<view class="tn-padding-right tn-text-bold tn-text-right"
+										<!-- 	<view class="tn-padding-right tn-text-bold tn-text-right"
 											style="max-width: 62vw;">
 											我
-										</view>
+										</view> -->
 										<view class="tn-flex tn-flex-col-center">
 											<view class="" v-if="item.conten == '发送失败'">
 												<!-- 发送失败 -->
@@ -322,7 +321,7 @@
 				this.tempRes = "";
 				// this.sparkResult = "";
 				let realThis = this;
-				this.socketTask = uni.connectSocket({
+				realThis.socketTask = uni.connectSocket({
 					//url: encodeURI(encodeURI(myUrl).replace(/\+/g, '%2B')),
 					url: myUrl,
 					header: {
@@ -330,7 +329,7 @@
 					},
 					method: 'GET',
 					success: res => {
-						realThis.isLoading = true;
+						// realThis.isLoading = true;
 					}
 				})
 
@@ -342,14 +341,14 @@
 					})
 				})
 				realThis.socketTask.onOpen((res) => {
-					this.historyTextList.push({
+					realThis.historyTextList.push({
 						"role": "user",
 						"content": realThis.TEXT,
 						"content_type": "text"
 					})
 					let params = {
 						"header": {
-							"app_id": this.APPID,
+							"app_id": realThis.APPID,
 							"uid": "39769795890"
 						},
 						"parameter": {
@@ -363,7 +362,7 @@
 						},
 						"payload": {
 							"message": {
-								"text": this.historyTextList
+								"text": realThis.historyTextList
 							}
 						}
 					};
@@ -384,15 +383,16 @@
 					let obj = JSON.parse(res.data)
 					console.log(obj)
 					if (obj.header.code == 10003) {
-						this.historyTextList.push({
-							"role": "assistant",
-							"content": '请选择图片上传！'
-						})
+						realThis.historyTextList = []
 						realThis.isLoading = false
+						uni.showToast({
+							title: "请先选择图片",
+							icon: 'none'
+						})
 						return
 					}
 					if (obj.header.code == 10013) {
-						this.historyTextList.push({
+						realThis.historyTextList.push({
 							"role": "assistant",
 							"content": '非常抱歉，根据相关法律法规，我们无法提供关于以下内容的答案，包括但不限于：\n\t(1) 涉及国家安全的信息；\n\t(2) 涉及政治与宗教类的信息；\n\t(3) 涉及暴力与恐怖主义的信息；\n\t(4) 涉及黄赌毒类的信息；\n\t(5) 涉及不文明的信息。\n我们会继续遵循相关法规法律的要求，共创一个健康和谐网络环境，谢谢您的理解。\n'
 						})
@@ -420,6 +420,7 @@
 							}
 						})
 					}
+					realThis.isLoading = false
 					if (temp.header.code === 0) {
 
 						if (res.data && temp.header.status === 2) {
@@ -474,6 +475,10 @@
 	/deep/.input-placeholder {
 		font-size: 30rpx;
 		color: #7C8191;
+	}
+
+	/deep/ .ua__markdown p {
+		margin: 0;
 	}
 
 	.login__info__item__button {

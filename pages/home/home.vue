@@ -1,12 +1,12 @@
 <template>
 	<view>
-
+		
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
-		<image src="../../static/1.png" mode="widthFix" class="centerImg"></image>
+		<!-- <image src="../../static/1.png" mode="widthFix" class="centerImg"></image> -->
 		<view class="titleBox">
-			<view class="title"> 
+			<view class="title">
 				<view>BUG在de我</view>
 				<view>代码在写我</view>
 				<view>螃蟹在剥我的壳</view>
@@ -39,6 +39,7 @@
 		data() {
 			return {
 				isloin: true,
+				
 			}
 		},
 		onLoad() {
@@ -74,17 +75,17 @@
 		width: 95%;
 		position: absolute;
 		left: 50%;
-		top: 60%;
+		top: 40%;
 		transform: translate(-50%, -50%);
 		text-align: center;
 	}
 
-	.title { 
+	.title {
 		font-size: 30rpx;
 		font-weight: 600;
-		letter-spacing: 1rpx; 
+		letter-spacing: 1rpx;
 		color: gray;
-		margin: 0 auto;  
+		margin: 0 auto;
 		line-height: 40rpx;
 	}
 

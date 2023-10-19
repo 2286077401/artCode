@@ -44,7 +44,8 @@
 					</view>
 				</view>
 				<view class="tn-flex-1 tn-padding-sm tn-margin-xs tn-radius">
-					<view  @click="goto('/pagesA/textImage/textImage')" class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
+					<view @click="goto('/pagesA/textImage/textImage')"
+						class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 						<view
 							class="icon12__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-main-gradient-indigo--light tn-color-indigo">
 							<view class="tn-icon-star-fill tn-three"></view>
@@ -391,6 +392,14 @@
 		},
 		methods: {
 			goto(e) {
+				if (e == '/pagesA/textImage/textImage') {
+					uni.showToast({
+						title: '此功能将于10月24日上线',
+						icon: 'none'
+
+					})
+					return false
+				}
 				uni.navigateTo({
 					url: e
 				})

@@ -1,5 +1,11 @@
 <template>
 	<view class="content">
+		<view class="login__bg login__bg--top">
+			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
+		</view>
+		<tn-notice-bar :style="{paddingTop:'44px'}" :list="list" :rightIcon="false" :closeBtn="true" backgroundColor="tn-main-gradient-indigo"
+			@close="closeNoticeShow = false"></tn-notice-bar>
+
 		<view v-if="tabberPageLoadFlag[0]" :style="{display: currentIndex === 0 ? '' : 'none'}">
 			<scroll-view class="custom-tabbar-page" scroll-y enable-back-to-top @scrolltolower="tabbarPageScrollLower">
 				<listPro ref="listPro"></listPro>
@@ -7,7 +13,7 @@
 		</view>
 		<view v-if="tabberPageLoadFlag[1]" :style="{display: currentIndex === 1 ? '' : 'none'}">
 			<scroll-view class="custom-tabbar-page" scroll-y enable-back-to-top @scrolltolower="tabbarPageScrollLower">
-				<draw ref="draw"  ></draw>
+				<draw ref="draw"></draw>
 			</scroll-view>
 		</view>
 		<view v-if="tabberPageLoadFlag[2]" :style="{display: currentIndex === 2 ? '' : 'none'}">
@@ -76,12 +82,18 @@
 				],
 				// tabbar当前被选中的序号
 				currentIndex: 0,
+				list: [
+					'10月24日之后将陆续开放文生图聊天功能，敬请期待',
+					'BitsAi 1.0.0(内测版已经上线咯) 正在有奖征集BUG',
+					'充值积分请主动联系客服微信'
+				],
+				closeNoticeShow: true,
 
 			}
 		},
 		onLoad(options) {
 			console.log(options)
-			const index = Number(options.index || 0) 
+			const index = Number(options.index || 0)
 			// 根据底部tabbar菜单列表设置对应页面的加载情况
 			this.tabberPageLoadFlag = this.tabbarList.map((item, tabbar_index) => {
 				return index === tabbar_index

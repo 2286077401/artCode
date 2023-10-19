@@ -103,7 +103,16 @@
 				"enablePullDownRefresh": false
 			}
 
-		}]
+		}    ,{
+                    "path" : "blanceDetal/blanceDetal",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "积分明细",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

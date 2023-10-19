@@ -31,8 +31,8 @@
 								<view class="tn-icon-phone"></view>
 							</view>
 							<view class="login__info__item__input__content">
-								<input maxlength="20" placeholder-class="input-placeholder" v-model="mobile"
-									placeholder="请输入手机号/邮箱/用户名" />
+								<input maxlength="11" placeholder-class="input-placeholder" v-model="mobile"
+									placeholder="请输入手机号" />
 							</view>
 						</view>
 

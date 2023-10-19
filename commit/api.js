@@ -20,6 +20,7 @@ export const wenxinChat = (data) => http.post('/wenxinChat', data)  //文星一�
 export const getPubilcDrow = (data) => http.get('/getPubilcDrow', data)  //绘画画廊
 
 export const getBanlace = () => http.get('/getBanlace')  //获取用户余额
+export const getblacHiste = () => http.get('/getblacHiste')  //获取积分使用明细
 export const gitDrowproList = () => http.get('/gitDrowproList')  //获取绘画提示词
 export const gitUserState = () => http.get('/gitUserState')  //获取绘画状态
 export const textToAudio = (data) => http.post('/text-to-audio',data)  //文字转语音
