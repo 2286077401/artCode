@@ -3,8 +3,15 @@
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
-		<tn-notice-bar :style="{paddingTop:'44px'}" :list="list" :rightIcon="false" :closeBtn="true" backgroundColor="tn-main-gradient-indigo"
+		<!-- #ifdef H5 -->
+		<tn-notice-bar :list="list" :rightIcon="false" :closeBtn="true" backgroundColor="tn-main-gradient-indigo"
 			@close="closeNoticeShow = false"></tn-notice-bar>
+		<!-- #endif -->
+		<!-- #ifndef H5 -->
+		<tn-notice-bar :style="{paddingTop:'44px'}" :list="list" :rightIcon="false" :closeBtn="true"
+			backgroundColor="tn-main-gradient-indigo" @close="closeNoticeShow = false"></tn-notice-bar>
+		<!-- #endif -->
+
 
 		<view v-if="tabberPageLoadFlag[0]" :style="{display: currentIndex === 0 ? '' : 'none'}">
 			<scroll-view class="custom-tabbar-page" scroll-y enable-back-to-top @scrolltolower="tabbarPageScrollLower">
@@ -133,5 +140,8 @@
 <style lang="scss" scoped>
 	.custom-tabbar-page {
 		height: calc(100vh - (100rpx + env(safe-area-inset-bottom) / 2));
+	}
+	/deep/.template-wallpaper{
+		padding-top: 20rpx;
 	}
 </style>

@@ -20,7 +20,7 @@
 					style="border-bottom: 1rpx solid #6666663d;">
 					<view class="justify-content-item">
 						<view class="tn-color-gray--dark tn-text-lg">
-							{{item.status==999?'注册奖励':'绘画扣除'}}
+							{{item.note|| '赠送积分'}}
 						</view>
 						<view class="tn-color-gray tn-padding-top-xs">
 							{{item.creatTime}}

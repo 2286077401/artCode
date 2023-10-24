@@ -4,10 +4,19 @@
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
 		<!-- 顶部自定义导航 -->
+		<!-- #ifdef H5 -->
+		<view class="tn-bg-white top-fixed" :style="{paddingTop:'44px'}">
+			<tn-tabs :list="fixedList" :current="current" :isScroll="false" activeColor="#000" :bold="true"
+				:fontSize="32" :badgeOffset="[20, 50]" @change="tabChange"></tn-tabs>
+		</view>
+		<!-- #endif -->
+		<!-- #ifndef H5 -->
 		<view class="tn-bg-white top-fixed">
 			<tn-tabs :list="fixedList" :current="current" :isScroll="false" activeColor="#000" :bold="true"
 				:fontSize="32" :badgeOffset="[20, 50]" @change="tabChange"></tn-tabs>
 		</view>
+		<!-- #endif -->
+
 		<!-- 页面内容 -->
 		<tn-empty v-if="dataList.length==0" mode="data"></tn-empty>
 		<!-- :style="{paddingTop: vuex_custom_bar_height + 'rpx'}" -->

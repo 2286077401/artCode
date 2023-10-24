@@ -57,6 +57,16 @@
 								<view class="tn-icon-my-lack"></view>
 							</view>
 							<view class="login__info__item__input__content">
+								<input maxlength="20" placeholder-class="input-placeholder" placeholder="邀请码(非必填)"
+									v-model="code" />
+							</view>
+						</view>
+						<view
+							class="login__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left">
+							<view class="login__info__item__input__left-icon">
+								<view class="tn-icon-my-lack"></view>
+							</view>
+							<view class="login__info__item__input__content">
 								<input maxlength="20" placeholder-class="input-placeholder" placeholder="请输入用户昵称"
 									v-model="username" />
 							</view>
@@ -181,6 +191,13 @@
 		},
 		onLoad(e) {
 			this.currentModeIndex = e.type || 0
+			if (!e.code) {
+				return false
+			} else {
+				this.code = e.code
+			}
+
+
 		},
 		watch: {
 			currentModeIndex(value) {
@@ -203,7 +220,7 @@
 						mobile: this.mobile,
 						pwd: this.password
 					}).then((res) => {
-						this.login(res) 
+						this.login(res)
 						uni.reLaunch({
 							url: '/pages/index/index',
 							fail(e) {
@@ -236,14 +253,15 @@
 					useRes({
 						mobile: this.mobile,
 						pwd: this.password,
-						name: this.username
-					}).then((res) => { 
+						name: this.username,
+						invtNum: Number(this.code) || ''
+					}).then((res) => {
 						if (res.code == 200) {
 							uni.showToast({
 								title: '注册成功',
 								icon: 'none'
 							})
-							setTimeout(() => { 
+							setTimeout(() => {
 								this.modeSwitch(0)
 							}, 2000)
 						} else {

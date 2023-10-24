@@ -175,12 +175,24 @@
 				</tn-list-cell>
 
 				<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
-					<view class="tn-flex tn-flex-col-center" @click="openLandscape(1)">
+					<view class="tn-flex tn-flex-col-center" @click="openLandscape(2)">
 						<view
 							class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-cool-bg-color-2 tn-color-white">
 							<view class="tn-icon-iot-fill"></view>
 						</view>
 						<view class="tn-margin-left-sm tn-flex-1">赚取积分</view>
+
+						<view class="tn-margin-left-sm tn-color-red tn-icon-share-triangle"></view>
+					</view>
+				</tn-list-cell>
+
+				<tn-list-cell :hover="true" :unlined="true" :radius="true" :fontSize="30">
+					<view class="tn-flex tn-flex-col-center" @click="openLandscape(1)">
+						<view
+							class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-cool-bg-color-2 tn-color-white">
+							<view class="tn-icon-iot-fill"></view>
+						</view>
+						<view class="tn-margin-left-sm tn-flex-1">加入组织</view>
 
 						<view class="tn-margin-left-sm tn-color-red tn-icon-share-triangle"></view>
 					</view>
@@ -270,11 +282,16 @@
 			:closePosition="closePosition" :closeTop="closeTop" :closeRight="closeRight" :closeBottom="closeBottom"
 			:closeLeft="closeLeft" :mask="mask" :maskCloseable="maskCloseable" @close="closeLandscape">
 			<image v-if="type==0" src="https://oss.laf.run/nupa44-bits/payImage/wx.jpg" mode="widthFix"></image>
-			<l-painter v-else>
+			<l-painter v-if="type==1">
 				<l-painter-qrcode
 					text="https://weixin.qq.com/g/AwYAAIHeGIyEzYHibOiUh0D4U1kmtLO2fuKOFP5djMoc39J2FFFun9r2wCv1FODA"
 					css="width: 300rpx; height: 300rpx" />
 			</l-painter>
+			<l-painter v-if="type==2">
+				<l-painter-qrcode
+					:text="`https://static-mp-3d800819-db30-43b0-9df5-55f99ce30f90.next.bspapp.com/#/pages/login/login?type=1&code=${user.code}`"
+					css="width: 300rpx; height: 300rpx" />
+		    	</l-painter>
 		</tn-landscape>
 		<!-- <wx-user-info-modal v-model="showAuthorizationModal" @updated="updatedUserIn'foEvent"></wx-user-info-modal> -->
 	</view>
@@ -334,6 +351,7 @@
 			this.getBance()
 		},
 		methods: {
+			
 			getBance() {
 				getBanlace().then((res) => {
 					if (res.code == 200) {
@@ -383,19 +401,23 @@
 				})
 			},
 			// 打开压屏窗
-			openLandscape(type) { 
+			openLandscape(type) {
 				// this.show_A = true
 				if (type == 1) {
 					uni.previewImage({
-						urls: ['https://oss.laf.run/nupa44-bits/qun.jpg'], 
+						urls: ['https://oss.laf.run/nupa44-bits/qun.jpg'],
 					})
-				} else {
-					
+				} else if (type == 0) {
+
 					uni.previewImage({
-						urls: ['https://oss.laf.run/nupa44-bits/payImage/wx.jpg'], 
+						urls: ['https://oss.laf.run/nupa44-bits/payImage/wx.jpg'],
 					})
 					// this.type = type
 					// this.show_A = true
+				} else if (type == 2) {
+
+					this.type = type
+					this.show_A = true
 				}
 
 			},
