@@ -1,9 +1,15 @@
 <template>
 	<view style="text-align: center;">
+		<view v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4" class="login-sussuspension begin"
+			@click="save">
+			<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
+				:hover-stay-time="150">保存</view>
+		</view>
 		<tn-tabs :list="tabbarList" :activeColor="'#9A5CE5'" :current="currentIndex" :isScroll="true"
 			@change="tabChange"></tn-tabs>
 		<image show-menu-by-longpress v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4"
-			:src="tabbarList[currentIndex].url" mode="widthFix" style="width: 90vw;margin: 0 auto;margin-top: 20rpx;">
+			:src="tabbarList[currentIndex].url" mode="widthFix"
+			style="width: 90vw;margin: 0 auto;margin-top: 20rpx;padding-bottom: 100rpx;height: 80vh;">
 		</image>
 
 		<tn-empty v-if="currentIndex == 1||currentIndex == 2" mode="list" style="padding-top: 200rpx;"></tn-empty>
@@ -42,12 +48,6 @@
 					:hover-stay-time="150">保存</view>
 			</view>
 		</view> -->
-
-		<view v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4" class="login-sussuspension begin"
-			@click="save">
-			<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
-				:hover-stay-time="150">保存</view>
-		</view>
 		<view style="width: 100%;height: 50rpx;">
 		</view>
 	</view>
@@ -145,36 +145,94 @@
 				switch (curr) {
 
 					case 1:
+						// #ifdef H5
+						var oA = document.createElement("a");
+						oA.download = 'artImage.png';
+						oA.href = this.tabbarList[this.currentIndex].url;
+						oA.target = "_blank";
+						document.body.appendChild(oA);
+						oA.click();
+						oA.remove();
+						// #endif
+						// #ifndef H5
+						uni.saveImageToPhotosAlbum({
+							filePath: this.tabbarList[this.currentIndex].url,
+							success(res) {
+								uni.showToast({
+									title: '已保存到相册',
+									icon: 'success',
+									duration: 2000
+								});
+							},
+							fail(e) {
+								console.log(e)
+							}
+						});
+						// #endif
+						//#ifdef H5
+
+						// #endif 
 						break;
 					case 2:
+						// #ifdef H5
+						var oA = document.createElement("a");
+						oA.download = 'artImage.png';
+						oA.href = this.tabbarList[this.currentIndex].url;
+						oA.target = "_blank";
+						document.body.appendChild(oA);
+						oA.click();
+						oA.remove();
+						// #endif
+						// #ifndef H5
+						uni.saveImageToPhotosAlbum({
+							filePath: this.tabbarList[this.currentIndex].url,
+							success(res) {
+								uni.showToast({
+									title: '已保存到相册',
+									icon: 'success',
+									duration: 2000
+								});
+							},
+							fail(e) {
+								console.log(e)
+							}
+						});
+						// #endif
+						//#ifdef H5
+
+						// #endif 
 						break;
 
 					default:
-						uni.downloadFile({
-							url: this.tabbarList[curr].url, //仅为示例，并非真实的资源
-							success: (res) => { 
-								if (res.statusCode === 200) {
-									uni.showToast({
-										title: '保存成功',
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: '保存失败',
-										icon: 'none'
-									})
-								}
-							},
-							fail(e) { 
+						// #ifdef H5
+						var oA = document.createElement("a");
+						oA.download = 'artImage.png';
+						oA.href = this.tabbarList[this.currentIndex].url;
+						oA.target = "_blank";
+						document.body.appendChild(oA);
+						oA.click();
+						oA.remove();
+						// #endif
+						// #ifndef H5
+						uni.saveImageToPhotosAlbum({
+							filePath: this.tabbarList[this.currentIndex].url,
+							success(res) {
 								uni.showToast({
-									title: '保存失败',
-									icon: 'none'
-								})
+									title: '已保存到相册',
+									icon: 'success',
+									duration: 2000
+								});
+							},
+							fail(e) {
+								console.log(e)
 							}
 						});
+						// #endif
+						//#ifdef H5
+
+						// #endif 
 						break;
 				}
-
 				// this.$refs.poster.canvasToTempFilePathSync({
 				// 	fileType: 'jpg',
 				// 	quality: 1,
@@ -207,7 +265,7 @@
 				// #endif
 			},
 
-			open(e) { 
+			open(e) {
 				uni.navigateTo({
 					url: '/pages/webView/webView?url=' + e,
 				})
@@ -220,7 +278,7 @@
 				uni.showLoading({
 					title: '加载中...'
 				})
-				get60s().then((res) => { 
+				get60s().then((res) => {
 					if (!res.data) {
 						uni.hideLoading()
 						uni.showToast({
@@ -261,11 +319,18 @@
 
 	}
 
+	.login-sussuspension {
+		width: 100%;
+		position: fixed;
+		bottom: 50rpx;
+		text-align: center;
+		z-index: 999;
+	}
+
 	.login__info__item__button {
 		width: 80%;
-		margin: 0 auto;
 		background-image: repeating-linear-gradient(-45deg, #9A5CE5, #00C3FF);
-		margin-bottom: 100rpx;
+		margin: 0 auto;
 	}
 
 	.listData {

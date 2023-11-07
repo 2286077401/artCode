@@ -34,7 +34,7 @@
 			<!-- 比例图文 start-->
 			<view class="tn-flex tn-flex-wrap tn-padding-bottom">
 				<block v-for="(item, index) in content" :key="index">
-					<view class="" style="width: 50%;" @click="tn('/pages/drwPubil/detailImage',item)">
+					<view class="" style="width: 50%;" @click="tn('/pages/drwPubil/detailImage?type=1',item)">
 						<view class="tn-margin-xs img-shadow" style="border-radius: 10rpx;">
 							<view class="tn-text-bold tn-padding-sm" style="position: absolute;">
 								<text class="">Bits · Ai</text>

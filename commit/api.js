@@ -4,8 +4,7 @@ export const useRes = (data) => http.userRes('/resUser', data)
 export const login = (data) => http.userLogin('/login', data)
 export const getPrompts = () => http.get('/getPrompts')
 // export const get60s = () => http.get('/get60s')
-export const get60s = () => http.apiGet('/60s')
-// export const get60s = () => http.apiGet('/60s')
+export const get60s = () => http.apiGet('/60s') 
 export const mjSecend = (data) => http.aiPost('/midjourney/imagine?token=d10de36270394f07b4d6a87d9ff9b060', data)
 export const mjlow = (data) => http.post('/drwImage', data)
 export const mjBase = (data) => http.aiPost('/midjourney/imagine/turbo?token=824bc9d30f88481a97aeb704c1d9c977', data)
@@ -15,7 +14,9 @@ export const getCodePro = () => http.get('/getCodePro')
 export const gitDrwHistory = (data) => http.post('/gitDrwHistory', data)  
 export const getUserInfo = () => http.get('/getUserInfo')  
 
-export const wenxinChat = (data) => http.post('/wenxinChat', data)  //文星一言聊天
+export const wenxinBot2 = (data) => http.post('/wenxin/bot2', data)  //文星一言聊天
+export const wenxinBot3 = (data) => http.post('/wenxin/bot3', data)  //文星一言聊天
+export const wenxinBot4 = (data) => http.post('/wenxin/bot4', data)  //文星一言聊天
 
 export const getPubilcDrow = (data) => http.get('/getPubilcDrow', data)  //绘画画廊
 

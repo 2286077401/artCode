@@ -185,12 +185,14 @@
 </template>
 
 <script>
+	import {toBase64} from "../tool/tool.js"
 	import uaMarkdown from "@/components/ua2-markdown/ua-markdown"
 	import * as base64 from "base-64"
 	import CryptoJS from '@/commit/crypto-js/crypto-js.js'
 	import parser from '@/commit/fast-xml-parser/src/parser'
 	import * as utf8 from "utf8"
-	let convert = require('@/pagesA/tool/tool.js')
+	import signatureUtils from "@/commit/signatureUtils.js"
+	
 	export default {
 		components: {
 			uaMarkdown
@@ -220,8 +222,11 @@
 				imgBase64: "",
 			}
 		},
-		onLoad() {
-
+		onShow() { 
+			const ts = Date.now();
+			console.log(this.APPID, this.APISecret)
+			const signature = signatureUtils.generateSignature(this.APPID, this.APISecret, ts);
+			console.log('Signature:', signature);
 		},
 		watch: {
 			sparkResult(data) {
@@ -266,7 +271,7 @@
 					success: function(res) {
 						console.log(res.tempFilePaths[0])
 						that.talkImage = res.tempFilePaths[0]
-						convert.toBase64(res.tempFilePaths[0]).then((res) => {
+						 toBase64(res.tempFilePaths[0]).then((res) => {
 							that.imgBase64 = res
 							that.historyTextList.push({
 								"role": "user",

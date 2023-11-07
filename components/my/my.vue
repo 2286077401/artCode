@@ -190,7 +190,7 @@
 					<view class="tn-flex tn-flex-col-center" @click="openLandscape(1)">
 						<view
 							class="icon1__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-cool-bg-color-2 tn-color-white">
-							<view class="tn-icon-iot-fill"></view>
+							<view class="tn-icon-add-rhombus"></view>
 						</view>
 						<view class="tn-margin-left-sm tn-flex-1">加入组织</view>
 
@@ -211,7 +211,7 @@
 						<view class="tn-margin-left-sm tn-flex-1">合作勾搭</view>
 						<view
 							class="tn-margin-left-sm tn-color-orangered tn-text-sm tn-padding-left-xs tn-padding-right-xs tn-bg-orange--disabled tn-round">
-							迪迦</view>
+							兰生</view>
 					</view>
 				</tn-list-cell>
 
@@ -223,7 +223,7 @@
 							<view class="tn-margin-left-sm tn-flex-1">作者微信</view>
 							<view
 								class="tn-margin-left-sm tn-color-orangered tn-text-sm tn-padding-left-xs tn-padding-right-xs tn-bg-orange--disabled tn-round">
-								迪迦</view>
+								兰生</view>
 						</view>
 					</tn-list-cell> -->
 

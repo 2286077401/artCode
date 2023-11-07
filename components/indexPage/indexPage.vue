@@ -44,14 +44,14 @@
 					</view>
 				</view>
 				<view class="tn-flex-1 tn-padding-sm tn-margin-xs tn-radius">
-					<view @click="goto('/pagesA/textImage/textImage')"
+					<view @click="goto('/pagesA/docUnderstan/docUnderstan')"
 						class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 						<view
 							class="icon12__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-main-gradient-indigo--light tn-color-indigo">
 							<view class="tn-icon-star-fill tn-three"></view>
 						</view>
 						<view class="tn-color-black tn-text-center">
-							<text class="tn-text-ellipsis">文生图</text>
+							<text class="tn-text-ellipsis">文档理解</text>
 						</view>
 					</view>
 				</view>
@@ -127,20 +127,12 @@
 									class="tn-blogger-content__label__item tn-float-left tn-margin-right tn-bg-gray--light tn-round tn-text-sm tn-text-bold">
 									<text class="tn-blogger-content__label__item--prefix">#</text> {{ label_item }}
 								</view>
-
 							</view>
 						</view>
 					</view>
-
 				</block>
 			</view>
-
 		</view>
-
-
-
-
-
 	</view>
 </template>
 
@@ -150,13 +142,13 @@
 			return {
 
 				banner: [{
-					image: 'https://resource.tuniaokj.com/images/shop/banner2.jpg'
+					image: require('@/static/banner/wdlj.png')
 				}, {
-					image: 'https://resource.tuniaokj.com/images/shop/banner1.jpg'
+					image: require('@/static/banner/1.png')
 				}, {
-					image: 'https://resource.tuniaokj.com/images/shop/banner2.jpg'
+					image: require('@/static/banner/2.png')
 				}, {
-					image: 'https://resource.tuniaokj.com/images/shop/banner1.jpg'
+					image: require('@/static/banner/3.png')
 				}],
 				pic: [{
 					image: 'https://resource.tuniaokj.com/images/shop/prototype2.jpg'
@@ -173,7 +165,7 @@
 				}],
 				content: [{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '组件',
@@ -200,7 +192,7 @@
 					},
 					{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '组件',
@@ -227,7 +219,7 @@
 					},
 					{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '免费开源可商用组件',
@@ -254,7 +246,7 @@
 					},
 					{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '免费开源可商用组件',
@@ -281,7 +273,7 @@
 					},
 					{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '免费开源可商用组件',
@@ -308,7 +300,7 @@
 					},
 					{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '我们都是好孩子',
@@ -335,7 +327,7 @@
 					},
 					{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '免费开源可商用组件',
@@ -362,7 +354,7 @@
 					},
 					{
 						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '迪迦',
+						userName: '兰生',
 						date: '2023年12月20日',
 						label: ['开源', '创意'],
 						desc: '免费开源可商用组件',
@@ -392,9 +384,9 @@
 		},
 		methods: {
 			goto(e) {
-				if (e == '/pagesA/textImage/textImage') {
+				if (e == '/pagesA/docUnderstan/docUnderstan') {
 					uni.showToast({
-						title: '此功能将于10月24日上线',
+						title: '此功能正在开发，别着急啦~',
 						icon: 'none'
 
 					})

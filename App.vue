@@ -12,6 +12,26 @@
 		},
 		onShow: function() {
 			console.log('App Show', this.imageIsLoad)
+			const userAgent = navigator.userAgent;
+			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+				// 如果是手机端
+				console.log('在手机端打开');
+
+				// uni.closeWebView(); // 关闭浏览器
+			} else {
+				// 如果是电脑端
+				console.log('在电脑端打开');
+				uni.showToast({
+					title: '请在手机端打开',
+					icon: 'none'
+				});
+
+				setTimeout(() => {
+					uni.reLaunch({
+						url: '/pagesA/404/404'
+					})
+				}, 2000)
+			}
 		},
 		onHide: function() {
 			this.changeLoad()
@@ -45,7 +65,7 @@
 	}
 
 	page {
-		font-size: 28rpx; 
+		font-size: 28rpx;
 		// --animate-duration: 1s;
 		// --animate-delay: 1s;
 		// --animate-repeat: 1;

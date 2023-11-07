@@ -27,18 +27,16 @@
 
 
 		<view>
+			<l-painter css="width: 750rpx;height:100vh; display:flex;justify-content: center;align-items: center;"
+				@fail="fail" @done="done" pathType="url" ref="poster" performance>
+				<l-painter-image :src="itemData.image_url" css="background: #ffffff;  width: 750rpx;"></l-painter-image>
+			</l-painter>
 			<!-- 比例图文 start-->
-			<view class="tn-flex tn-flex-wra">
-				<view class="" style="width: 100%;">
-					<view class="img-shadow">
-						<view class="image-picbook">
-							<view class="image-book">
-								<image :src="itemData.image_url" style="width: 100%;" mode="widthFix"></image>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
+			<!-- <view class="tn-flex tn-flex-wra "> -->
+			<!-- object-fit: cover; height: 100%;font-size: 16rpx;font-weight: 300;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%); -->
+			<!-- <image :src="itemData.image_url" class="image-book" style="width: 100%;" mode="widthFix"></image> -->
+
+			<!-- </view> -->
 			<!-- 比例图文 end-->
 		</view>
 
@@ -57,23 +55,24 @@
 				</view>
 				<view class="">收藏</view>
 			</view>
-			<view class="action">
+
+			<view class="action" @click="save(itemData.image_url)">
 				<view class="bar-icon">
 					<view class="tn-icon-download">
 					</view>
 					<!-- <image class="" src='https://resource.tuniaokj.com/images/tabbar/k2.png'></image> -->
 				</view>
-				<view class="" @click="saveImage(itemData.image_url)">下载</view>
+				<view class="">下载</view>
+				<!-- 				<view class="" @click="saveImage(itemData.image_url)">下载</view> -->
 			</view>
-			<view class="action">
+			<!-- <view class="action" @click="save">
 				<view class="bar-icon">
 					<view class="tn-icon-flower">
 					</view>
-					<!-- <image class="" src='https://resource.tuniaokj.com/images/tabbar/i2.png'></image> -->
 				</view>
 				<view class="">海报</view>
-			</view>
-			<view class="action">
+			</view> -->
+			<view class="action" v-if="type==2">
 				<button class="tn-flex-direction-column tn-flex-row-center tn-flex-col-center tn-button--clear-style"
 					open-type="share">
 					<view class="bar-icon">
@@ -81,7 +80,18 @@
 						</view>
 						<!-- <image class="" src='https://resource.tuniaokj.com/images/tabbar/d2.png'></image> -->
 					</view>
-					<view class="">分享</view>
+					<view class="">公开</view>
+				</button>
+			</view>
+			<view class="action" v-else @click="wring">
+				<button class="tn-flex-direction-column tn-flex-row-center tn-flex-col-center tn-button--clear-style"
+					open-type="share">
+					<view class="bar-icon">
+						<view class="tn-icon-warning">
+						</view>
+						<!-- <image class="" src='https://resource.tuniaokj.com/images/tabbar/d2.png'></image> -->
+					</view>
+					<view class="">举报</view>
 				</button>
 			</view>
 		</view>
@@ -143,13 +153,174 @@
 		data() {
 			return {
 				show1: false,
-				itemData: ''
+				itemData: '',
+				type: '1',
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			console.log(e)
+			this.type = e.type
 			this.itemData = JSON.parse(uni.getStorageSync('imgData'))
 		},
 		methods: {
+			wring() {
+				uni.showToast({
+					title: '反馈成功',
+					icon: 'none'
+				})
+			},
+			save(path) {
+				// #ifdef H5
+				var oA = document.createElement("a");
+				oA.download = 'aiChat.png'; // 设置下载的文件名，默认是'下载'
+				oA.href = path; // 图片url
+				oA.target = "_blank"; // 打开在新标签页或新窗口
+				document.body.appendChild(oA);
+				oA.click();
+				oA.remove(); // 下载之后把创建的元素删除
+				// #endif
+
+				// #ifndef H5
+				this.$refs.poster.canvasToTempFilePathSync({
+					fileType: 'jpg',
+					quality: 1,
+					success: (res) => {
+						console.log(res.tempFilePath)
+						this.picture2 = res.tempFilePath
+						this.saveImage()
+					},
+					fail(e) {
+						console.log('???????????', e)
+					}
+				})
+
+				// #endif
+
+
+				// // #ifdef APP
+				// uni.showLoading({
+				// 	title: '下载中'
+				// })
+				// var self = this
+				// uni.downloadFile({
+				// 	url: e,
+				// 	success(res) {
+				// 		if (res.statusCode === 200) {
+				// 			uni.saveImageToPhotosAlbum({ //保存图片到系统相册。
+				// 				filePath: res.tempFilePath, //图片文件路径
+				// 				success: function() {
+				// 					uni.showToast({
+				// 						title: '图片保存成功',
+				// 						icon: 'none',
+				// 					});
+				// 				},
+				// 				fail: function(e) {
+				// 					uni.showToast({
+				// 						title: '图片保存失败',
+				// 						icon: 'none',
+				// 					});
+				// 				}
+				// 			});
+				// 		}
+				// 	},
+				// 	fail: (err) => {
+				// 		uni.showToast({
+				// 			title: '保存失败',
+				// 			icon: "none"
+				// 		})
+				// 	}
+				// });
+
+				// // #endif
+
+				// // #ifdef MP-WEIXIN
+				// wx.showLoading({
+				// 	title: '加载中...'
+				// });
+				// //wx.downloadFile方法：下载文件资源到本地
+				// wx.downloadFile({
+				// 	url: e, //图片地址
+				// 	success: function(res) {
+				// 		//wx.saveImageToPhotosAlbum方法：保存图片到系统相册
+				// 		wx.saveImageToPhotosAlbum({
+				// 			filePath: res.tempFilePath, //图片文件路径
+				// 			success: function(data) {
+				// 				wx.hideLoading(); //隐藏 loading 提示框
+				// 				wx.showModal({
+				// 					title: '提示',
+				// 					content: '保存成功',
+				// 					modalType: false,
+				// 				})
+				// 			},
+				// 			// 接口调用失败的回调函数
+				// 			fail: function(err) {
+				// 				if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err
+				// 					.errMsg === "saveImageToPhotosAlbum:fail auth deny" || err
+				// 					.errMsg === "saveImageToPhotosAlbum:fail authorize no response"
+				// 				) {
+				// 					wx.showModal({
+				// 						title: '提示',
+				// 						content: '需要您授权保存相册',
+				// 						modalType: false,
+				// 						success: modalSuccess => {
+				// 							wx.openSetting({
+				// 								success(settingdata) {
+				// 									if (settingdata
+				// 										.authSetting[
+				// 											'scope.writePhotosAlbum'
+				// 										]) {
+				// 										wx.showModal({
+				// 											title: '提示',
+				// 											content: '获取权限成功,再次点击按钮即可保存',
+				// 											modalType: false,
+				// 										})
+				// 									} else {
+				// 										wx.showModal({
+				// 											title: '提示',
+				// 											content: '获取权限失败，将无法保存到相册',
+				// 											modalType: false,
+				// 										})
+				// 									}
+				// 								},
+				// 								fail(failData) {
+				// 									console.log("failData",
+				// 										failData)
+				// 								},
+				// 								complete(finishData) {
+				// 									console.log("finishData",
+				// 										finishData)
+				// 								}
+				// 							})
+				// 						}
+				// 					})
+				// 				}
+				// 			},
+				// 			complete(res) {
+				// 				wx.hideLoading();
+				// 			}
+				// 		})
+				// 	}
+				// })
+				// // #endif
+			},
+			// 保存图征
+			saveImage() {
+				// #ifndef H5
+				uni.saveImageToPhotosAlbum({
+					filePath: this.picture,
+					success(res) {
+						uni.showToast({
+							title: '已保存到相册',
+							icon: 'success',
+							duration: 2000
+						});
+					},
+				});
+				// #endif
+			},
+			done(v) {
+				console.log('绘制完成:')
+			},
 			goBackIndex() {
 				uni.redirectTo({
 					url: "/pages/index/index"
@@ -177,113 +348,6 @@
 			closeLandscape() {
 				this.show1 = false
 			},
-			saveImage(e) {
-				// #ifdef APP  
-				uni.showLoading({
-					title: '下载中'
-				})
-				var self = this
-				uni.downloadFile({
-					url: e,
-					success(res) { 
-						if (res.statusCode === 200) {
-							uni.saveImageToPhotosAlbum({ //保存图片到系统相册。
-								filePath: res.tempFilePath, //图片文件路径
-								success: function() {
-									uni.showToast({
-										title: '图片保存成功',
-										icon: 'none',
-									});
-								},
-								fail: function(e) { 
-									uni.showToast({
-										title: '图片保存失败',
-										icon: 'none',
-									});
-								}
-							});
-						}
-					},
-					fail: (err) => { 
-						uni.showToast({
-							title: '保存失败',
-							icon: "none"
-						})
-					}
-				});
-
-				// #endif
-
-				// #ifdef MP-WEIXIN
-				wx.showLoading({
-					title: '加载中...'
-				});
-				//wx.downloadFile方法：下载文件资源到本地
-				wx.downloadFile({
-					url: e, //图片地址
-					success: function(res) {
-						//wx.saveImageToPhotosAlbum方法：保存图片到系统相册
-						wx.saveImageToPhotosAlbum({
-							filePath: res.tempFilePath, //图片文件路径
-							success: function(data) {
-								wx.hideLoading(); //隐藏 loading 提示框
-								wx.showModal({
-									title: '提示',
-									content: '保存成功',
-									modalType: false,
-								})
-							},
-							// 接口调用失败的回调函数
-							fail: function(err) {
-								if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err
-									.errMsg === "saveImageToPhotosAlbum:fail auth deny" || err
-									.errMsg === "saveImageToPhotosAlbum:fail authorize no response"
-								) {
-									wx.showModal({
-										title: '提示',
-										content: '需要您授权保存相册',
-										modalType: false,
-										success: modalSuccess => {
-											wx.openSetting({
-												success(settingdata) { 
-													if (settingdata
-														.authSetting[
-															'scope.writePhotosAlbum'
-														]) {
-														wx.showModal({
-															title: '提示',
-															content: '获取权限成功,再次点击按钮即可保存',
-															modalType: false,
-														})
-													} else {
-														wx.showModal({
-															title: '提示',
-															content: '获取权限失败，将无法保存到相册',
-															modalType: false,
-														})
-													}
-												},
-												fail(failData) {
-													console.log("failData",
-														failData)
-												},
-												complete(finishData) {
-													console.log("finishData",
-														finishData)
-												}
-											})
-										}
-									})
-								}
-							},
-							complete(res) {
-								wx.hideLoading();
-							}
-						})
-					}
-				})
-				// #endif
-			},
 		}
 	}
 </script>
@@ -291,7 +355,7 @@
 <style lang="scss" scoped>
 	.tn-safe-area-inset-bottom,
 	.tn-flex-wra {
-		height: 100vh;
+		// height: 100vh;
 	}
 
 	/* 胶囊*/
@@ -345,11 +409,10 @@
 		height: 100%;
 		font-size: 16rpx;
 		font-weight: 300;
-		position: relative;
-		display: flex;
-		justify-content: center;
-		justify-items: center;
-		align-items: center;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	.image-picbook {

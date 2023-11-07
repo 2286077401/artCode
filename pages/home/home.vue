@@ -1,6 +1,5 @@
 <template>
-	<view>
-		
+	<view> 
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
@@ -14,7 +13,7 @@
 				<view>而你在想我_</view>
 			</view>
 			<view class="titleNex"> by <span style="color: royalblue;font-weight: bolder;padding-left: 20rpx;">
-					Bits迪迦.</span> </view>
+					Bits兰生.</span> </view>
 			<view style="color: #c3c3c3;">
 				5LiN6KeB6bK45LiN6KeB6bm/5LiN6KeB5L2g
 			</view>
@@ -39,7 +38,7 @@
 		data() {
 			return {
 				isloin: true,
-				
+
 			}
 		},
 		onLoad() {

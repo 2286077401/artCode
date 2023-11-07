@@ -1,5 +1,18 @@
 <template>
-	<view class="">
+	<view style="padding-bottom: 100rpx;">
+		<chatRightPop ref='showPopu' @chatModelData='chatModelData' :type="'wx'"></chatRightPop>
+		<tn-nav-bar fixed customBack :backgroundColor="'#ffffff95'">
+			<view slot="back" class='tn-custom-nav-bar__back'>
+				<text class='icon tn-icon-left' @click="goBack"></text>
+				<text class='icon tn-icon-home-capsule-fill' @click="goBackIndex"></text>
+			</view>
+			<view>
+				{{title}}
+			</view>
+			<view slot="right">
+				<text class="tn-icon-align tn-padding-right" @click="changeShowPopu()"></text>
+			</view>
+		</tn-nav-bar>
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
@@ -8,7 +21,8 @@
 			:animationType="animationType" :showMask="showMask" @click="clickFabItem">
 		</tn-fab>
 
-		<view style="position: relative;padding: 0 20rpx;height: 85vh;">
+		<view style="position: relative;padding: 0 20rpx;height: 85vh;"
+			:style="{paddingTop: vuex_custom_bar_height + 'px'}">
 			<scroll-view scroll-y="true" :scroll-top="scrollTop" :style="{paddingTop:statusBarHeight}" class="scroll-Y"
 				:scroll-with-animation="true" @scroll="scroll">
 				<view class="chat-item" v-for="(item, index) in chat" :key="index">
@@ -72,8 +86,9 @@
 		<!-- 底部输入框 -->
 		<view class="input-box">
 			<!-- <text class="tn-icon-voice" style="font-size: 50rpx;font-weight:bolder;color: #767cf2;"></text> -->
-			<input :disabled="isLoading" style="flex: 1;" placeholder="请输入内容" border="surround" v-model="problem">
-			</input>
+			<textarea auto-height :disabled="isLoading" style="flex: 1;max-height: 150px;overflow-y: scroll;"
+				placeholder="请输入内容" border="surround" v-model="problem">
+			</textarea>
 			<view style="padding-right: 20rpx;">
 				<button :disabled="isLoading" style="margin: 0 auto;margin-left: 20rpx;"
 					class="login__info__item__button tn-cool-bg-color-7--reverse tn-color-white" iconColor="#ffffff"
@@ -91,7 +106,9 @@
 <script>
 	import uaMarkdown from "@/components/ua2-markdown/ua-markdown"
 	import {
-		wenxinChat
+		wenxinBot2,
+		wenxinBot3,
+		wenxinBot4,
 	} from "@/commit/api.js"
 	import {
 		data
@@ -103,6 +120,7 @@
 		},
 		data() {
 			return {
+				showPopupData: false,
 				isLoading: false,
 				chat: [],
 				openData: {
@@ -150,15 +168,15 @@
 						bgColor: '#24F083',
 					}
 				],
-				statusBarHeight: 20
+				statusBarHeight: 20,
+				title: "",
+				chatBot: '',
 			}
 		},
 		onLoad() {
 			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
 			if (uni.getStorageSync('gptType')) {
-				uni.setNavigationBarTitle({
-					title: uni.getStorageSync('gptType').templateName
-				});
+				this.title = uni.getStorageSync('gptType').templateName
 				this.chat.push({
 					type: 'text',
 					problem: uni.getStorageSync('gptType').templateName,
@@ -168,7 +186,7 @@
 					role: "user",
 					content: uni.getStorageSync('gptType').content
 				})
-				wenxinChat(this.openData).then((res) => {
+				wenxinBot2(this.openData).then((res) => {
 					this.isLoading = false
 					if (res.code == 200) {
 						// this.chat.splice(this.openData.messages.length - 1, 1);
@@ -178,7 +196,7 @@
 							type: 'text',
 							problem: "",
 							answer: this.askInfo,
-						}); 
+						});
 					} else {
 						this.openData.messages = res.data.messages
 						this.chat.push({
@@ -199,8 +217,31 @@
 		onUnload() {
 			this.isLoading = false
 			this.Audio()
-		}, 
+		},
 		methods: {
+			goBackIndex() {
+				uni.redirectTo({
+					url: "/pages/index/index"
+				})
+			},
+			goBack() {
+				uni.navigateBack()
+			},
+			chatModelData(e) {
+				console.log(e)
+				this.chatBot = e
+				
+				
+				this.openData.messages = []
+				// this.chat = [] 
+				this.$set(this, 'chat', []);
+				this.getChat()
+				this.title = '文星一言' + e
+			},
+			changeShowPopu() {
+				// changeShow
+				this.$refs.showPopu.changeShow()
+			},
 			Audio() {
 				uni.$emit('stop')
 			},
@@ -246,13 +287,7 @@
 					}
 				});
 			},
-
-
-
-
-
 			async getAnswer() {
-
 				let user = uni.getStorageSync('user');
 				this.currentAnswerIndex = this.chat.length
 				if (!this.problem) {
@@ -278,10 +313,9 @@
 				this.problem = ''
 				setTimeout(() => {
 					this.scrollTop = this.scrollTop + 1;
-				}, 100)
-				wenxinChat(this.openData).then((res) => {
-					this.isLoading = false
-
+				}, 100); 
+				(this.chatBot == 'ERNIE-Bot-turbo'?wenxinBot2(this.openData):(this.chatBot == 'ERNIE-Bot'?wenxinBot3(this.openData):wenxinBot4(this.openData))).then((res) => {
+					this.isLoading = false 
 					if (res.code == 200) {
 						this.askInfo = res.data.messages[res.data.messages.length - 1].content
 						this.openData.messages = res.data.messages
@@ -315,6 +349,50 @@
 </script>
 
 <style lang="scss" scoped>
+	/* 胶囊*/
+	.tn-custom-nav-bar__back {
+		width: 100%;
+		height: 100%;
+		position: relative;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		box-sizing: border-box;
+		background-color: rgba(0, 0, 0, 0.15);
+		border-radius: 1000rpx;
+		border: 1rpx solid rgba(255, 255, 255, 0.5);
+		color: #FFFFFF;
+		font-size: 18px;
+
+		.icon {
+			display: block;
+			flex: 1;
+			margin: auto;
+			text-align: center;
+		}
+
+		&:before {
+			content: " ";
+			width: 1rpx;
+			height: 110%;
+			position: absolute;
+			top: 22.5%;
+			left: 0;
+			right: 0;
+			margin: auto;
+			transform: scale(0.5);
+			transform-origin: 0 0;
+			pointer-events: none;
+			box-sizing: border-box;
+			opacity: 0.7;
+			background-color: #FFFFFF;
+		}
+	}
+
+	/deep/ .uni-textarea-wrapper {
+		height: 50rpx;
+	}
+
 	.login__info__item__button {
 		letter-spacing: 0;
 		text-indent: 0;
@@ -405,10 +483,9 @@
 		background-color: #67d9f5;
 	}
 
-	input {
-		height: 80rpx;
-		line-height: 80rpx;
-		padding: 10rpx;
+	/deep/ uni-textarea {
+
+		padding: 20rpx 10rpx 20rpx 10rpx;
 		background-color: white;
 		border-radius: 40rpx;
 		padding-left: 20rpx;

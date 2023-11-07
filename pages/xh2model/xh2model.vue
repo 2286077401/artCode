@@ -1,5 +1,18 @@
 <template>
 	<view style="padding-bottom: 100rpx;">
+		<chatRightPop ref='showPopu' @chatModelData='chatModelData' :type="'xh'"></chatRightPop>
+		<tn-nav-bar fixed customBack :backgroundColor="'#ffffff95'">
+			<view slot="back" class='tn-custom-nav-bar__back'>
+				<text class='icon tn-icon-left' @click="goBack"></text>
+				<text class='icon tn-icon-home-capsule-fill' @click="goBackIndex"></text>
+			</view>
+			<view>
+				{{title}}
+			</view>
+			<view slot="right">
+				<text class="tn-icon-align tn-padding-right" @click="changeShowPopu()"></text>
+			</view>
+		</tn-nav-bar>
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
@@ -7,7 +20,7 @@
 			:iconSize="iconSize" :backgroundColor="backgroundColor" :fontColor="fontColor" :icon="icon"
 			:animationType="animationType" :showMask="showMask" @click="clickFabItem">
 		</tn-fab>
-		<scroll-view :scroll-y="true" :style="{paddingTop:statusBarHeight}" class="scroll-Y"
+		<scroll-view :scroll-y="true" :style="{paddingTop: vuex_custom_bar_height + 'px'}" class="scroll-Y"
 			:scroll-with-animation="true">
 			<!-- :style="{paddingTop: vuex_custom_bar_height + 'px'}" -->
 			<view class="" v-for="(item,index) in historyTextList" :key="index">
@@ -24,11 +37,11 @@
 									<view class="tn-padding-right tn-color-black">
 										<view class="tn-padding-left-sm tn-text-bold tn-margin-top-sm"
 											style="max-width: 62vw;">
-											星火
+											<!-- 星火 -->
 										</view>
 										<view class="tn-flex tn-flex-col-center">
-											<view class="tn-bg-gray--light tn-margin-sm tn-padding-sm"
-												style="max-width: 62vw;border-radius: 0 15rpx 15rpx 15rpx;">
+											<view class="tn-bg-white tn-margin-left-sm tn-padding-sm"
+												style="max-width: 71vw;border-radius: 15rpx 15rpx 15rpx 15rpx;">
 												<ua-markdown :source="item.content || '加载中...'" :showLine="false" />
 												<text @tap="copy(item.content)" class="tn-icon-copy-fill"
 													style="width: 100%;text-align: left;"></text>
@@ -40,7 +53,6 @@
 										</view>
 
 									</view>
-
 								</view>
 							</view>
 							<view class="justify-content-item">
@@ -92,8 +104,8 @@
 								<view class="tn-flex tn-flex-col-top tn-flex-row-left">
 									<view class="tn-padding-left tn-color-black">
 										<view class="tn-padding-right tn-text-bold tn-margin-top-sm tn-text-right"
-											style="max-width: 62vw;">
-											我
+											style="max-width: 70vw;">
+											<!-- 我 -->
 										</view>
 										<view class="tn-flex tn-flex-col-center">
 											<view class="" v-if="item.conten == '发送失败'">
@@ -101,8 +113,8 @@
 												<text
 													class="tn-icon-warning-fill tn-color-purplered tn-text-xxl"></text>
 											</view>
-											<view class="tn-bg-gray--light tn-margin-sm tn-padding-sm"
-												style="max-width: 62vw;border-radius: 15rpx 0 15rpx 15rpx;">
+											<view class="tn-bg-white tn-margin-right-sm tn-padding-sm"
+												style="max-width: 71vw;border-radius: 15rpx 15rpx 15rpx 15rpx;">
 												<ua-markdown :source="item.content || '加载中...'" :showLine="false" />
 
 											</view>
@@ -122,33 +134,34 @@
 		</scroll-view>
 		<view class="tabbar footerfixed tn-bg-white">
 			<view class="tn-flex tn-flex-row-between tn-flex-col-center">
-				<view class="justify-content-item tn-margin-top" style="flex: 1;">
+				<view class="justify-content-item tn-margin-top" style="width: 70%;">
 					<view class="tn-flex tn-flex-row-center tn-flex-col-center">
 						<!-- <view class="tn-flex tn-flex-row-center tn-padding-right tn-padding-left">
 		          <text class="tn-icon-emoji-good tn-text-xxl"></text>
 		        </view> -->
-						<view class="tn-flex tn-flex-row-center tn-flex-col-center tn-padding-right tn-padding-left-sm">
+						<!-- 			<view class="tn-flex tn-flex-row-center tn-flex-col-center tn-padding-right tn-padding-left-sm">
 							<view
 								class="icon27__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-color-gray">
 								<view class="tn-icon-add-circle"></view>
-							</view>
-							<!-- <view class="icon27__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-text-shadow-orange">
+							</view> -->
+						<!-- <view class="icon27__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-text-shadow-orange">
 		            <view class="">??</view>
 		          </view> -->
-							<!-- <view class="avatar-all">
+						<!-- <view class="avatar-all">
 		            <view class="tn-shadow-blur" style="background-image:url('https://cdn.nlark.com/yuque/0/2022/jpeg/280373/1664005699053-assets/web-upload/8645ea3a-e0a9-4422-8364-cc5ede305c9f.jpeg');width: 60rpx;height: 60rpx;background-size: cover;">
 		            </view>
 		          </view> -->
-						</view>
+						<!-- </view> -->
 						<view
-							class="topic__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left "
-							style="flex: 1;">
+							class="topic__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left ">
 							<!-- <view class="topic__info__item__input__left-icon">
 		            <view class="tn-icon-emoji-good"></view>
 		          </view> -->
-							<view class="topic__info__item__input__content">
-								<input v-model="TEXT" maxlength="20" :disabled="isLoading"
-									placeholder-class="input-placeholder" placeholder="请输入内容" :cursor-spacing="18" />
+							<view class="topic__info__item__input__content" style="height: 100%;">
+								<textarea style="overflow-y: scroll;" auto-height v-model="TEXT" :disabled="isLoading"
+									maxlength="600" placeholder-class="input-placeholder" placeholder="请输入内容"
+									:cursor-spacing="18" />
+
 							</view>
 						</view>
 					</view>
@@ -187,6 +200,7 @@
 		// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
 		data() {
 			return {
+				showPopupData: false,
 				left: 'auto',
 				right: 40,
 				bottom: 300,
@@ -234,14 +248,16 @@
 				}],
 				statusBarHeight: 20,
 				firstTrigger: false,
+				title: "星火大模型",
+				chatModel: 'v2.1',
+				uid: uni.getStorageSync('userInfo')._id,
+				general: "generalv2",
 			}
 		},
 		onLoad() {
 			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
 			if (uni.getStorageSync('gptType')) {
-				uni.setNavigationBarTitle({
-					title: uni.getStorageSync('gptType').templateName
-				});
+				this.title = uni.getStorageSync('gptType').templateName + this.chatModel
 				this.TEXT = uni.getStorageSync('gptType').content
 				// this.historyTextList.push({
 				// 	"role": "user",
@@ -269,6 +285,42 @@
 			}
 		},
 		methods: {
+			chatModelData(e) {
+				this.chatModel = e
+				if (e.split('.')[0] == 'v1') {
+					this.general = 'general'
+				} else {
+					this.general = 'general' + e.split('.')[0] || 'v2'
+				}
+
+				this.historyTextList = []
+				this.getChat()
+				this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
+				if (uni.getStorageSync('gptType')) {
+					this.title = uni.getStorageSync('gptType').templateName + this.chatModel
+					this.TEXT = uni.getStorageSync('gptType').content
+					// this.historyTextList.push({
+					// 	"role": "user",
+					// 	"content": this.TEXT
+					// })
+					this.sendToSpark()
+				}
+			},
+			changeShowPopu() {
+				// changeShow
+				this.$refs.showPopu.changeShow()
+			},
+			closedPopup(e) {
+				console.log(e)
+			},
+			goBackIndex() {
+				uni.redirectTo({
+					url: "/pages/index/index"
+				})
+			},
+			goBack() {
+				uni.navigateBack()
+			},
 			getChat() {
 				this.historyTextList = [];
 			},
@@ -361,11 +413,11 @@
 					let params = {
 						"header": {
 							"app_id": this.APPID,
-							"uid": "aef9f963-7"
+							"uid": this.uid,
 						},
 						"parameter": {
 							"chat": {
-								"domain": "generalv2",
+								"domain": this.general,
 								"temperature": 0.5,
 								"max_tokens": 1024
 							}
@@ -391,12 +443,39 @@
 				// 接受到消息时
 				realThis.socketTask.onMessage((res) => {
 					let obj = JSON.parse(res.data)
+					console.log(obj)
+					if (obj.header.code == 10404) {
+						this.historyTextList.push({
+							"role": "assistant",
+							"content": obj.header.message
+						})
+						realThis.isLoading = false
+						realThis.socketTask.close({
+							success(res) {
+								console.log('关闭成功', res)
+
+							},
+							fail(err) {
+								console.log('关闭失败', err)
+							}
+						})
+						return
+					}
 					if (obj.header.code == 10013) {
 						this.historyTextList.push({
 							"role": "assistant",
 							"content": '非常抱歉，根据相关法律法规，我们无法提供关于以下内容的答案，包括但不限于：\n\t(1) 涉及国家安全的信息；\n\t(2) 涉及政治与宗教类的信息；\n\t(3) 涉及暴力与恐怖主义的信息；\n\t(4) 涉及黄赌毒类的信息；\n\t(5) 涉及不文明的信息。\n我们会继续遵循相关法规法律的要求，共创一个健康和谐网络环境，谢谢您的理解。\n'
 						})
 						realThis.isLoading = false
+						realThis.socketTask.close({
+							success(res) {
+								console.log('关闭成功', res)
+
+							},
+							fail(err) {
+								console.log('关闭失败', err)
+							}
+						})
 						return
 					}
 					let dataArray = obj.payload.choices.text;
@@ -447,13 +526,15 @@
 			// 鉴权
 			getWebSocketUrl() {
 				return new Promise((resolve, reject) => {
-					var url = "wss://spark-api.xf-yun.com/v2.1/chat";
+					var url = "wss://spark-api.xf-yun.com/" + this.chatModel + "/chat";
+					console.log(url)
 					var host = "spark-api.xf-yun.com";
 					var apiKeyName = "api_key";
 					var date = new Date().toGMTString();
 					var algorithm = "hmac-sha256";
 					var headers = "host date request-line";
-					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2.1/chat HTTP/1.1`;
+					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /${this.chatModel}/chat HTTP/1.1`;
+					console.log(signatureOrigin)
 					var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, this.APISecret);
 					var signature = CryptoJS.enc.Base64.stringify(signatureSha);
 					var authorizationOrigin =
@@ -468,6 +549,46 @@
 </script>
 
 <style scoped>
+	/* 胶囊*/
+	.tn-custom-nav-bar__back {
+		width: 100%;
+		height: 100%;
+		position: relative;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		box-sizing: border-box;
+		background-color: rgba(0, 0, 0, 0.15);
+		border-radius: 1000rpx;
+		border: 1rpx solid rgba(255, 255, 255, 0.5);
+		color: #FFFFFF;
+		font-size: 18px;
+
+		.icon {
+			display: block;
+			flex: 1;
+			margin: auto;
+			text-align: center;
+		}
+
+		&:before {
+			content: " ";
+			width: 1rpx;
+			height: 110%;
+			position: absolute;
+			top: 22.5%;
+			left: 0;
+			right: 0;
+			margin: auto;
+			transform: scale(0.5);
+			transform-origin: 0 0;
+			pointer-events: none;
+			box-sizing: border-box;
+			opacity: 0.7;
+			background-color: #FFFFFF;
+		}
+	}
+
 	/deep/.input-placeholder {
 		font-size: 30rpx;
 		color: #7C8191;
@@ -477,23 +598,27 @@
 		margin: 0;
 	}
 
+	/deep/ uni-textarea {
+		max-height: 150px;
+		width: 100%;
+	}
+
 	.login__info__item__button {
 		letter-spacing: 0;
 		text-indent: 0;
 	}
 
 	.topic__info__item__input__content {
-		width: 80%;
-		padding-top: 0px;
-		padding-left: 15px;
+		width: 100%;
+		padding: 15px;
 	}
 
 	.topic__info__item__input {
-		width: 80%;
-		height: 30px;
+		width: 100%;
+		/* height: 30px; */
 		background-color: rgba(0, 3, 72, 0.05);
 		border-radius: 5px;
-		margin-right: 40rpx;
+		margin-left: 20rpx;
 	}
 
 	/* 底部 start*/
@@ -510,7 +635,7 @@
 		align-items: center;
 		min-height: 130rpx;
 		padding: 0;
-		height: calc(130rpx + env(safe-area-inset-bottom) / 2);
+		/* height: calc(130rpx + env(safe-area-inset-bottom) / 2); */
 		padding-bottom: calc(30rpx + env(safe-area-inset-bottom) / 2);
 		padding-left: 10rpx;
 		padding-right: 10rpx;
@@ -518,8 +643,8 @@
 
 	/* 用户头像 start */
 	.logo-image {
-		width: 80rpx;
-		height: 80rpx;
+		width: 60rpx;
+		height: 60rpx;
 		position: relative;
 	}
 

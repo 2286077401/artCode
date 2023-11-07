@@ -92,7 +92,7 @@ module.exports = {
 			})
 		})
 	},
-	userRes: function(url, data) { 
+	userRes: function(url, data) {
 		url = configdata.APIHOST + url;
 		return new Promise((succ, error) => {
 			uni.request({
@@ -311,52 +311,6 @@ module.exports = {
 			})
 		})
 	},
-	vvGet: function(url, data, header) {
-		header = header || "application/x-www-form-urlencoded";
-		url = this.config("ROOTPATHVV") + url;
-		let token = uni.getStorageSync("token");
-		return new Promise((succ, error) => {
-			uni.request({
-				url: url,
-				data: data,
-				method: "GET",
-				header: {
-					"content-type": header,
-				},
-				success: function(result) {
-					if (result.data.code == '401') {
-						uni.clearStorage()
-						uni.showToast({
-							title: '登陆信息已过期,请重新登陆',
-							icon: 'none',
-							mask: true,
-							success() {
-								setTimeout(() => {
-									uni.reLaunch({
-										url: '/pages/login/login'
-									})
-								}, 1000)
-							}
-						})
-					} else if (result.data.code == '200') {
-						succ.call(self, result.data)
-					} else {
-						uni.showToast({
-							title: result.data.msg,
-							icon: 'none',
-						})
-					}
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '请求超时~',
-						icon: 'error'
-					})
-					error.call(self, e)
-				}
-			})
-		})
-	},
 	aiGet: function(url, data, header) {
 		header = header || "application/x-www-form-urlencoded";
 		url = this.config("ROOTPATHAI") + url;
@@ -403,4 +357,5 @@ module.exports = {
 			})
 		})
 	}
+
 }

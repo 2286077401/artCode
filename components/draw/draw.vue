@@ -5,7 +5,7 @@
 		<view class="titleNav">
 			<text>描述语句</text>
 			<view style="display: flex;">
-				<!-- <text @click="showProm">内置提示词</text> -->
+				<text @click="showProm">内置提示词</text>
 				<text style="margin-left: 20rpx;" @click="showPop = true">参数详情</text>
 			</view>
 		</view>
@@ -15,9 +15,10 @@
 			<view class="tetxNum">
 				<view style="color: gray;">
 					<span>{{drwData.prompt.length}}/500</span>
+					<text class="tn-icon-delete tn-padding-left-sm" @click="clear"></text>
 				</view>
 				<view style="color: gray;">
-					<span style="font-size: 22rpx;">{{randomStyle}} </span>
+					<span style="font-size: 22rpx;" @click="surerRandStyle(randomStyle)">{{randomStyle}} </span>
 					<text class="tn-icon-refresh tn-color-black" style="font-size: 30rpx;margin-left: 20rpx;"
 						@click="getRandomStyle()"></text>
 				</view>
@@ -104,8 +105,8 @@
 				<ls-loading :fontSize='30' text="绘制中,请稍后" :embed='true' :animation="'progress'"></ls-loading>
 			</view>
 			<image v-if="imageData!=''" :src="imageData.image_url" style="width: 100%;" mode="widthFix"></image>
-		 
-			<view v-if="imageData!=''" class="grid-container">
+
+			<view v-if="imageData!='' && !isSave" class="grid-container">
 				<view class="grid-item" v-for="item in 4" @click="choseImageIndex(item)">
 					<view v-if="ImageIndex==item" class="centerBox">
 						<view class='aganBtn' @click="useImage('variation'+item,'v')">精修</view>
@@ -125,9 +126,9 @@
 		</tn-popup>
 		<tn-popup v-model="showPramList" mode="center" length="80%" height="70%">
 			<tn-subsection :list="menuLisTitle" mode="button" :borderRadius="0" backgroundColor="tn-cool-bg-color-9"
-				buttonColor="tn-cool-bg-color-7" inactiveColor="#FFFFFF" activeColor="#FFFFFF"
-				@change='changeData'></tn-subsection>
-			<view class="tn-flex tn-flex-row-between tn-flex-col-center tn-padding-top-xl tn-margin">
+				buttonColor="tn-cool-bg-color-7" inactiveColor="#FFFFFF" activeColor="#FFFFFF" @change='changeData'
+				:current='navCurrent' :type="'wx'"></tn-subsection>
+			<view class="tn-flex tn-flex-row-between tn-flex-col-center tn-margin">
 				<view class="tn-flex justify-content-item">
 					<view class="tn-bg-black tn-color-white tn-text-center"
 						style="border-radius: 100rpx;margin-right: 8rpx;width: 45rpx;height: 45rpx;line-height: 45rpx;">
@@ -143,9 +144,9 @@
 			<view class="tn-margin tn-text-justify tn-padding-bottom">
 				<view v-for="(item, index) in menuChild" :key="index"
 					class="tn-tag-content__item tn-margin-right tn-round tn-text-sm tn-text-bold"
-					:class="[styleIndex==index ? `tn-bg-purplered--light tn-color-gray` : 'tn-bg-gray--light tn-color-gray--dark']"
+					:class="[item.check ? `tn-bg-purplered--light tn-color-gray` : 'tn-bg-gray--light tn-color-gray--dark']"
 					@click="handleMannerClick(index)">
-					<text class="tn-padding-right-xs tn-icon-brand"></text> {{ item.title }}
+					<text class="tn-padding-right-xs tn-icon-brand"></text>{{ item.detail }}
 				</view>
 			</view>
 		</tn-popup>
@@ -166,9 +167,7 @@
 	} from "@/commit/api.js"
 	export default {
 		computed: {
-			computed: {
-				...mapState(['imageData', "imageIsLoad"]),
-			},
+			...mapState(['imageData', "imageIsLoad"]),
 			gridItemWidth() {
 				return 100 / this.col + '%'
 			}
@@ -181,6 +180,7 @@
 				showPramList: false,
 				showPop: false,
 				choseSize: 90,
+				navCurrent: 0,
 				sizeList: [{
 						name: '头像图',
 						size: '1:1',
@@ -335,6 +335,7 @@
 				menuChild: [],
 				styleIndex: 0, //风格选择
 				randomStyle: "",
+				randKeyword: "",
 			}
 		},
 
@@ -346,11 +347,11 @@
 		mounted() {
 			this.getProList()
 			// this.getStatus()
-		}, 
+		},
 		methods: {
 			changeData(e) {
 				this.menuChild = this.menuList[e.index].list
-				console.log(this.menuChild)
+				this.navCurrent = e.index
 			},
 			getSocketResu() {
 				// let imageData = uni.getStorageSync('IMAGE_DATA')
@@ -377,6 +378,9 @@
 					}
 				})
 			},
+			clear() {
+				this.drwData.prompt = ''
+			},
 			choseSizeData(e, index) {
 				var regex = / --ar (.*)/;
 				if (!regex.test(this.drwData.prompt)) {
@@ -397,7 +401,6 @@
 				if (!uni.getStorageSync('MENU_LIST')) {
 					gitDrowproList().then((res) => {
 						if (res.code == 200) {
-							console.log(res)
 							this.menuList = res.data
 							uni.setStorageSync('MENU_LIST', res.data)
 							let randomData = this.menuList[Math.floor(Math.random() * this.menuList.length)].list;
@@ -407,16 +410,25 @@
 							this.menuList.map((res) => {
 								this.menuLisTitle.push(res.type)
 							})
+							this.menuChild = this.menuList[0].list
 						}
 					})
 				} else {
 					this.menuList = uni.getStorageSync('MENU_LIST')
+					let randomData = this.menuList[Math.floor(Math.random() * this.menuList.length)].list;
+					let data = randomData[Math.floor(Math.random() * randomData.length)]
+					this.randKeyword = data.keyword
+					this.randomStyle = data.detail + data.keyword
 					this.menuList.map((res) => {
 						this.menuLisTitle.push(res.type)
 					})
-					console.log(this.menuLisTitle)
+
+					this.menuChild = this.menuList[0].list
 				}
 
+			},
+			surerRandStyle(e) {
+				this.drwData.prompt += ' ' + this.randKeyword
 			},
 			getRandomStyle() {
 				if (this.drwData.prompt.length >= 500) {
@@ -425,8 +437,9 @@
 				} else {
 					let randomData = this.menuList[Math.floor(Math.random() * this.menuList.length)].list;
 					let data = randomData[Math.floor(Math.random() * randomData.length)]
+					this.randKeyword = data.keyword
 					this.randomStyle = data.detail + data.keyword
-					this.drwData.prompt += ' ' + data.keyword
+					// this.drwData.prompt += ' ' + data.keyword
 				}
 
 			},
@@ -502,6 +515,7 @@
 				// #endif
 			},
 			useImage(e, type) {
+
 				uni.showModal({
 					title: '提示',
 					content: type == 'v' ? '是否确认精修当前风格图？' : '是否确认放大当前图片？',
@@ -538,6 +552,14 @@
 			},
 			// 处理风格点击事件
 			handleMannerClick(index) {
+				// console.log(this.menuChild[index].keyword, this.drwData.prompt)
+
+				if (!this.menuChild[index].check) {
+					this.$set(this.menuChild[index], 'check', true);
+					this.drwData.prompt = this.drwData.prompt + ' ' + this.menuChild[index].keyword
+				} else {
+					this.$set(this.menuChild[index], 'check', false);
+				}
 				this.styleIndex = index
 			},
 			// 处理艺术家点击事件
@@ -567,22 +589,7 @@
 				this.currentIndex = 0
 				this.drwData.image_id = ''
 				this.$store.dispatch('mjImageDrw', this.drwData)
-				uni.showModal({
-					title: '提示',
-					content: '绘制开始是否前往画夹查看？',
-					cancelText: "取消", // 取消按钮的文字 
-					confirmText: "确认", // 确认按钮文字 
-					showCancel: true, // 是否显示取消按钮，默认为 true
-					confirmColor: '#999999',
-					cancelColor: '#39B54A',
-					success: (res) => {
-						if (res.confirm) {
-							uni.navigateTo({
-								url: '/pages/history/history'
-							})
-						}
-					}
-				})
+
 			},
 		},
 
@@ -590,6 +597,10 @@
 </script>
 
 <style scoped lang="scss">
+	/deep/.uni-scroll-view-content {
+		overflow-y: scroll;
+	}
+
 	.sizeBox {
 		padding: 0px 3px;
 		text-align: justify;

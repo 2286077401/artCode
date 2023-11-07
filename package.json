@@ -16,7 +16,9 @@
     },
     "dependencies": {
         "base-64": "^1.0.0",
+        "js-audio-recorder": "^1.0.7",
         "marked": "^9.1.1",
+        "recorder-core": "^1.2.23070100",
         "utf8": "^3.0.0"
     }
 }

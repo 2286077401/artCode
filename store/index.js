@@ -58,14 +58,14 @@ const store = new Vuex.Store({
 		vuex_custom_bar_height: 0
 	},
 	mutations: {
-		getImageData(){
-			
+		getImageData() {
+
 		},
-		changeimageLoad(state,data) { 
+		changeimageLoad(state, data) {
 			state.imageData = data
 			// state.codeIsLoad = false
 		},
-		changeLoad(state) { 
+		changeLoad(state) {
 			state.imageIsLoad = false
 			state.codeIsLoad = false
 		},
@@ -105,17 +105,17 @@ const store = new Vuex.Store({
 		loginStatus(state) { //判断登录状态
 			let token = uni.getStorageSync('token');
 			let data = uni.getStorageSync('userInfo');
-			let inviteUrl = window.location.href.split('?')[0] 
+			let inviteUrl = window.location.href.split('?')[0]
 		}
 	},
 	actions: {
 		codeDrw({
 			commit,
 			state
-		}, drwData) { 
+		}, drwData) {
 			state.codeIsLoad = true
 			state.codeImgData = '';
-			 
+
 			if (drwData.prompt == '' || drwData.content == '') {
 				uni.showToast({
 					title: '必填项不能为空！',
@@ -128,7 +128,7 @@ const store = new Vuex.Store({
 				icon: 'none'
 			})
 			drwData.socketId = uni.getStorageSync('SOCKET_ID')
-			arCode(drwData).then((res) => { 
+			arCode(drwData).then((res) => {
 				state.codeIsLoad = false;
 				if (!res.image_url) {
 					uni.showToast({
@@ -148,7 +148,7 @@ const store = new Vuex.Store({
 			state.imageIsLoad = true
 			state.imageData = '';
 			drwData.socketId = uni.getStorageSync('SOCKET_ID')
-			mjlow(drwData).then((res) => { 
+			mjlow(drwData).then((res) => {
 				if (res.code == 999) {
 					uni.showToast({
 						title: res.msg,
@@ -163,10 +163,9 @@ const store = new Vuex.Store({
 						title: res.msg,
 						icon: 'none'
 					})
-				} else {
+				} else { 
 					state.imageIsLoad = false;
-					// assuming you have a state for imageRes  
-					state.imageData = res.data
+					state.imageData = res.data 
 				}
 			})
 		}

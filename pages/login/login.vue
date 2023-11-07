@@ -325,8 +325,10 @@
 	}
 
 	.login__wrapper {
+		margin: 0 auto;
 		margin-top: 200rpx;
 		width: 100%;
+		max-width: 500px;
 	}
 
 	.login__mode {

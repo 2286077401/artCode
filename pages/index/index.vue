@@ -4,11 +4,11 @@
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
 		<!-- #ifdef H5 -->
-		<tn-notice-bar :list="list" :rightIcon="false" :closeBtn="true" backgroundColor="tn-main-gradient-indigo"
+		<tn-notice-bar :list="list" :show='closeNoticeShow' :rightIcon="false" :closeBtn="true" backgroundColor="tn-main-gradient-indigo"
 			@close="closeNoticeShow = false"></tn-notice-bar>
 		<!-- #endif -->
 		<!-- #ifndef H5 -->
-		<tn-notice-bar :style="{paddingTop:'44px'}" :list="list" :rightIcon="false" :closeBtn="true"
+		<tn-notice-bar :style="{paddingTop:'44px'}" :list="list" :show='closeNoticeShow' :rightIcon="false" :closeBtn="true"
 			backgroundColor="tn-main-gradient-indigo" @close="closeNoticeShow = false"></tn-notice-bar>
 		<!-- #endif -->
 
@@ -90,9 +90,9 @@
 				// tabbar当前被选中的序号
 				currentIndex: 0,
 				list: [
-					'10月24日之后将陆续开放文生图聊天功能，敬请期待',
+					'完整功能正在陆续开发，敬请期待',
 					'BitsAi 1.0.0(内测版已经上线咯) 正在有奖征集BUG',
-					'充值积分请主动联系客服微信'
+					'积分问题请主动联系客服微信'
 				],
 				closeNoticeShow: true,
 

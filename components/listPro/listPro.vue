@@ -53,7 +53,7 @@
 							</view>
 							<view class="">
 								<button class="nextBtn" @click="goto('/pages/chat/chat',item)">文心一言</button>
-								<button class="nextBtn" @click="goto('/pages/xh2model/xh2model',item)">星火大模型2.0</button>
+								<button class="nextBtn" @click="goto('/pages/xh2model/xh2model',item)">星火大模型</button>
 							</view>
 						</view>
 					</view>

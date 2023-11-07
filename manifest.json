@@ -1,5 +1,5 @@
 {
-    "name" : "bitsAi",
+    "name" : "BitsAi",
     "appid" : "__UNI__E9E27EF",
     "description" : "您的智能助手",
     "versionName" : "1.0.0",
@@ -105,5 +105,11 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "h5" : {
+        "title" : "BitsAi",
+        "devServer" : {
+            "https" : false
+        }
+    }
 }

@@ -48,8 +48,7 @@ function connectWebSocket() {
 	});
 
 	uni.onSocketError(function(error) {
-		console.error('WebSocket 错误:', error);
-
+		console.error('WebSocket 错误:', error); 
 		// 可以在这里处理连接错误的逻辑
 	});
 }
