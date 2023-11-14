@@ -116,7 +116,6 @@
 											<view class="tn-bg-white tn-margin-right-sm tn-padding-sm"
 												style="max-width: 71vw;border-radius: 15rpx 15rpx 15rpx 15rpx;">
 												<ua-markdown :source="item.content || '加载中...'" :showLine="false" />
-
 											</view>
 										</view>
 									</view>
@@ -159,9 +158,8 @@
 		          </view> -->
 							<view class="topic__info__item__input__content" style="height: 100%;">
 								<textarea style="overflow-y: scroll;" auto-height v-model="TEXT" :disabled="isLoading"
-									maxlength="600" placeholder-class="input-placeholder" placeholder="请输入内容"
-									:cursor-spacing="18" />
-
+									maxlength="-1" placeholder-class="input-placeholder" placeholder="请输入内容"
+									:cursor-spacing="18" /> 
 							</view>
 						</view>
 					</view>

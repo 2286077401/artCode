@@ -7,13 +7,13 @@
 		</view>
 		<tn-tabs :list="tabbarList" :activeColor="'#9A5CE5'" :current="currentIndex" :isScroll="true"
 			@change="tabChange"></tn-tabs>
-		<image show-menu-by-longpress v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4"
+		<!-- 		<image show-menu-by-longpress v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4"
 			:src="tabbarList[currentIndex].url" mode="widthFix"
 			style="width: 90vw;margin: 0 auto;margin-top: 20rpx;padding-bottom: 100rpx;height: 80vh;">
-		</image>
+		</image> -->
 
-		<tn-empty v-if="currentIndex == 1||currentIndex == 2" mode="list" style="padding-top: 200rpx;"></tn-empty>
-		<!-- <view v-if="currentIndex == 0" style="margin-top: 20rpx;">
+		<!-- <tn-empty v-if="currentIndex == 1||currentIndex == 2" mode="list" style="padding-top: 200rpx;"></tn-empty> -->
+		<view v-if="currentIndex == 0 || currentIndex == 1 || currentIndex == 2" style="margin-top: 20rpx;">
 			<view v-if="droImg" style="width:630rpx;margin: 0 auto;border: 1rpx solid #ebebeb;">
 				<l-painter css="width:630rpx;" :after-delay='100' @fail="fail" @done="done" pathType="url" ref="poster"
 					performance>
@@ -34,10 +34,10 @@
 						</l-painter-text>
 					</l-painter-view>
 					<l-painter-view css='width: 630rpx;margin: 0 auto;margin-top: 20rpx;'>
-						<l-painter-text v-for="(item,index) in chinanData.news" :key="index" :text="item"
+						<l-painter-text v-for="(item,index) in chinanData" :key="index" :text="index+1 +'，'+item.title"
 							css="margin: 0 auto;margin-bottom:20rpx;width: 610rpx;text-align: justify;">
 						</l-painter-text>
-						<l-painter-text :text="chinanData.weiyu"
+						<l-painter-text text=""
 							css="color:#eb6430;margin: 0 auto;margin-bottom:20rpx;width: 610rpx;text-align: justify;">
 						</l-painter-text>
 					</l-painter-view>
@@ -47,18 +47,21 @@
 				<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
 					:hover-stay-time="150">保存</view>
 			</view>
-		</view> -->
+		</view>
 		<view style="width: 100%;height: 50rpx;">
 		</view>
 	</view>
 </template>
 
 <script>
+	// https://api.songzixian.com/api/daily-word?dataSource=LOCAL_DAILY_WORD 每日一言
 	// new Date().toLocaleString('zh-CN-u-ca-chinese').replace(/(\d+)\s*?年/, (_,y)=>"甲乙丙丁戊己庚辛壬癸".charAt((y-4)%10)+ "子丑寅卯辰巳午未申酉戌亥".charAt((y-4)%12))
 	// new Date().toLocaleString('ja-JP-u-ca-chinese')
 	import cache from "@/commit/cache.js"
 	import {
-		get60s
+		get60s,
+		weibo60s,
+		douyin60s
 	} from "@/commit/api.js"
 	export default {
 		data() {
@@ -128,6 +131,7 @@
 				this.get60data()
 			} else {
 				this.chinanData = uni.getStorageSync('NEWDATA')
+				console.log(this.chinanData)
 				this.droImg = true
 			}
 
@@ -272,21 +276,20 @@
 			},
 			tabChange(index) {
 				this.currentIndex = index
+				if (index == 0 || index == 1 || index == 2) {
+					this.get60data()
+				}
 
 			},
 			get60data() {
-				uni.showLoading({
-					title: '加载中...'
-				})
-				get60s().then((res) => {
-					if (!res.data) {
+				this.currentIndex == 0 ? get60s() : (this.currentIndex == 1 ? weibo60s() : douyin60s()).then((res) => {
+					if (res.code != 200) {
 						uni.hideLoading()
 						uni.showToast({
 							title: '服务器被挤爆啦！',
 							icon: 'none'
 						})
 					} else {
-						uni.hideLoading()
 						uni.setStorageSync('NEWDATA', res.data)
 						this.chinanData = res.data
 						this.droImg = true

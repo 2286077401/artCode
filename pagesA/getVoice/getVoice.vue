@@ -3,7 +3,6 @@
 		<view class="status">{{ btnStatus }}</view>
 		<view class="button" @click="toggleRecording">{{ buttonLabel }}</view>
 		<view class="result">{{ resultText }}</view>
-		<button type="default" @click="play">12121</button>
 	</view>
 </template>
 
@@ -63,6 +62,7 @@
 				}
 				rec.stop(function(blob, duration) {
 					console.log('录音结束')
+					clearInterval(This.countdownInterval);
 					// var reader = new FileReader();
 					// reader.addEventListener("load", function() {
 					// 	console.log(reader)
@@ -91,6 +91,7 @@
 						clearInterval(that.countdownInterval);
 						that.buttonLabel = "开始录音";
 						that.btnStatus = 'CLOSED';
+						that.changeBtnStatus("CLOSED");
 						that.h5btn_sub_stop()
 					} else {
 						that.buttonLabel = `录音中（${seconds}s）`;
@@ -112,6 +113,7 @@
 				}
 			},
 			renderResult(resultData) {
+				console.log(resultData)
 				// 请实现结果渲染逻辑
 			},
 
@@ -143,23 +145,24 @@
 								status: 0,
 								format: "audio/L16;rate=16000",
 								encoding: "raw",
-							}
+							},
 						};
 
 						that.iatWS.send(JSON.stringify(params))
-
-						that.iatWS.onMessage((e) => {
-							let obj = JSON.parse(e.data);
-							that.recorder.stop();
-							console.log('接收到消息', obj);
-							that.renderResult(e.data);
-						});
 					});
-
+					that.iatWS.onMessage((e) => {
+						let obj = JSON.parse(e.data);
+						// that.recorder.stop();
+						console.log('接收到消息', obj);
+						that.renderResult(e.data);
+					});
 					that.iatWS.onError((e) => {
-						console.log(e);
-						that.recorder.stop();
+						clearInterval(that.countdownInterval);
+						that.buttonLabel = "开始录音";
+						that.btnStatus = 'CLOSED';
 						that.changeBtnStatus("CLOSED");
+						that.h5btn_sub_stop()
+
 					});
 				})
 
@@ -171,14 +174,36 @@
 			},
 			toggleRecording() {
 				let that = this
+				let chunkSize = 0;
 				if (that.btnStatus === "UNDEFINED" || that.btnStatus === "CLOSED") {
 					that.recorder = new Recorder({
 						type: 'mp3',
 						bitRate: 16,
 						sampleRate: 16000,
 						onProcess: function(buffers, powerLevel, duration, sampleRate) {
-							that.duration = duration;
-							that.powerLevel = powerLevel;
+							chunkSize += 1280
+							const audioData = new Int16Array(buffers[0]);
+							const chunk = audioData.subarray(chunkSize, audioData.length);
+							const audioDataEncoded = that.customBase64Encode(chunk);
+							console.log(audioDataEncoded);
+							// for (let i = 0; i < audioData.length; i++) {
+							// 	console.log(chunkSize, audioData.length)
+							// 	const chunk = audioData.subarray(chunkSize, audioData.length);
+							// 	// 使用自定义的base64编码函数  
+							// 	const audioDataEncoded = that.customBase64Encode(chunk);
+							// 	// console.log(audioDataEncoded);
+							// 	chunkSize += 1280
+							// 	// // 发送音频数据块  
+							// 	// that.sendAudioChunk({  
+							// 	//     data: {  
+							// 	//         status: isLast ? 2 : 1,  
+							// 	//         format: "audio/L16;rate=16000",  
+							// 	//         encoding: "raw",  
+							// 	//         audio: audioDataEncoded,  
+							// 	//     },  
+							// 	// });  
+							// }
+
 						}
 					});
 					that.recorder.open(function() {
@@ -194,13 +219,49 @@
 					};
 
 				} else if (that.btnStatus === "CONNECTING" || that.btnStatus === "OPEN") {
-					console.log('=====')
+					clearInterval(that.countdownInterval);
+					that.buttonLabel = "开始录音";
+					that.btnStatus = 'CLOSED';
+					that.changeBtnStatus("CLOSED");
 					that.h5btn_sub_stop()
 					// that.recorder.onStop = () => {
 					// 	clearInterval(countdownInterval);
 					// };
 				}
 			},
+			// 自定义base64编码函数
+			customBase64Encode(arrayBuffer) {
+				const bytes = new Uint8Array(arrayBuffer);
+				let base64 = '';
+				const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+				let padding = 0;
+				let buffer = 0;
+				for (let i = 0; i < bytes.length; i++) {
+					buffer = (buffer << 8) | bytes[i];
+					padding += 8;
+					while (padding >= 6) {
+						const index = (buffer >> (padding - 6)) & 0x3F;
+						base64 += characters[index];
+						padding -= 6;
+					}
+				}
+				if (padding > 0) {
+					base64 += characters[(buffer << (6 - padding)) & 0x3F];
+					while (padding > 2) {
+						base64 += '=';
+						padding -= 6;
+					}
+				}
+				return base64;
+			},
+			// 发送音频数据
+			sendAudioChunk(audioChunk) {
+				console.log("audioChunk", audioChunk)
+				if (this.iatWS && this.iatWS.readyState === WebSocket.OPEN) {
+					this.iatWS.send(JSON.stringify(audioChunk));
+				}
+			},
+
 		}
 	}
 </script>

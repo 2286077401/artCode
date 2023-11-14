@@ -95,7 +95,7 @@
 			<!-- 比例 end-->
 
 			<!-- 图文 -->
-			<view class="tn-flex tn-flex-direction-column">
+			<!-- <view class="tn-flex tn-flex-direction-column">
 
 				<block v-for="(item,index) in content" :key="index">
 					<view class="tn-blogger-content__wrap">
@@ -131,7 +131,7 @@
 						</view>
 					</view>
 				</block>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -163,223 +163,223 @@
 				}, {
 					image: 'https://resource.tuniaokj.com/images/shop/bag2.jpg'
 				}],
-				content: [{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '组件',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/prototype2.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 999,
-						commentCount: 999,
-						likeCount: 999
-					},
-					{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '组件',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/prototype1.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 265,
-						commentCount: 22,
-						likeCount: 62
-					},
-					{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '免费开源可商用组件',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/computer2.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 265,
-						commentCount: 22,
-						likeCount: 62
-					},
-					{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '免费开源可商用组件',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/phonecase1.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 265,
-						commentCount: 22,
-						likeCount: 62
-					},
-					{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '免费开源可商用组件',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/phonecase2.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 265,
-						commentCount: 22,
-						likeCount: 62
-					},
-					{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '我们都是好孩子',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/watch1.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 265,
-						commentCount: 22,
-						likeCount: 62
-					},
-					{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '免费开源可商用组件',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/sticker.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 265,
-						commentCount: 22,
-						likeCount: 62
-					},
-					{
-						userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
-						userName: '兰生',
-						date: '2023年12月20日',
-						label: ['开源', '创意'],
-						desc: '免费开源可商用组件',
-						mainImage: 'https://resource.tuniaokj.com/images/shop/card.jpg',
-						viewUser: {
-							latestUserAvatar: [{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
-								},
-								{
-									src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
-								},
-							],
-							viewUserCount: 129
-						},
-						collectionCount: 265,
-						commentCount: 22,
-						likeCount: 62
-					}
-				]
+				// content: [{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '组件',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/prototype2.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 999,
+				// 		commentCount: 999,
+				// 		likeCount: 999
+				// 	},
+				// 	{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '组件',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/prototype1.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 265,
+				// 		commentCount: 22,
+				// 		likeCount: 62
+				// 	},
+				// 	{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '免费开源可商用组件',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/computer2.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 265,
+				// 		commentCount: 22,
+				// 		likeCount: 62
+				// 	},
+				// 	{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '免费开源可商用组件',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/phonecase1.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 265,
+				// 		commentCount: 22,
+				// 		likeCount: 62
+				// 	},
+				// 	{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '免费开源可商用组件',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/phonecase2.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 265,
+				// 		commentCount: 22,
+				// 		likeCount: 62
+				// 	},
+				// 	{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '我们都是好孩子',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/watch1.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 265,
+				// 		commentCount: 22,
+				// 		likeCount: 62
+				// 	},
+				// 	{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '免费开源可商用组件',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/sticker.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 265,
+				// 		commentCount: 22,
+				// 		likeCount: 62
+				// 	},
+				// 	{
+				// 		userAvatar: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg',
+				// 		userName: '兰生',
+				// 		date: '2023年12月20日',
+				// 		label: ['开源', '创意'],
+				// 		desc: '免费开源可商用组件',
+				// 		mainImage: 'https://resource.tuniaokj.com/images/shop/card.jpg',
+				// 		viewUser: {
+				// 			latestUserAvatar: [{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_1.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_2.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_3.jpeg'
+				// 				},
+				// 				{
+				// 					src: 'https://resource.tuniaokj.com/images/blogger/avatar_4.jpeg'
+				// 				},
+				// 			],
+				// 			viewUserCount: 129
+				// 		},
+				// 		collectionCount: 265,
+				// 		commentCount: 22,
+				// 		likeCount: 62
+				// 	}
+				// ]
 			}
 		},
 		methods: {
