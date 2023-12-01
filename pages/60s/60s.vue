@@ -11,14 +11,15 @@
 			:src="tabbarList[currentIndex].url" mode="widthFix"
 			style="width: 90vw;margin: 0 auto;margin-top: 20rpx;padding-bottom: 100rpx;height: 80vh;">
 		</image> -->
-
 		<!-- <tn-empty v-if="currentIndex == 1||currentIndex == 2" mode="list" style="padding-top: 200rpx;"></tn-empty> -->
-		<view v-if="currentIndex == 0 || currentIndex == 1 || currentIndex == 2" style="margin-top: 20rpx;">
+		<!-- https://api.vvhan.com/api/moyu -->
+		<view style="margin-top: 20rpx;">
 			<view v-if="droImg" style="width:630rpx;margin: 0 auto;border: 1rpx solid #ebebeb;">
-				<l-painter css="width:630rpx;" :after-delay='100' @fail="fail" @done="done" pathType="url" ref="poster"
-					performance>
+				<l-painter v-if="currentIndex == 0 || currentIndex == 1 || currentIndex == 2"
+					css="width:630rpx;height:100%" :after-delay='100' @fail="fail" @done="done" pathType="url"
+					ref="poster" performance>
 					<l-painter-view css="width: 630rpx;height:300rpx;background:#eb6430">
-						<l-painter-text text="60S读懂世界"
+						<l-painter-text :text="pageTitle"
 							css='width:300rpx;font-size: 50rpx;font-weight: bolder;color: white;line-height: 300rpx;text-align: center;margin: 0 auto;'></l-painter-text>
 					</l-painter-view>
 					<l-painter-view
@@ -34,7 +35,8 @@
 						</l-painter-text>
 					</l-painter-view>
 					<l-painter-view css='width: 630rpx;margin: 0 auto;margin-top: 20rpx;'>
-						<l-painter-text v-for="(item,index) in chinanData" :key="index" :text="index+1 +'，'+item.title"
+						<l-painter-text v-for="(item,index) in chinanData" :key="index"
+							:text="index+ 1 +'，'+ item.title"
 							css="margin: 0 auto;margin-bottom:20rpx;width: 610rpx;text-align: justify;">
 						</l-painter-text>
 						<l-painter-text text=""
@@ -42,6 +44,13 @@
 						</l-painter-text>
 					</l-painter-view>
 				</l-painter>
+
+				<l-painter v-else css="width:630rpx;" :after-delay='100' @fail="fail" @done="done" pathType="url"
+					ref="poster" performance>
+					<l-painter-image src="https://api.vvhan.com/api/moyu"
+						css="width: 100%; height:100%; object-fit: fill; "></l-painter-image>
+				</l-painter>
+
 			</view>
 			<view class="login-sussuspension begin" @click="save">
 				<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
@@ -66,6 +75,7 @@
 	export default {
 		data() {
 			return {
+				pageTitle: '60S读懂世界',
 				picture: '',
 				droImg: false,
 				currentIndex: 0,
@@ -102,16 +112,17 @@
 						out: true,
 						url: 'https://api.vvhan.com/api/hotlist?type=douyinHot'
 					},
+					// {
+					// 	name: '职场日历',
+					// 	activeIcon: 'honor',
+					// 	inactiveIcon: 'honor',
+					// 	activeIconColor: '#FFFFFF',
+					// 	inactiveIconColor: '#FFFFFF',
+					// 	iconSize: 50,
+					// 	out: true,
+					// 	url: 'https://api.vvhan.com/api/zhichang'
+					// }, 
 					{
-						name: '职场日历',
-						activeIcon: 'honor',
-						inactiveIcon: 'honor',
-						activeIconColor: '#FFFFFF',
-						inactiveIconColor: '#FFFFFF',
-						iconSize: 50,
-						out: true,
-						url: 'https://api.vvhan.com/api/zhichang'
-					}, {
 						name: '摸鱼日历',
 						activeIcon: 'honor',
 						inactiveIcon: 'honor',
@@ -137,7 +148,21 @@
 
 		},
 		methods: {
-
+			get60Data() {
+				get60s().then((res) => {
+					if (res.code != 200) {
+						uni.hideLoading()
+						uni.showToast({
+							title: '服务器被挤爆啦！',
+							icon: 'none'
+						})
+					} else {
+						uni.setStorageSync('NEWDATA', res.data)
+						this.chinanData = res.data
+						this.droImg = true
+					}
+				})
+			},
 			fail(v) {
 				console.log(v)
 			},
@@ -147,7 +172,6 @@
 			save() {
 				let curr = this.currentIndex
 				switch (curr) {
-
 					case 1:
 						// #ifdef H5
 						var oA = document.createElement("a");
@@ -276,13 +300,18 @@
 			},
 			tabChange(index) {
 				this.currentIndex = index
+
 				if (index == 0 || index == 1 || index == 2) {
 					this.get60data()
 				}
+				index == 0 ? this.pageTitle = '60S读懂世界' : (index == 1 ? this.pageTitle = '微博热榜' : this.pageTitle =
+					'抖音实时热榜')
 
 			},
 			get60data() {
-				this.currentIndex == 0 ? get60s() : (this.currentIndex == 1 ? weibo60s() : douyin60s()).then((res) => {
+				this.currentIndex == 0 ? this.get60Data() : (this.currentIndex == 1 ? weibo60s() : douyin60s()).then((
+					res) => {
+					console.log(res)
 					if (res.code != 200) {
 						uni.hideLoading()
 						uni.showToast({
