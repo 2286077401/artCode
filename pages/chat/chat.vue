@@ -227,8 +227,7 @@
 			goBack() {
 				uni.navigateBack()
 			},
-			chatModelData(e) {
-				console.log(e)
+			chatModelData(e) { 
 				this.chatBot = e
 				
 				

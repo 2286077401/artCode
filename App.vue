@@ -1,21 +1,35 @@
 <script>
 	import {
+		getKeyData
+	} from "@/commit/api.js"
+	import {
 		mapMutations
 	} from 'vuex';
+
 	export default {
 		methods: {
 			...mapMutations(['changeLoad']),
+			getKeyDataList() {
+				getKeyData().then((res) => {
+					console.log(res)
+					if (res.code == 200) {
+						uni.setStorageSync('KEY_LIST', res.data)
+					}
+				})
+			}
 		},
 		onLaunch: function() {
 			console.log('App Launch')
 			this.$socket.connectWebSocket()
 		},
 		onShow: function() {
-			console.log('App Show', this.imageIsLoad)
 			const userAgent = navigator.userAgent;
 			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
 				// 如果是手机端
 				console.log('在手机端打开');
+				if (!uni.getStorageSync('KEY_LIST')) {
+					this.getKeyDataList()
+				}
 
 				// uni.closeWebView(); // 关闭浏览器
 			} else {

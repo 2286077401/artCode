@@ -14,6 +14,9 @@
 	import CryptoJS from '@/commit/crypto-js/crypto-js.js'
 	import parser from '@/commit/fast-xml-parser/src/parser'
 	import * as utf8 from "utf8"
+	import {
+		swapCharacters
+	} from "@/commit/tool.js"
 	export default {
 		data() {
 			return {
@@ -34,8 +37,8 @@
 				return new Promise((resolve, reject) => {
 					var url = "wss://iat-api.xfyun.cn/v2/iat";
 					var host = "iat-api.xfyun.cn";
-					var apiKey = 'dc335c4380bcabb37503a8c40ca68d1c';
-					var apiSecret = 'YWE0Yzk2ZTZhNWVlMWQ1OTBhYjRmNDI4';
+					var apiKey = swapCharacters(uni.getStorageSync('KEY_LIST').apiKey);
+					var apiSecret = swapCharacters(uni.getStorageSync('KEY_LIST').secret);
 					var date = new Date().toGMTString();
 					var algorithm = "hmac-sha256";
 					var headers = "host date request-line";

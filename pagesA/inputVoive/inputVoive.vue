@@ -6,6 +6,9 @@
 </template>
 
 <script>
+	import {
+		swapCharacters
+	} from "@/commit/tool.js"
 	export default {
 		data() {
 			return {
@@ -18,20 +21,18 @@
 				return new Promise((resolve, reject) => {
 					var url = "wss://iat-api.xfyun.cn/v2/iat";
 					var host = "iat-api.xfyun.cn";
-					var apiKey = 'dc335c4380bcabb37503a8c40ca68d1c';
-					var apiSecret = 'YWE0Yzk2ZTZhNWVlMWQ1OTBhYjRmNDI4';
+					var apiKey = swapCharacters(uni.getStorageSync('KEY_LIST').apiKey);
+					var apiSecret = swapCharacters(uni.getStorageSync('KEY_LIST').secret);
 					var date = new Date().toGMTString();
 					var algorithm = "hmac-sha256";
 					var headers = "host date request-line";
 					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2/iat HTTP/1.1`;
 					var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret);
 					var signature = CryptoJS.enc.Base64.stringify(signatureSha);
-					console.log(signature)
 					var authorizationOrigin =
 						`api_key="${apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
 					var authorization = btoa(authorizationOrigin);
 					url = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
-					console.log(url)
 					resolve(url);
 				});
 			},

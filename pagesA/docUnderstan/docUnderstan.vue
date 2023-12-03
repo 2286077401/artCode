@@ -7,14 +7,19 @@
 
 <script>
 	import signatureUtils from "@/commit/signatureUtils.js"
-
+	import {
+		toBase64
+	} from "../tool/tool.js"
+	import {
+		swapCharacters
+	} from "@/commit/tool.js"
 	import betsUrl from '@/commit/config.js'
 	export default {
 		data() {
 			return {
 				APPID: '4ae5ca01', // 控制台获取填写
-				APISecret: 'YWE0Yzk2ZTZhNWVlMWQ1OTBhYjRmNDI4',
-				// APIKey: 'dc335c4380bcabb37503a8c40ca68d1c',
+				APISecret: swapCharacters(uni.getStorageSync('KEY_LIST').secret),
+				APIKey: swapCharacters(uni.getStorageSync('KEY_LIST').apiKey),
 				signaStr: ''
 			}
 		},

@@ -100,6 +100,9 @@
 	import {
 		data
 	} from "../../tuniao-ui/libs/mixin/components_color";
+	import {
+		swapCharacters
+	} from "@/commit/tool.js"
 	export default {
 		name: 'TemplateLoading',
 		components: {
@@ -108,8 +111,8 @@
 		data() {
 			return {
 				APPID: '4ae5ca01', // 控制台获取填写
-				APISecret: 'YWE0Yzk2ZTZhNWVlMWQ1OTBhYjRmNDI4',
-				APIKey: 'dc335c4380bcabb37503a8c40ca68d1c',
+				APISecret: swapCharacters(uni.getStorageSync('KEY_LIST').secret),
+				APIKey: swapCharacters(uni.getStorageSync('KEY_LIST').apiKey),
 				isLoading: false,
 				chat: [],
 				openData: {
@@ -274,14 +277,13 @@
 				}, 100)
 				uni.request({
 					url: myUrl,
-					data:JSON.stringify(this.openData),
+					data: JSON.stringify(this.openData),
 					method: "GET",
 					header: {
 						"content-type": "application/json;charset=UTF-8",
 						"app_id": "4ae5ca01"
 					},
 					success: function(result) {
-						console.log(result)
 						this.isLoading = false
 						if (res.code == 200) {
 							this.askInfo = res.data.messages[res.data.messages.length - 1].content

@@ -15,4 +15,7 @@ function generateSignature() {
 }
 
 // 导出 generateSignature 函数
-module.exports = generateSignature;
+
+export {
+	generateSignature
+}

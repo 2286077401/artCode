@@ -159,7 +159,7 @@
 							<view class="topic__info__item__input__content" style="height: 100%;">
 								<textarea style="overflow-y: scroll;" auto-height v-model="TEXT" :disabled="isLoading"
 									maxlength="-1" placeholder-class="input-placeholder" placeholder="请输入内容"
-									:cursor-spacing="18" /> 
+									:cursor-spacing="18" />
 							</view>
 						</view>
 					</view>
@@ -190,6 +190,9 @@
 	import CryptoJS from '@/commit/crypto-js/crypto-js.js'
 	import parser from '@/commit/fast-xml-parser/src/parser'
 	import * as utf8 from "utf8"
+	import {
+		swapCharacters
+	} from "@/commit/tool.js"
 	export default {
 		components: {
 			uaMarkdown
@@ -232,8 +235,8 @@
 				isLoading: false,
 				TEXT: '',
 				APPID: '4ae5ca01', // 控制台获取填写
-				APISecret: 'YWE0Yzk2ZTZhNWVlMWQ1OTBhYjRmNDI4',
-				APIKey: 'dc335c4380bcabb37503a8c40ca68d1c',
+				APISecret: swapCharacters(uni.getStorageSync('KEY_LIST').secret),
+				APIKey: swapCharacters(uni.getStorageSync('KEY_LIST').apiKey),
 				sparkResult: '',
 				historyTextList: [], // 历史会话信息，由于最大token12000,可以结合实际使用，进行移出
 				tempRes: '', // 临时答复保存
@@ -441,7 +444,6 @@
 				// 接受到消息时
 				realThis.socketTask.onMessage((res) => {
 					let obj = JSON.parse(res.data)
-					console.log(obj)
 					if (obj.header.code == 10404) {
 						this.historyTextList.push({
 							"role": "assistant",
@@ -525,14 +527,12 @@
 			getWebSocketUrl() {
 				return new Promise((resolve, reject) => {
 					var url = "wss://spark-api.xf-yun.com/" + this.chatModel + "/chat";
-					console.log(url)
 					var host = "spark-api.xf-yun.com";
 					var apiKeyName = "api_key";
 					var date = new Date().toGMTString();
 					var algorithm = "hmac-sha256";
 					var headers = "host date request-line";
 					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /${this.chatModel}/chat HTTP/1.1`;
-					console.log(signatureOrigin)
 					var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, this.APISecret);
 					var signature = CryptoJS.enc.Base64.stringify(signatureSha);
 					var authorizationOrigin =

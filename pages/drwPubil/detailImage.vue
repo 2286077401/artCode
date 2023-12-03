@@ -157,8 +157,7 @@
 				type: '1',
 			}
 		},
-		onLoad(e) {
-			console.log(e)
+		onLoad(e) { 
 			this.type = e.type
 			this.itemData = JSON.parse(uni.getStorageSync('imgData'))
 		},
@@ -184,8 +183,7 @@
 				this.$refs.poster.canvasToTempFilePathSync({
 					fileType: 'jpg',
 					quality: 1,
-					success: (res) => {
-						console.log(res.tempFilePath)
+					success: (res) => { 
 						this.picture2 = res.tempFilePath
 						this.saveImage()
 					},

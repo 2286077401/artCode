@@ -1,10 +1,10 @@
 <template>
 	<view style="text-align: center;">
-		<view v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4" class="login-sussuspension begin"
+		<!-- 		<view v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4" class="login-sussuspension begin"
 			@click="save">
 			<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
 				:hover-stay-time="150">保存</view>
-		</view>
+		</view> -->
 		<tn-tabs :list="tabbarList" :activeColor="'#9A5CE5'" :current="currentIndex" :isScroll="true"
 			@change="tabChange"></tn-tabs>
 		<!-- 		<image show-menu-by-longpress v-if="currentIndex == 0||currentIndex == 3 || currentIndex == 4"
@@ -14,7 +14,8 @@
 		<!-- <tn-empty v-if="currentIndex == 1||currentIndex == 2" mode="list" style="padding-top: 200rpx;"></tn-empty> -->
 		<!-- https://api.vvhan.com/api/moyu -->
 		<view style="margin-top: 20rpx;">
-			<view v-if="droImg" style="width:630rpx;margin: 0 auto;border: 1rpx solid #ebebeb;">
+			<view v-if="droImg" style="width:630rpx;margin: 0 auto;border: 1rpx solid #ebebeb;padding-bottom: 40rpx;"
+				class="canvas-module" id="pagePoster">
 				<l-painter v-if="currentIndex == 0 || currentIndex == 1 || currentIndex == 2"
 					css="width:630rpx;height:100%" :after-delay='100' @fail="fail" @done="done" pathType="url"
 					ref="poster" performance>
@@ -52,7 +53,8 @@
 				</l-painter>
 
 			</view>
-			<view class="login-sussuspension begin" @click="save">
+			<view class="login-sussuspension begin" @click="canvas.createPoster">
+				<!-- 			<view class="login-sussuspension begin" @click="save"> -->
 				<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
 					:hover-stay-time="150">保存</view>
 			</view>
@@ -67,6 +69,7 @@
 	// new Date().toLocaleString('zh-CN-u-ca-chinese').replace(/(\d+)\s*?年/, (_,y)=>"甲乙丙丁戊己庚辛壬癸".charAt((y-4)%10)+ "子丑寅卯辰巳午未申酉戌亥".charAt((y-4)%12))
 	// new Date().toLocaleString('ja-JP-u-ca-chinese')
 	import cache from "@/commit/cache.js"
+	let base64src = require('@/commit/tool.js')
 	import {
 		get60s,
 		weibo60s,
@@ -75,6 +78,7 @@
 	export default {
 		data() {
 			return {
+				posterImg: "",
 				pageTitle: '60S读懂世界',
 				picture: '',
 				droImg: false,
@@ -142,12 +146,17 @@
 				this.get60data()
 			} else {
 				this.chinanData = uni.getStorageSync('NEWDATA')
-				console.log(this.chinanData)
 				this.droImg = true
 			}
 
 		},
 		methods: {
+			creates(option) {
+				base64src.base64Tosrc(option.posterImg, this.pageTitle)
+			},
+			goTodetail() {
+				console.log('==')
+			},
 			get60Data() {
 				get60s().then((res) => {
 					if (res.code != 200) {
@@ -326,6 +335,42 @@
 				})
 			}
 		}
+	}
+</script>
+
+<script module="canvas" lang="renderjs">
+	import html2canvas from "@/commit/html2canvas.js"
+	export default {
+		data() {
+			return {}
+		},
+		methods: {
+			createPoster(event, ownerInstance) {
+				console.log(event, ownerInstance)
+				// 生成海报  
+				const domObj = document.getElementById("pagePoster");
+				html2canvas(domObj, {
+					useCORS: true,
+					logging: false,
+					letterRendering: true,
+					proxy: "http://oss.licai521.com/",
+					allowTaint: true,
+					onclone(doc) {
+						let e = doc.querySelector("#pagePoster");
+						// e.style.display = "block";
+					},
+				}).then(function(canvas) {
+					var posterImg = canvas.toDataURL("image/png", 0.7);
+
+					ownerInstance.callMethod('creates', {
+						posterImg: posterImg
+					})
+
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+		},
 	}
 </script>
 
