@@ -105,8 +105,8 @@
 				<ls-loading :fontSize='30' text="绘制中,请稍后" :embed='true' :animation="'progress'"></ls-loading>
 			</view>
 			<image v-if="imageData!=''" :src="imageData.image_url" style="width: 100%;" mode="widthFix"></image>
-
-			<view v-if="imageData!='' && !isSave" class="grid-container">
+			<!-- {{imageData}}{{isSave}} -->
+			<view v-if="imageData!='' && isSave" class="grid-container">
 				<view class="grid-item" v-for="item in 4" @click="choseImageIndex(item)">
 					<view v-if="ImageIndex==item" class="centerBox">
 						<view class='aganBtn' @click="useImage('variation'+item,'v')">精修</view>
@@ -366,6 +366,7 @@
 								icon: "none"
 							})
 							// this.imageIsLoad = true
+
 						}
 						// else {
 						// 	this.$store.commit('changeimageLoad', res.data);
@@ -515,7 +516,7 @@
 				// #endif
 			},
 			useImage(e, type) {
-
+				let that = this
 				uni.showModal({
 					title: '提示',
 					content: type == 'v' ? '是否确认精修当前风格图？' : '是否确认放大当前图片？',
@@ -526,16 +527,16 @@
 					cancelColor: '#39B54A',
 					success: (res) => {
 						if (res.confirm) {
+							that.drwData.image_id = that.imageData.image_id
+							that.drwData.action = e
+							that.currentIndex = 0
+							that.drwData.prompt = ''
+							that.$store.dispatch('mjImageDrw', that.drwData)
 							if (type == 'u') {
-								this.isSave = true
+								that.isSave = true
 							} else {
-								this.isSave = false
+								that.isSave = false
 							}
-							this.drwData.image_id = this.imageData.image_id
-							this.drwData.action = e
-							this.currentIndex = 0
-							this.drwData.prompt = ''
-							this.$store.dispatch('mjImageDrw', this.drwData)
 						}
 					}
 				})

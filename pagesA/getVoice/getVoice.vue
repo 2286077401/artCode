@@ -7,9 +7,9 @@
 </template>
 
 <script>
-	import Recorder from 'recorder-core'
-	import 'recorder-core/src/engine/mp3'
-	import 'recorder-core/src/engine/mp3-engine'
+	// import Recorder from 'recorder-core'
+	// import 'recorder-core/src/engine/mp3'
+	// import 'recorder-core/src/engine/mp3-engine'
 	import * as base64 from "base-64"
 	import CryptoJS from '@/commit/crypto-js/crypto-js.js'
 	import parser from '@/commit/fast-xml-parser/src/parser'

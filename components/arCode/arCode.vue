@@ -277,7 +277,7 @@
 					ecl: 'H', //纠错等级
 					seed: "",
 				},
-				engineType: "自定义引擎", //引擎选择
+				engineType: "高级引擎", //引擎选择
 				engineList: [{
 						name: '高级引擎',
 						disabled: false
@@ -598,6 +598,11 @@
 				this.codeData.preset = this.presetList[index].value
 			},
 			radioEngine(index) {
+				uni.showToast({
+					title: '自定义引擎目前暂不支持使用',
+					icon: 'none',
+					duration: 2000
+				})
 				this.activeCode = ''
 				this.codeData = {
 					content: '', //二维码内容

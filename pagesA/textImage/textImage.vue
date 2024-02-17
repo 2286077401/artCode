@@ -1,235 +1,308 @@
 <template>
-	<view class="">
+	<view style="padding-bottom: 100rpx;">
 		<view class="login__bg login__bg--top">
 			<image class="bg" src="@/static/Chatbot01.png" mode="widthFix"></image>
 		</view>
-		<tn-fab :btnList="btnList" :left="left" :right="right" :bottom="bottom" :width="width" :height="height"
-			:iconSize="iconSize" :backgroundColor="backgroundColor" :fontColor="fontColor" :icon="icon"
-			:animationType="animationType" :showMask="showMask" @click="clickFabItem">
-		</tn-fab>
+		<!-- :style="{paddingTop:statusBarHeight}" -->
+		<scroll-view :scroll-y="true" class="scroll-Y" :scroll-with-animation="true">
+			<!-- :style="{paddingTop: vuex_custom_bar_height + 'px'}" -->
+			<view class="" v-for="(item,index) in historyTextList" :key="index">
+				<view class="tn-text-justify">
+					<view class="tn-margin tn-no-margin-top" v-if="item.role=='assistant'">
+						<view class="tn-flex tn-flex-row-between tn-flex-col-center">
+							<view class="justify-content-item">
+								<view class="tn-flex tn-flex-col-top tn-flex-row-left">
+									<view class="logo-pic tn-margin-top-sm"
+										style="background-image:url('https://oss.laf.run/nupa44-bits/chatlogo.png')">
+										<view class="logo-image">
+										</view>
+									</view>
+									<view class="tn-padding-right tn-color-black">
+										<!-- 			<view class="tn-padding-left-sm tn-text-bold" style="max-width: 62vw;">
+											GTP
+										</view> -->
+										<view class="tn-flex tn-flex-col-center">
+											<view class="tn-bg-gray--light tn-margin-sm tn-padding-sm"
+												style="max-width: 62vw;border-radius: 0 15rpx 15rpx 15rpx;">
+												<ua-markdown :source="item.content || '加载中...'" :showLine="false" />
+												<text @tap="copy(item.content)" class="tn-icon-copy-fill"
+													style="width: 100%;text-align: left;"></text>
+											</view>
+											<view class="">
+												<!-- 发送失败 -->
+												<!-- <text class="tn-icon-warning-fill tn-color-purplered tn-text-xxl"></text> -->
+											</view>
+										</view>
 
-		<view style="position: relative;padding: 0 20rpx;height: 85vh;">
-			<scroll-view scroll-y="true" :scroll-top="scrollTop" :style="{paddingTop:statusBarHeight}" class="scroll-Y"
-				:scroll-with-animation="true" @scroll="scroll">
-				<view class="chat-item" v-for="(item, index) in chat" :key="index">
-					<!-- 问题框 -->
-					<uni-transition :show="true" mode="fade-right" v-if="item.problem != ''">
-						<view class="chat-item__right">
-							<view class="chat-item__right-message" @longtap="copy(item.problem)">
-								{{ item.problem }}
+									</view>
+
+								</view>
 							</view>
-							<image style="width: 80rpx;height: 80rpx;border-radius: 50%;" mode="widthFix" shape="square"
-								src="https://oss.laf.run/nupa44-bits/12aff9074a7a6692e785266073e1ebe1_1.jpg">
-							</image>
+							<view class="justify-content-item">
+								<!-- 预留空位 -->
+							</view>
 						</view>
-					</uni-transition>
-					<!-- 答案框 -->
-					<!-- 					<uni-transition :show="false" mode="fade-left" >
-						<view class=" chat-item__left u-flex">
-							<image style="width: 80rpx;" mode="widthFix" src="/static/chatlogo.png" shape="square">
-							</image>
-							<view class="chat-item__left-right">
-								<view class="chat-item__left-name"> GPT </view>
-								<view class="chat-item__left-bottom">
-									<tn-loading></tn-loading>
+					</view>
+					<view class="tn-margin tn-no-margin-top" v-if="false">
+						<view class="tn-flex tn-flex-row-between tn-flex-col-center">
+							<view class="justify-content-item">
+								<view class="tn-flex tn-flex-col-top tn-flex-row-left">
+									<view class="logo-pic tn-margin-top-sm"
+										style="background-image:url('https://resource.tuniaokj.com/images/blogger/blogger_beibei.jpg')">
+										<view class="logo-image">
+										</view>
+									</view>
+									<view class="tn-padding-right tn-color-black">
+										<view class="tn-padding-left-sm tn-text-bold tn-margin-top-sm"
+											style="max-width: 62vw;">
+											抓住那只猪
+										</view>
+										<view class="tn-flex tn-flex-col-center">
+											<view class="tn-margin-sm" style="max-width: 62vw;">
+												<view class="bg-img-cont tn-shadow-blur"
+													style="background-image:url('https://resource.tuniaokj.com/images/content/rodion.jpg');">
+												</view>
+											</view>
+											<view class="">
+												<!-- 发送失败 -->
+												<!-- <text class="tn-icon-warning-fill tn-color-purplered tn-text-xxl"></text> -->
+											</view>
+										</view>
+
+									</view>
+
+								</view>
+							</view>
+							<view class="justify-content-item">
+								<!-- 预留空位 -->
+							</view>
+						</view>
+					</view>
+					<view class="tn-margin tn-no-margin-top" v-if="item.role=='user'">
+						<view class="tn-flex tn-flex-row-between tn-flex-col-center">
+							<view class="justify-content-item">
+								<!-- 预留空位 -->
+							</view>
+							<view class="justify-content-item">
+								<view class="tn-flex tn-flex-col-top tn-flex-row-left">
+									<view class="tn-padding-left tn-color-black">
+										<!-- 	<view class="tn-padding-right tn-text-bold tn-text-right"
+											style="max-width: 62vw;">
+											我
+										</view> -->
+										<view class="tn-flex tn-flex-col-center">
+											<view class="" v-if="item.conten == '发送失败'">
+												<!-- 发送失败 -->
+												<text
+													class="tn-icon-warning-fill tn-color-purplered tn-text-xxl"></text>
+											</view>
+											<view class="tn-bg-gray--light tn-margin-sm tn-padding-sm"
+												style="max-width: 62vw;border-radius: 15rpx 0 15rpx 15rpx;">
+												<ua-markdown :source="item.content || '加载中...'" :showLine="false" />
+											</view>
+											<!-- <view class="tn-bg-gray--light tn-margin-sm"
+												style="max-width: 62vw;border-radius: 15rpx 0 15rpx 15rpx;overflow: hidden;"
+												v-else>
+												<image :src="'data:image/jpeg;base64,'+item.content"
+													style="width: 62vw;margin: 0 auto;text-align: center;"
+													mode="widthFix"></image>
+											</view> -->
+										</view>
+									</view>
+									<view class="logo-pic tn-margin-top-sm"
+										style="background-image:url('https://oss.laf.run/nupa44-bits/12aff9074a7a6692e785266073e1ebe1_1.jpg')">
+										<view class="logo-image">
+										</view>
+									</view>
 								</view>
 							</view>
 						</view>
-					</uni-transition> -->
-					<uni-transition :show="true" mode="fade-left" v-if="item.answer!=''">
-						<view class=" chat-item__left u-flex">
-							<image style="width: 80rpx;" mode="widthFix" src="/static/chatlogo.png" shape="square">
-							</image>
-							<view class="chat-item__left-right">
-								<view class="chat-item__left-name"> GPT </view>
-								<view class="chat-item__left-bottom">
-									<view class="chat-item__left-message" @longtap="copy(item.answer)">
-										<text v-if="item.answer == 'error'">网络错误</text>
-										<ua-markdown v-if="item.answer != 'error' && item.type === 'text'"
-											:source="item.answer || '加载中...'" :showLine="false" />
-									</view>
-									<tn-loading v-if="item.answer == ''"></tn-loading>
-									<u-icon v-if="item.answer == 'error'" name="error"></u-icon>
-
-									<view
-										style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-										<textVoice v-if="item.answer && item.answer != 'error'" audioId="audio1"
-											:type="'0'" :url="item.answer" audioColor="#68d7bb">
-										</textVoice>
-										<text v-if="item.answer && item.answer != 'error'" @tap="copy(item.answer)"
-											class="tn-icon-copy-fill" style="width: 100%;text-align: left;"></text>
-										<!-- 		<text v-if="item.answer && item.answer != 'error'" @tap="copy(item.answer)"
-											class="tn-icon-headset"></text> -->
-										<!-- <tn-loading></tn-loading> -->
-									</view>
-								</view>
-							</view>
-						</view>
-					</uni-transition>
+					</view>
 				</view>
-			</scroll-view>
-		</view>
-		<!-- 底部输入框 -->
-		<view class="input-box">
-			<!-- <text class="tn-icon-voice" style="font-size: 50rpx;font-weight:bolder;color: #767cf2;"></text> -->
-			<input :disabled="isLoading" style="flex: 1;" placeholder="请输入内容" border="surround" v-model="problem">
-			</input>
-			<view style="padding-right: 20rpx;">
-				<button :disabled="isLoading" style="margin: 0 auto;margin-left: 20rpx;"
-					class="login__info__item__button tn-cool-bg-color-7--reverse tn-color-white" iconColor="#ffffff"
-					color="#98e4f3" size="normal" @tap="getAnswer">
-					<tn-loading v-if="isLoading" style="margin-right: 10rpx;"></tn-loading>发送
-				</button>
+			</view>
+		</scroll-view>
+		<view class="tabbar footerfixed tn-bg-white">
+			<view class="tn-flex tn-flex-row-between tn-flex-col-center">
+				<view class="justify-content-item tn-margin-top" style="flex: 1;">
+					<view class="tn-flex tn-flex-row-center tn-flex-col-center">
+						<!-- <view class="tn-flex tn-flex-row-center tn-padding-right tn-padding-left">
+		          <text class="tn-icon-emoji-good tn-text-xxl"></text>
+		        </view> -->
+						<view class="tn-flex tn-flex-row-center tn-flex-col-center tn-padding-right tn-padding-left-sm">
+							<view
+								class="icon27__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-color-gray">
+								<!-- <tn-image-upload :customBtn="true">
+									<view slot="addBtn" class="tn-image-upload__custom-btn" hover-class="tn-hover-class"
+										hover-stay-time="150">
+										<view class="tn-icon-add-circle"></view>
+									</view>
+								</tn-image-upload> -->
+								<!-- <view class="tn-icon-add-circle" @click="choseImage"></view> -->
+
+							</view>
+							<!-- <view class="icon27__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-text-shadow-orange">
+		            <view class="">??</view>
+		          </view> -->
+							<!-- <view class="avatar-all">
+		            <view class="tn-shadow-blur" style="background-image:url('https://cdn.nlark.com/yuque/0/2022/jpeg/280373/1664005699053-assets/web-upload/8645ea3a-e0a9-4422-8364-cc5ede305c9f.jpeg');width: 60rpx;height: 60rpx;background-size: cover;">
+		            </view>
+		          </view> -->
+						</view>
+						<view
+							class="topic__info__item__input tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-left "
+							style="flex: 1;">
+							<!-- <view class="topic__info__item__input__left-icon">
+		            <view class="tn-icon-emoji-good"></view>
+		          </view> -->
+							<view class="topic__info__item__input__content  tn-flex">
+								<image v-if="talkImage!=''" :src="talkImage" style="width: 40rpx;height: 40rpx;"
+									mode="scaleToFill" @click="seeImage([talkImage])"></image>
+								<input style="padding-left: 15rpx;" v-model="TEXT" maxlength="20" :disabled="isLoading"
+									placeholder-class="input-placeholder" placeholder="请输入内容" :cursor-spacing="18" />
+							</view>
+						</view>
+					</view>
+				</view>
+				<view @click="sendToSpark()"
+					class="justify-content-item tn-flex-row-center tn-flex-col-center tn-margin-top tn-margin-right">
+					<view class="topic__info__item__sure">
+						<view class="tn-flex-1 justify-content-item tn-text-center">
+							<tn-button shape="round"
+								class="login__info__item__button tn-cool-bg-color-7--reverse tn-color-white"
+								iconColor="#ffffff" color="#98e4f3" size="normal">
+								<text class="tn-color-white" hover-class="tn-hover" :hover-stay-time="150">
+									<tn-loading v-if="isLoading" style="margin-right: 10rpx;"></tn-loading>发 送
+								</text>
+							</tn-button>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
-		<!-- 页面内容 -->
-		<view style="padding: 0 25rpx;">
-		</view>
+		<!-- <button type="default" @click="gun()" style="position: fixed;bottom: 200rpx;left: 50rpx;">滚</button> -->
 	</view>
 </template>
 
 <script>
+	import {
+		toBase64
+	} from "../tool/tool.js"
+	import {
+		swapCharacters
+	} from "@/commit/tool.js"
 	import uaMarkdown from "@/components/ua2-markdown/ua-markdown"
 	import * as base64 from "base-64"
 	import CryptoJS from '@/commit/crypto-js/crypto-js.js'
 	import parser from '@/commit/fast-xml-parser/src/parser'
 	import * as utf8 from "utf8"
 	import {
-		wenxinChat
-	} from "@/commit/api.js"
-	import {
-		data
-	} from "../../tuniao-ui/libs/mixin/components_color";
-	import {
-		swapCharacters
-	} from "@/commit/tool.js"
+		generateSignature
+	} from "@/commit/signatureUtils.js"
+
 	export default {
-		name: 'TemplateLoading',
 		components: {
 			uaMarkdown
 		},
+		// https://spark-api.xf-yun.com/v1.1/chat  V1.5 domain general
+		// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
 		data() {
 			return {
+				isLoading: false,
+				TEXT: '',
 				APPID: '4ae5ca01', // 控制台获取填写
 				APISecret: swapCharacters(uni.getStorageSync('KEY_LIST').secret),
 				APIKey: swapCharacters(uni.getStorageSync('KEY_LIST').apiKey),
-				isLoading: false,
-				chat: [],
-				openData: {
-					"messages": []
-				},
-				problem: '',
-				answer: '',
-				currentAnswerIndex: -1,
-				webSocketClient: null,
-				upOption: {
-					use: false,
-					noMoreSize: 0
-				},
-				downOption: {
-					auto: false
-				},
-				scrollTop: 9999999999,
-				left: 'auto',
-				right: 40,
-				bottom: 300,
-				width: 64,
-				height: 64,
-				iconSize: 48,
-				backgroundColor: '#01BEFF',
-				fontColor: '#FFFFFF',
-				icon: 'open',
-				animationType: 'around',
-				showMask: true,
-				btnList: [{
-						icon: 'link',
-						text: '链接',
-						bgColor: '#E72F8C'
-					},
-					{
-						icon: 'clear',
-						text: '清屏',
-						textSize: 32,
-						bgColor: '#FF7043'
-					},
-					{
-						icon: 'share-triangle',
-						text: '分享',
-						iconSize: 32,
-						iconColor: '#AAAAAA',
-						bgColor: '#24F083',
-					}
-				],
-				statusBarHeight: 20
+				sparkResult: '',
+				historyTextList: [], // 历史会话信息，由于最大token12000,可以结合实际使用，进行移出
+				tempRes: '', // 临时答复保存
+				listData: [{
+					role: 'role',
+					text: 'text',
+					header: 'header',
+					useToken: 'useToken',
+					name: 'name'
+				}],
+				statusBarHeight: 20,
+				firstTrigger: false,
+				talkImage: "",
+				imgBase64: "",
 			}
 		},
-		onLoad() {
-
+		onShow() {
+			const ts = Date.now();
+			const signature = generateSignature(this.APPID, this.APISecret, ts);
 		},
-		beforeDestroy() {},
-		onHide() {
-			this.isLoading = false
-			this.Audio()
-		},
-		onUnload() {
-			this.isLoading = false
-			this.Audio()
-		},
-		methods: {
-			// 鉴权
-			getWebSocketUrl() {
-				return new Promise((resolve, reject) => {
-					// https://spark-api.xf-yun.com/v1.1/chat  V1.5 domain general
-					// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
-					var url = "https://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti";
-					var host = "spark-api.xf-yun.com";
-					var apiKeyName = "api_key";
-					var date = new Date().toGMTString();
-					var algorithm = "hmac-sha256";
-					var headers = "host date request-line";
-					var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2.1/tti HTTP/1.1`;
-					var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, this.APISecret);
-					var signature = CryptoJS.enc.Base64.stringify(signatureSha);
-					var authorizationOrigin =
-						`${apiKeyName}="${this.APIKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
-					var authorization = base64.encode(authorizationOrigin);
-					url = `${url}?authorization=${authorization}&date=${encodeURI(date)}&host=${host}`;
-					resolve(url); // 主要是返回地址
-				});
-			},
-			Audio() {
-				uni.$emit('stop')
-			},
-
-			// 点击悬浮按钮的内容
-			clickFabItem(e) {
-				switch (e.index) {
-					case 0: {
-						this.$tn.message.toast(`暂未开放`)
-						break;
-					}
-					case 1: {
-						this.openData.messages = []
-						this.chat = []
-						this.getChat()
-						this.$tn.message.toast(`已清屏`)
-						break;
-					}
-					case 2: {
-						this.$tn.message.toast(`暂未开放`)
-						break;
-					}
+		watch: {
+			sparkResult(data) {
+				if (data == '') {
+					return false
 				}
-			},
-			scroll(e) {
-				// console.log(e);
-			},
-			getChat() {
-				this.chat.push({
-					type: 'text',
-					problem: '',
-					answer: this.askInfo,
+				if (!this.firstTrigger) {
+					this.firstTrigger = true;
+					this.historyTextList.push({
+						"role": "assistant",
+						"content": ''
+					});
+				} else {
+					this.historyTextList[this.historyTextList.length - 1].content = data;
+
+				}
+
+			}
+		},
+
+		methods: {
+			seeImage(data) {
+				uni.previewImage({
+					urls: data,
+					longPressActions: {
+						itemList: ['发送给朋友', '保存图片', '收藏'],
+						success: function(data) {
+							console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+						},
+						fail: function(err) {
+							console.log(err.errMsg);
+						}
+					}
 				});
+			},
+			// choseImage() {
+			// 	const that = this
+			// 	uni.chooseImage({
+			// 		count: 1,
+			// 		sizeType: ['compressed'],
+			// 		sourceType: ['album', 'camera'],
+			// 		success: function(res) {
+			// 			that.talkImage = res.tempFilePaths[0]
+			// 			toBase64(res.tempFilePaths[0]).then((res) => {
+			// 				that.imgBase64 = res
+			// 				that.historyTextList.push({
+			// 					"role": "user",
+			// 					"content": res,
+			// 					"content_type": "image"
+			// 				})
+			// 			})
+			// 		},
+			// 		fail() {
+			// 			uni.showToast({
+			// 				title: '选择失败',
+			// 				icon: "none"
+			// 			})
+			// 		}
+			// 	});
+			// },
+			scrollUpdata() {
+				uni.pageScrollTo({
+					scrollTop: 9999,
+					duration: 300,
+					success: () => {
+						console.log('success')
+					},
+					fail(err) {
+						console.log(err)
+
+					}
+				})
 			},
 			copy(val) {
 				uni.setClipboardData({
@@ -242,187 +315,249 @@
 					}
 				});
 			},
-
-
-
-
-
-			async getAnswer() {
-				let myUrl = await this.getWebSocketUrl();
-				let user = uni.getStorageSync('user');
-				this.currentAnswerIndex = this.chat.length
-				if (!this.problem) {
+			async sendToSpark() {
+				if (this.TEXT == '') {
 					uni.showToast({
-						title: '你还没有输入问题呢！',
+						title: '输入内容不能为空',
 						icon: 'none'
-					});
-					return
+					})
+					return false
 				}
 				this.isLoading = true
-				this.chat.push({
-					type: 'text',
-					problem: this.problem,
-					answer: '',
-					// client_avatar: this.userInfo.avatar
+				this.firstTrigger = false
+				let myUrl = await this.getWebSocketUrl();
+				console.log(myUrl)
+				this.tempRes = "";
+				// this.sparkResult = "";
+				let realThis = this;
+				realThis.socketTask = uni.connectSocket({
+					//url: encodeURI(encodeURI(myUrl).replace(/\+/g, '%2B')),
+					url: myUrl,
+					header: {
+						'Content-Type': 'application/json;charset=UTF-8'
+					},
+					method: 'GET',
+					success: res => {
+						// realThis.isLoading = true;
+					},
 				})
 
-				let obj = {
-					role: "user",
-					content: this.problem
-				}
-				this.openData.messages.push(obj)
-				this.problem = ''
-				setTimeout(() => {
-					this.scrollTop = this.scrollTop + 1;
-				}, 100)
-				uni.request({
-					url: myUrl,
-					data: JSON.stringify(this.openData),
-					method: "GET",
-					header: {
-						"content-type": "application/json;charset=UTF-8",
-						"app_id": "4ae5ca01"
-					},
-					success: function(result) {
-						this.isLoading = false
-						if (res.code == 200) {
-							this.askInfo = res.data.messages[res.data.messages.length - 1].content
-							this.openData.messages = res.data.messages
-							this.chat.push({
-								type: 'text',
-								problem: "",
-								answer: this.askInfo,
-							});
-							setTimeout(() => {
-								this.scrollTop = this.scrollTop + 1;
-							}, 100)
-						} else {
-							this.$nextTick(() => {
-								// this.mescroll.scrollTo(99999999);
-								this.scrollTop = 999999999;
-							});
-							this.openData.messages = res.data.messages
-							this.chat.push({
-								type: 'text',
-								problem: '',
-								answer: 'error',
-							});
-
+				realThis.socketTask.onError((res) => {
+					console.log(res, '=====')
+					realThis.isLoading = false
+					realThis.historyTextList.push({
+						"role": "user",
+						"content": '发送失败'
+					})
+				})
+				realThis.socketTask.onOpen((res) => {
+					realThis.historyTextList.push({
+						"role": "user",
+						"content": realThis.TEXT,
+					})
+					let params = {
+						"header": {
+							"app_id": realThis.APPID,
+							"uid": "39769795890"
+						},
+						"parameter": {
+							"chat": {
+								"domain": "general",
+								"max_tokens": 2028,
+								"width": 512,
+								"height": 512
+							}
+						},
+						"payload": {
+							"message": {
+								"text": realThis.historyTextList
+							}
 						}
-					},
-					fail: function(e) {
-						uni.showToast({
-							title: '请求超时~',
-							icon: 'error'
+					};
+					// this.sparkResult = this.sparkResult + "\r\n我：" + this.TEXT + "\r\n"
+					// this.sparkResult += this.sparkResult  
+
+					realThis.socketTask.send({ // 发送消息，，都用uni的官方版本
+						data: JSON.stringify(params),
+						success() {
+							realThis.TEXT = ''
+							realThis.talkImage = ''
+						}
+					});
+				});
+
+				// 接受到消息时
+				realThis.socketTask.onMessage((res) => {
+					let obj = JSON.parse(res.data)
+					console.log(obj)
+					// if (obj.header.code == 10163) {
+					// 	realThis.historyTextList = []
+					// 	realThis.isLoading = false
+					// 	uni.showToast({
+					// 		title: "图片过大",
+					// 		icon: 'none'
+					// 	})
+					// 	realThis.isLoading = false
+					// 	return
+					// }
+					// if (obj.header.code == 10003) {
+					// 	realThis.historyTextList = []
+					// 	realThis.isLoading = false
+					// 	uni.showToast({
+					// 		title: "请先选择图片",
+					// 		icon: 'none'
+					// 	})
+					// 	return
+					// }
+					if (obj.header.code == 10013) {
+						realThis.historyTextList.push({
+							"role": "assistant",
+							"content": '非常抱歉，根据相关法律法规，我们无法提供关于以下内容的答案，包括但不限于：\n\t(1) 涉及国家安全的信息；\n\t(2) 涉及政治与宗教类的信息；\n\t(3) 涉及暴力与恐怖主义的信息；\n\t(4) 涉及黄赌毒类的信息；\n\t(5) 涉及不文明的信息。\n我们会继续遵循相关法规法律的要求，共创一个健康和谐网络环境，谢谢您的理解。\n'
 						})
-						error.call(self, e)
+						realThis.isLoading = false
+						return
+					}
+					let dataArray = obj.payload.choices.text;
+					for (let i = 0; i < dataArray.length; i++) {
+						realThis.sparkResult = realThis.sparkResult + dataArray[i].content
+						realThis.tempRes = realThis.tempRes + dataArray[i].content
+						// realThis.historyTextList[realThis.historyTextList.length - 1].content  +=  dataArray[i].content
+					}
+					let temp = JSON.parse(res.data)
+					if (temp.header.code !== 0) {
+						realThis.isLoading = false
+
+						realThis.socketTask.close({
+							success(res) {
+								console.log('关闭成功', res)
+							},
+							fail(err) {
+								console.log('关闭失败', err)
+							}
+						})
+					}
+					realThis.isLoading = false
+					if (temp.header.code === 0) {
+						if (res.data && temp.header.status === 2) {
+							// realThis.sparkResult = realThis.sparkResult +
+							// 	"\r\n**********************************************"
+							realThis.scrollUpdata()
+							/* let dataArray= obj.payload.choices.text;
+							for(let i=0;i<dataArray.length;i++){
+								realThis.sparkResult =realThis.sparkResult+ dataArray[i].content
+							} */
+							setTimeout(() => {
+								realThis.socketTask.close({
+									success(res) {
+										realThis.isLoading = false
+										realThis.sparkResult = ''
+									},
+									fail(err) {
+										// console.log('关闭失败', err)
+									}
+								})
+							}, 1000)
+						}
 					}
 				})
-
-
-				// this.problem = ""
-			}
+			},
+			// 鉴权
+			getWebSocketUrl() {
+				return new Promise((resolve, reject) => {
+					// https://spark-api.xf-yun.com/v1.1/chat  V1.5 domain general
+					// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
+					var url = "wss://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti";
+					var host = "spark-api.cn-huabei-1.xf-yun.com";
+					var apiKeyName = "api_key";
+					var date = new Date().toGMTString();
+					var algorithm = "hmac-sha256";
+					var headers = "host date request-line";
+					var signatureOrigin = `host: ${host}\ndate: ${date}\nPOST /v2.1/tti HTTP/1.1`;
+					var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, this.APISecret);
+					var signature = CryptoJS.enc.Base64.stringify(signatureSha);
+					var authorizationOrigin =
+						`${apiKeyName}="${this.APIKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
+					var authorization = base64.encode(authorizationOrigin);
+					url = `${url}?authorization=${authorization}&date=${encodeURI(date)}&host=${host}`;
+					resolve(url); // 主要是返回地址
+				});
+			},
 		}
 	}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+	/deep/.input-placeholder {
+		font-size: 30rpx;
+		color: #7C8191;
+	}
+
+	/deep/ .ua__markdown p {
+		margin: 0;
+	}
+
 	.login__info__item__button {
 		letter-spacing: 0;
 		text-indent: 0;
 	}
 
-	.content {
-		background-size: 100% 100%;
+	.topic__info__item__input__content {
+		width: 80%;
+		padding-top: 0px;
+		padding-left: 10rpx;
+		z-index: 1000;
+	}
+
+	.topic__info__item__input {
+		width: 80%;
+		height: 30px;
+		background-color: rgba(0, 3, 72, 0.05);
+		border-radius: 5px;
+		margin-right: 40rpx;
+	}
+
+	/* 底部 start*/
+	.footerfixed {
+		position: fixed;
+		width: 100%;
+		bottom: 0;
+		z-index: 999;
+		background-color: rgba(255, 255, 255, 0.5);
+		box-shadow: 0rpx 0rpx 30rpx 0rpx rgba(0, 0, 0, 0.07);
+	}
+
+	.tabbar {
+		align-items: center;
+		min-height: 130rpx;
+		padding: 0;
+		height: calc(130rpx + env(safe-area-inset-bottom) / 2);
+		padding-bottom: calc(30rpx + env(safe-area-inset-bottom) / 2);
+		padding-left: 10rpx;
+		padding-right: 10rpx;
+	}
+
+	/* 用户头像 start */
+	.logo-image {
+		width: 80rpx;
+		height: 80rpx;
+		position: relative;
+	}
+
+	.logo-pic {
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: top;
+		box-shadow: 0rpx 0rpx 80rpx 0rpx rgba(0, 0, 0, 0.05);
+		border-radius: 50%;
+	}
+
+	.bg-img-cont {
+		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
-	}
-
-
-	// @import '@/static/css/templatePage/custom_nav_bar.scss';
-	// @import '@/static/css/demo.scss';
-	.chat-item__right {
-		height: auto;
-	}
-
-	.chat {
-		padding: 20rpx;
-		box-sizing: border-box;
-
-		&-item {
-			&__left {
-				display: flex;
-				margin-top: 20rpx;
-
-				&-right {
-					margin-left: 20rpx;
-				}
-
-				&-name {
-					font-size: 24rpx;
-				}
-
-				&-message {
-					margin-top: 10rpx;
-					background: #b3f5d1;
-					padding: 20rpx;
-					border-radius: 10rpx;
-					font-size: 28rpx;
-					color: #080808;
-					margin-right: 20rpx;
-					max-width: 510rpx;
-					text-align: justify;
-				}
-
-				&-bottom {
-					display: flex;
-				}
-			}
-
-			&__right {
-				display: flex;
-				margin-top: 20rpx;
-				justify-content: flex-end;
-
-				&-message {
-					max-width: 510rpx;
-					margin-right: 20rpx;
-					background: #67d9f5;
-					padding: 20rpx;
-					border-radius: 10rpx;
-					font-size: 28rpx;
-					text-align: justify;
-				}
-			}
-		}
-	}
-
-	.scroll-Y {
-		height: 100vh;
-		padding-bottom: calc(130rpx + env(safe-area-inset-bottom));
-	}
-
-	.input-box {
-		box-sizing: border-box;
-		display: flex;
-		position: fixed;
-		bottom: 0rpx;
-		// bottom: calc(110rpx + env(safe-area-inset-bottom));
-		left: 0;
-		width: 100%;
-		padding: 20rpx;
-		box-sizing: border-box;
-		justify-content: space-between;
-		align-items: center;
-		background-color: #67d9f5;
-	}
-
-	input {
-		height: 80rpx;
-		line-height: 80rpx;
-		padding: 10rpx;
-		background-color: white;
-		border-radius: 40rpx;
-		padding-left: 20rpx;
+		height: 260rpx;
+		width: 55vw;
+		margin: 10rpx 0 0 0;
+		border-radius: 12rpx;
 	}
 </style>

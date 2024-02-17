@@ -18,13 +18,13 @@
 		<!-- #endif -->
 
 		<!-- 页面内容 -->
-		<tn-empty v-if="dataList.length==0" mode="data"></tn-empty>
-
-		<view class="" v-if="current ==0">
+		<tn-empty v-if="list.length==0" mode="data"></tn-empty>
+		<!-- v-if="current ==0" -->
+		<view class="" v-if="show">
 			<view class="" style="padding: 30rpx 20rpx;">
 				<tn-waterfall ref="waterfall" v-model="list" @finish="handleWaterFallFinish">
 					<template v-slot:left="{ leftList }">
-						<view v-for="(item, index) in leftList" :key="item.id" class="wallpaper__item" >
+						<view v-for="(item, index) in leftList" :key="item.id" class="wallpaper__item">
 							<view class="item__image">
 								<ls-loading :highlight-color="'#ff9900'"
 									style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);"
@@ -65,13 +65,11 @@
 										<text class="tn-color-gray">{{ millisecondsToTime(item.creatTime)}}</text>
 									</view>
 								</view>
-
-
 							</view>
 						</view>
 					</template>
 					<template v-slot:right="{ rightList }">
-						<view v-for="(item, index) in rightList" :key="item._id" class="wallpaper__item" >
+						<view v-for="(item, index) in rightList" :key="item._id" class="wallpaper__item">
 							<view class="item__image">
 								<ls-loading :highlight-color="'#ff9900'"
 									style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);"
@@ -131,6 +129,8 @@
 		name: 'PagesA',
 		data() {
 			return {
+				show: true,
+				pageNumber: 1,
 				current: 0,
 				fixedList: [{
 						name: 'AI绘画'
@@ -141,23 +141,26 @@
 				],
 				/* 瀑布流*/
 				loadStatus: 'loadmore',
+				// loaded-
 				list: [],
-				dataList: []
 			}
 		},
 		created() {
 			/* 瀑布流*/
 			this.getData()
 		},
+		onReachBottom() {
+			this.getData()
+		},
 		methods: {
 			// 跳转
-			tn(e, data) { 
+			tn(e, data) {
 				uni.setStorageSync('imgData', JSON.stringify(data))
 				uni.navigateTo({
 					url: e,
 				});
 			},
-			millisecondsToTime(milliseconds=' ') { 
+			millisecondsToTime(milliseconds = ' ') {
 				// let seconds = Math.floor(milliseconds / 1000);
 				// let minutes = Math.floor(seconds / 60);
 				// let hours = Math.floor(minutes / 60);
@@ -175,43 +178,63 @@
 				return milliseconds.split(' ')[0]
 			},
 			tabChange(index) {
+				this.show = false
+				setTimeout(() => {
+					this.show = true
+				}, 500)
 				this.current = index
-				this.dataList = []
 				this.list = []
+				// this.list = []
+				this.pageNumber = 1
 				this.getData()
+				console.log(this.list)
 			},
 			getData() {
+
 				let index = 0
+
 				this.status = 'loading'
 				gitDrwHistory({
-					type: this.current
+					type: this.current,
+					pageNumber: this.pageNumber
 				}).then((res) => {
-					this.dataList = res.data
-					this.getRandomData()
+					if (res.code == 200) {
+						if (res.data.length == 0) {
+							uni.showToast({
+								title: '已加载全部数据',
+								icon: 'none'
+							})
+							return
+						} else {
+							this.pageNumber++;
+							this.list.push(...res.data)
+						}
+
+					}
+					// this.getRandomData()
 				})
 			},
 
 
 			/* 瀑布流*/
 			// 获取随机数据
-			getRandomData() {
-				this.loadStatus = 'loading'
-				for (let i = 0; i < this.dataList.length; i++) {
+			// getRandomData() {
+			// 	this.loadStatus = 'loading'
+			// 	for (let i = 0; i < this.dataList.length; i++) {
 
-					let item = JSON.parse(JSON.stringify(this.dataList[i]))
-					this.list.push(item)
-				} 
-			},
+			// 		let item = JSON.parse(JSON.stringify(this.dataList[i]))
+			// 		this.list.push(item)
+			// 	}
+			// },
 			// 瀑布流加载完毕事件
 			handleWaterFallFinish() {
-				this.loadStatus = 'loadmore'
+				this.loadStatus = 'loaded'
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	
 	.pages-a {
 		max-height: 100vh;
 	}

@@ -9,7 +9,7 @@ export const weibo60s = () => http.get('/juhe/weibo') //微博热榜
 export const douyin60s = () => http.get('/juhe/dy60s') //抖音热榜
 // export const get60s = () => http.apiGet('/60s') 
 export const mjSecend = (data) => http.aiPost('/midjourney/imagine?token=d10de36270394f07b4d6a87d9ff9b060', data)
-export const mjlow = (data) => http.post('/drwImage', data)
+export const mjlow = (data) => http.post('/drwImage', data) //绘图
 export const mjBase = (data) => http.aiPost('/midjourney/imagine/turbo?token=824bc9d30f88481a97aeb704c1d9c977', data)
 export const arCode = (data) => http.post('/drwCode', data, '', 300000) //艺术二维码 
 export const getCodePro = () => http.get('/getCodePro') //获取提示词

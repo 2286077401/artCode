@@ -390,6 +390,16 @@
 				// 接受到消息时
 				realThis.socketTask.onMessage((res) => {
 					let obj = JSON.parse(res.data)
+					if (obj.header.code == 10163) {
+						realThis.historyTextList = []
+						realThis.isLoading = false
+						uni.showToast({
+							title: "图片过大",
+							icon: 'none'
+						})
+						realThis.isLoading = false
+						return
+					}
 					if (obj.header.code == 10003) {
 						realThis.historyTextList = []
 						realThis.isLoading = false
