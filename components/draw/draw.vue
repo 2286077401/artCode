@@ -523,11 +523,8 @@
 				oA.download = '下载.png'; // 设置下载的文件名，默认是'下载'
 				oA.href = this.imageData.image_url; //图片url
 				document.body.appendChild(oA);
-				setTimeout(() => {
-					oA.click();
-				}, 500)
-
-				// oA.remove(); // 下载之后把创建的元素删除 
+				oA.click();
+				oA.remove(); // 下载之后把创建的元素删除 
 				// uni.showToast({
 				// 	title: '长按图片保存到本地',
 				// 	icon: 'none'
