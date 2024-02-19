@@ -358,6 +358,12 @@
 				this.getStatus()
 			},
 			getStatus() {
+				// console.log(this.$store.state.imageData,'===========')
+				if (this.$store.state.imageData.prompt == '') {
+					this.isSave = false
+				} else {
+					this.isSave = true
+				}
 				gitUserState().then((res) => {
 					if (res.code == 200) {
 						// that.isSave = false 
@@ -367,14 +373,11 @@
 								icon: "none"
 							})
 							this.$store.commit('changeLoadTrue');
-						} else {
-							if (res.data.prompt == '') {
-								this.isSave = false
-							} else {
-								this.isSave = true
-							}
-							this.$store.commit('changeimageLoad', res);
 						}
+						// else {
+
+						// 	// this.$store.commit('changeimageLoad', res);
+						// }
 					} else {
 						uni.showToast({
 							title: '查询失败',
@@ -791,7 +794,7 @@
 
 		.choseStyle {
 			width: 700rpx;
-			// min-height: 700rpx;
+			min-height: 200rpx;
 			border-radius: 20rpx;
 			background-color: #ffffff80;
 			box-shadow: 8rpx 8rpx 20rpx 2rpx #ffffff50;

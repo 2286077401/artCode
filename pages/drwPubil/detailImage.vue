@@ -27,7 +27,7 @@
 
 
 		<view>
-			<l-painter css="width: 750rpx;height:100vh; display:flex;justify-content: center;align-items: center;"
+			<l-painter css="width: 750rpx;height:90vh; display:flex;justify-content: center;align-items: center;"
 				@fail="fail" @done="done" pathType="url" ref="poster" performance>
 				<l-painter-image :src="itemData.image_url" css="background: #ffffff;  width: 750rpx;"></l-painter-image>
 			</l-painter>
@@ -47,13 +47,13 @@
 
 		<!-- 底部tabbar start-->
 		<view class="tabbar footerfixed dd-glass tn-color-white" style="border-radius: 100rpx;">
-			<view class="action">
+			<view class="action" v-if="itemData.userId == uerInfo_id" @click="redraw">
 				<view class="bar-icon">
 					<view class="tn-icon-like-lack">
 					</view>
 					<!-- <image class="" src='https://resource.tuniaokj.com/images/tabbar/a1.png'></image> -->
-				</view>
-				<view class="">收藏</view>
+				</view> 
+				<view class="" >收藏</view>
 			</view>
 
 			<view class="action" @click="save(itemData.image_url)">
@@ -150,18 +150,31 @@
 
 <script>
 	export default {
+
 		data() {
 			return {
 				show1: false,
 				itemData: '',
 				type: '1',
+				uerInfo_id: "",
 			}
 		},
-		onLoad(e) { 
+		onShow() {
+			this.uerInfo_id = uni.getStorageSync('userInfo')._id;
+		},
+		onLoad(e) {
 			this.type = e.type
 			this.itemData = JSON.parse(uni.getStorageSync('imgData'))
+			console.log(this.itemData)
 		},
 		methods: {
+			redraw(){
+				uni.setStorageSync('INDEX_CURRENT',1)
+				this.$store.commit('changeimageLoad', {data:this.itemData});
+				uni.redirectTo({
+					url:'/pages/index/index'
+				})
+			},
 			wring() {
 				uni.showToast({
 					title: '反馈成功',
@@ -183,7 +196,7 @@
 				this.$refs.poster.canvasToTempFilePathSync({
 					fileType: 'jpg',
 					quality: 1,
-					success: (res) => { 
+					success: (res) => {
 						this.picture2 = res.tempFilePath
 						this.saveImage()
 					},

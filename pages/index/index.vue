@@ -106,6 +106,7 @@
 			})
 			this.switchTabbar(Number(uni.getStorageSync('INDEX_CURRENT')||0))
 		},
+		 
 		methods: {
 			// 切换导航
 			switchTabbar(index) {
