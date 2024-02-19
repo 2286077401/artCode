@@ -62,12 +62,16 @@ const store = new Vuex.Store({
 
 		},
 		changeimageLoad(state, data) {
-			state.imageData = data
+			console.log(data)
+			state.imageData = data.data
 			// state.codeIsLoad = false
 		},
 		changeLoad(state) {
 			state.imageIsLoad = false
 			state.codeIsLoad = false
+		},
+		changeLoadTrue(state) {
+			state.imageIsLoad = true
 		},
 		$tStore(state, payload) {
 			// 判断是否多层调用，state中为对象存在的情况，例如user.info.score = 1
@@ -163,9 +167,9 @@ const store = new Vuex.Store({
 						title: res.msg,
 						icon: 'none'
 					})
-				} else { 
+				} else {
 					state.imageIsLoad = false;
-					state.imageData = res.data 
+					state.imageData = res.data
 				}
 			})
 		}

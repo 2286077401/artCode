@@ -360,17 +360,21 @@
 			getStatus() {
 				gitUserState().then((res) => {
 					if (res.code == 200) {
+						// that.isSave = false 
 						if (res.isLoading) {
 							uni.showToast({
 								title: '正在绘制，具体绘制结果在画夹查看',
 								icon: "none"
 							})
-							// this.imageIsLoad = true
-
+							this.$store.commit('changeLoadTrue');
+						} else {
+							if (res.data.prompt == '') {
+								this.isSave = false
+							} else {
+								this.isSave = true
+							}
+							this.$store.commit('changeimageLoad', res);
 						}
-						// else {
-						// 	this.$store.commit('changeimageLoad', res.data);
-						// }
 					} else {
 						uni.showToast({
 							title: '查询失败',
@@ -514,6 +518,21 @@
 					}
 				})
 				// #endif
+				// #ifdef H5 
+				var oA = document.createElement("a");
+				oA.download = '下载.png'; // 设置下载的文件名，默认是'下载'
+				oA.href = this.imageData.image_url; //图片url
+				document.body.appendChild(oA);
+				setTimeout(() => {
+					oA.click();
+				}, 500)
+
+				// oA.remove(); // 下载之后把创建的元素删除 
+				// uni.showToast({
+				// 	title: '长按图片保存到本地',
+				// 	icon: 'none'
+				// })
+				// #endif
 			},
 			useImage(e, type) {
 				let that = this
@@ -533,9 +552,9 @@
 							that.drwData.prompt = ''
 							that.$store.dispatch('mjImageDrw', that.drwData)
 							if (type == 'u') {
-								that.isSave = true
-							} else {
 								that.isSave = false
+							} else {
+								that.isSave = true
 							}
 						}
 					}
@@ -775,7 +794,7 @@
 
 		.choseStyle {
 			width: 700rpx;
-			min-height: 700rpx;
+			// min-height: 700rpx;
 			border-radius: 20rpx;
 			background-color: #ffffff80;
 			box-shadow: 8rpx 8rpx 20rpx 2rpx #ffffff50;

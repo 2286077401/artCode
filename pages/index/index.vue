@@ -98,14 +98,13 @@
 
 			}
 		},
-		onLoad(options) {
-			console.log(options)
+		onLoad(options) { 
 			const index = Number(options.index || 0)
 			// 根据底部tabbar菜单列表设置对应页面的加载情况
 			this.tabberPageLoadFlag = this.tabbarList.map((item, tabbar_index) => {
 				return index === tabbar_index
 			})
-			this.switchTabbar(index)
+			this.switchTabbar(Number(uni.getStorageSync('INDEX_CURRENT')||0))
 		},
 		methods: {
 			// 切换导航
@@ -132,6 +131,7 @@
 					this.tabberPageLoadFlag[index] = true
 				}
 				this.currentIndex = index
+				uni.setStorageSync('INDEX_CURRENT',index)
 			},
 
 		}
