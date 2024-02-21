@@ -141,7 +141,7 @@
 					<text class="tn-icon-constellation"></text>
 				</view>
 			</view>
-			<view class="tn-margin tn-text-justify tn-padding-bottom">
+			<view class="tn-margin tn-text-justify tn-padding-bottom" style="overflow-y: scroll;">
 				<view v-for="(item, index) in menuChild" :key="index"
 					class="tn-tag-content__item tn-margin-right tn-round tn-text-sm tn-text-bold"
 					:class="[item.check ? `tn-bg-purplered--light tn-color-gray` : 'tn-bg-gray--light tn-color-gray--dark']"

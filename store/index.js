@@ -117,8 +117,6 @@ const store = new Vuex.Store({
 			commit,
 			state
 		}, drwData) {
-			state.codeIsLoad = true
-			state.codeImgData = '';
 
 			if (drwData.prompt == '' || drwData.content == '') {
 				uni.showToast({
@@ -131,19 +129,30 @@ const store = new Vuex.Store({
 				title: '开始绘制，绘制结果在画夹查看！',
 				icon: 'none'
 			})
+			state.codeIsLoad = true
+			state.codeImgData = '';
+
 			drwData.socketId = uni.getStorageSync('SOCKET_ID')
 			arCode(drwData).then((res) => {
 				state.codeIsLoad = false;
-				if (!res.image_url) {
+				let re = res.data
+				if (!re.image_url) {
 					uni.showToast({
-						title: res.detail,
+						title: re.detail,
 						icon: 'none'
 					})
 				} else {
 					// assuming you have a state for imageRes  
-					state.imageData = res
+					state.codeImgData = re
 				}
-			})
+			}).catch((error) => {
+				state.codeIsLoad = false;
+				console.error('发生错误:', error);
+				uni.showToast({
+					title: '绘制失败，请重试',
+					icon: 'none'
+				});
+			});
 		},
 		mjImageDrw({
 			commit,

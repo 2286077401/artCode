@@ -46,7 +46,6 @@
 				</view>
 			</view>
 			<view v-if="engineType =='自定义引擎'">
-
 				<view class='titleNav'>
 					预设背景风格
 				</view>
@@ -220,7 +219,19 @@
 					</view>
 				</view>
 			</view>
+
+
+
 		</view>
+		<view class="choseStyle" style="position: relative;">
+			<view v-if="!codeIsLoad && codeImgData==''" class="loading">
+				<tn-empty mode="data" text='暂无绘制内容'></tn-empty>
+			</view>
+			<view v-if="codeIsLoad" class="loading">
+				<ls-loading :fontSize='30' text="绘制中,请稍后" :embed='true' :animation="'progress'"></ls-loading>
+			</view>
+			<image v-if="codeImgData!=''" :src="codeImgData.image_url" style="width: 100%;" mode="widthFix"></image> 
+		</view> 
 		<view class="login-sussuspension begin">
 			<view class="login__info__item__button tn-cool-bg-color-7--reverse" hover-class="tn-hover"
 				:hover-stay-time="150" @click="codeDrwL()">立即生成(5积分/次)</view>
@@ -598,11 +609,11 @@
 				this.codeData.preset = this.presetList[index].value
 			},
 			radioEngine(index) {
-				uni.showToast({
-					title: '自定义引擎目前暂不支持使用',
-					icon: 'none',
-					duration: 2000
-				})
+				// uni.showToast({
+				// 	title: '自定义引擎目前暂不支持使用',
+				// 	icon: 'none',
+				// 	duration: 2000
+				// })
 				this.activeCode = ''
 				this.codeData = {
 					content: '', //二维码内容
@@ -630,6 +641,77 @@
 </script>
 
 <style scoped lang="scss">
+	.choseStyle {
+		width: 700rpx;
+		min-height: 200rpx;
+		border-radius: 20rpx;
+		background-color: #ffffff80;
+		box-shadow: 8rpx 8rpx 20rpx 2rpx #ffffff50;
+		margin: 0 auto;
+		margin-top: 30rpx;
+		padding: 20rpx;
+
+		.grid-container {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: grid;
+			grid-template-columns: repeat(2, 330rpx);
+			/* 创建两列，每列宽度为100px */
+			// grid-template-rows: repeat(2, 330rpx);
+			/* 创建两行，每行高度为100px */
+			padding: 20rpx;
+		}
+
+		.aganBtn {
+			padding: 5rpx 10rpx 5rpx 10rpx;
+			margin-bottom: 10rpx;
+			border-radius: 20rpx;
+			width: 100rpx;
+			background-color: #00ccffc4;
+		}
+
+		.grid-item {
+			// display: flex;
+			// flex-direction: column;
+			// justify-content: center;
+			// justify-items: center;
+			// align-items: center;
+			// text-align: center;
+			color: white;
+			font-weight: bolder;
+			position: relative;
+
+			.centerBox {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				text-align: center;
+			}
+		}
+
+		/deep/ .tn-grid-item {
+			background-color: #00000000;
+			height: 150rpx;
+			margin-top: 20rpx;
+			width: 200rpx;
+			padding: 0;
+			border-radius: 20rpx;
+
+		}
+
+		/deep/.tn-grid-item__box {
+			box-shadow: 0rpx 5rpx 20rpx 2rpx #ffffff50;
+			border-radius: 20rpx;
+			width: 200rpx;
+			background-color: #f5f5f599;
+
+		}
+	}
+
 	.login__info__item__button {
 		letter-spacing: .5em;
 		width: 80%;
