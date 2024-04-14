@@ -82,6 +82,7 @@
 		getPubilcDrow
 	} from "@/commit/api.js"
 	export default {
+		name:'drwPubil',
 		data() {
 			return {
 				pageNumber: 1,

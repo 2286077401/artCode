@@ -16,7 +16,7 @@
 			<view class="tn-margin">
 				<tn-swiper :list="banner" :height="350" :effect3d="false" mode="rect"></tn-swiper>
 			</view>
-
+			<tn-notice-bar :list="list" mode="vertical"></tn-notice-bar>
 			<!-- 方式12 start-->
 			<view class="tn-flex tn-margin-sm">
 				<view class="tn-flex-1 tn-padding-sm tn-margin-xs tn-radius">
@@ -55,92 +55,42 @@
 						</view>
 					</view>
 				</view>
-				<view class="tn-flex-1 tn-padding-sm tn-margin-xs tn-radius">
+				<view class="tn-flex-1 tn-padding-sm tn-margin-xs tn-radius"
+					@click="goto('/pages/webView/webView?url=http://blog.bitsai.cn/')">
 					<view class="tn-flex tn-flex-direction-column tn-flex-row-center tn-flex-col-center">
 						<view
 							class="icon12__item--icon tn-flex tn-flex-row-center tn-flex-col-center tn-main-gradient-purplered--light tn-color-purplered">
 							<view class="tn-icon-like-fill tn-three"></view>
 						</view>
 						<view class="tn-color-black tn-text-center">
-							<text class="tn-text-ellipsis">精选测试</text>
+							<text class="tn-text-ellipsis">个人主页</text>
 						</view>
 					</view>
 				</view>
 			</view>
-			<!-- 方式12 end-->
-
-			<!-- banner start-->
-			<view class="tn-flex tn-flex-wrap tn-margin-xs">
-				<view class=" " style="width: 100%;">
-					<view class="image-pic tn-margin-sm"
-						style="background-image:url('https://resource.tuniaokj.com/images/shop/phonecase1.jpg')">
-						<view class="image-wallpaper">
-						</view>
-					</view>
+			<view class="listBox">
+				<view class="list">
+					前端实验室
 				</view>
+				<view class="list">
+					博客模板
+				</view>
+
+
 			</view>
-			<!-- banner end-->
-
-			<!-- 比例 start-->
-			<view class="tn-flex tn-flex-wrap tn-margin-xs">
-				<block v-for="(item, index) in pic" :key="index">
-					<view class=" " style="width: 50%;">
-						<view class="image-pic tn-margin-sm" :style="'background-image:url(' + item.image + ')'">
-							<view class="image-wallpaper">
-							</view>
-						</view>
-					</view>
-				</block>
-			</view>
-			<!-- 比例 end-->
-
-			<!-- 图文 -->
-			<!-- <view class="tn-flex tn-flex-direction-column">
-
-				<block v-for="(item,index) in content" :key="index">
-					<view class="tn-blogger-content__wrap">
-						<view class="">
-							<image
-								class="tn-blogger-content__main-image tn-blogger-content__main-image--1 tn-margin-bottom tn-margin-top"
-								:src="item.mainImage" mode="aspectFill"></image>
-						</view>
-						<view class="tn-blogger-content__label tn-text-justify">
-							<text
-								class="tn-blogger-content__label__desc tn-text-lg tn-text-bold tn-color-black">{{ item.desc }}</text>
-						</view>
-
-						<view class="tn-flex tn-flex-row-between tn-flex-col-center tn-margin-top-xs">
-							<view class="justify-content-item tn-flex tn-flex-col-center">
-								<view style="margin-right: 10rpx;margin-left: 0rpx;">
-									<view class="tn-color-gray">
-										<text class="tn-blogger-content__count-icon tn-icon-flower"></text>
-										<text class="tn-padding-right">{{ item.collectionCount }}</text>
-										<text class="tn-blogger-content__count-icon tn-icon-message"></text>
-										<text class="tn-padding-right">{{ item.commentCount }}</text>
-										<text class="tn-blogger-content__count-icon tn-icon-like"></text>
-										<text class="">{{ item.likeCount }}</text>
-									</view>
-								</view>
-							</view>
-							<view class="justify-content-item tn-text-center">
-								<view v-for="(label_item,label_index) in item.label" :key="label_index"
-									class="tn-blogger-content__label__item tn-float-left tn-margin-right tn-bg-gray--light tn-round tn-text-sm tn-text-bold">
-									<text class="tn-blogger-content__label__item--prefix">#</text> {{ label_item }}
-								</view>
-							</view>
-						</view>
-					</view>
-				</block>
-			</view> -->
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
+
 		data() {
 			return {
-
+				list: [
+					'BitsAi内测现已发布V1.0.0',
+					'bug有奖征集反馈哦',
+				],
 				banner: [{
 					image: require('@/static/banner/wdlj.png')
 				}, {
@@ -401,6 +351,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.listBox {
+		display: flex;
+		width: 100%;
+	}
+
 	.template-wallpaper {
 		height: 100vh;
 		overflow-y: scroll;
@@ -511,78 +466,4 @@
 			}
 		}
 	}
-
-	/* 文章内容 start*/
-	.tn-blogger-content {
-		&__wrap {
-			margin: 30rpx;
-		}
-
-		&__info {
-			&__btn {
-				margin-right: -12rpx;
-				opacity: 0.5;
-			}
-		}
-
-		&__label {
-			&__item {
-				line-height: 45rpx;
-				padding: 0 20rpx;
-				margin: 5rpx 18rpx 0 0;
-
-				&--prefix {
-					color: #00FFC8;
-					padding-right: 10rpx;
-				}
-			}
-
-			&__desc {
-				line-height: 55rpx;
-			}
-		}
-
-		&__main-image {
-			border-radius: 16rpx;
-
-			&--1 {
-				max-width: 690rpx;
-				min-width: 690rpx;
-				max-height: 400rpx;
-				min-height: 400rpx;
-			}
-
-			&--2 {
-				max-width: 260rpx;
-				max-height: 260rpx;
-			}
-
-			&--3 {
-				height: 212rpx;
-				width: 100%;
-			}
-		}
-
-		&__count-icon {
-			font-size: 40rpx;
-			padding-right: 5rpx;
-		}
-	}
-
-	.image-wallpaper {
-		padding: 160rpx 0rpx;
-		font-size: 40rpx;
-		font-weight: 300;
-		position: relative;
-	}
-
-	.image-pic {
-		background-size: cover;
-		background-repeat: no-repeat;
-		// background-attachment:fixed;
-		background-position: top;
-		border-radius: 10rpx;
-	}
-
-	/* 文章内容 end*/
 </style>

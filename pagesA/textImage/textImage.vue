@@ -466,7 +466,8 @@
 				return new Promise((resolve, reject) => {
 					// https://spark-api.xf-yun.com/v1.1/chat  V1.5 domain general
 					// https://spark-api.xf-yun.com/v2.1/chat  V2.0 domain generalv2
-					var url = "wss://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti";
+					var url = "https://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti";
+/* 					var url = "wss://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti"; */
 					var host = "spark-api.cn-huabei-1.xf-yun.com";
 					var apiKeyName = "api_key";
 					var date = new Date().toGMTString();

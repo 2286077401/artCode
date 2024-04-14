@@ -25,7 +25,7 @@
 		</view>
 		<view v-if="tabberPageLoadFlag[2]" :style="{display: currentIndex === 2 ? '' : 'none'}">
 			<scroll-view class="custom-tabbar-page" scroll-y enable-back-to-top @scrolltolower="tabbarPageScrollLower">
-				<indexPage ref="indexPage"></indexPage>
+				<indexPage ref="indexPage"></indexPage> 
 			</scroll-view>
 		</view>
 		<view v-if="tabberPageLoadFlag[3]" :style="{display: currentIndex === 3 ? '' : 'none'}">
